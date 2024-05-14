@@ -13,7 +13,6 @@ import {
 } from "@suiet/wallet-kit";
 import Web3ModalProvider from './context';
 
-
 const ProfileChild = dynamic(() => import("@/components/Profile/index"), {
   ssr: false,
 });
@@ -76,7 +75,6 @@ export default async function profile() {
           </WalletProvider>
         </Web3ModalProvider>
       </NextUIProvider>
-      
     );
 }
   

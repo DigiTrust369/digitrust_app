@@ -16,7 +16,6 @@ export default function ProfileHeader() {
     const [showModal, setShowModal] = useState(false);
     const { open } = useWeb3Modal();
     const EVMWallet = useWalletInfo().walletInfo;
-    console.log(EVMWallet);
 
     const { 
         select, 
@@ -142,7 +141,7 @@ export default function ProfileHeader() {
                     </div>
                 </div>
             </header>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} 
+            {!wallet.connected && EVMWallet == undefined && <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} 
                 isKeyboardDismissDisabled={true} scrollBehavior={'inside'} size="3xl">
                 <ModalContent>
                     {(onClose) => (
@@ -150,9 +149,10 @@ export default function ProfileHeader() {
                         <ModalHeader className="flex flex-col gap-1">Select Wallet</ModalHeader>
                         <ModalBody>
                             <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                <Button className="text-align: left" color="primary" startContent={<MetaMaskIcon/>} onPress={() => open({ view: 'Networks' })}>
+                                <Button className="text-align: left" color="primary" startContent={<MetaMaskIcon/>} onPress={() => open({ view: 'Connect' })}>
                                     MetaMask
                                 </Button> 
+                            
                             </div>
                             <div className="grid grid-rows-1 grid-flow-col gap-4">
                                 <ConnectModal
@@ -183,7 +183,7 @@ export default function ProfileHeader() {
                         </>
                     )}
                     </ModalContent>
-                </Modal>
+                </Modal>}
         </Fragment>
     );
 }
