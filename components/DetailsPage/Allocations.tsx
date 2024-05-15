@@ -5,6 +5,7 @@ import btc from "@/assets/images/crypto/bitcoin.svg";
 import PieChart from "@/components/Chart/PieChart/PieChart";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import { useWalletKit } from "@mysten/wallet-kit";
+import DepositWithdraw from "./DepositWithdraw";
 
 interface Asset {
   asset: string;
@@ -49,7 +50,7 @@ const Allocations = () => {
     <>
       <div className="mt-11 mb-32">
         <div className="flex justify-between">
-          <div className="flex items-center w-[67%] h-[297px] bg-white border border-[#C3D4E9] rounded-[10px]">
+          <div className="flex items-start w-[67%] bg-white border border-[#C3D4E9] rounded-[10px]">
             <div className="relative w-[42%] h-full">
               <div className="absolute top-[34px] left-[55px]">
                 <PieChart />
@@ -66,7 +67,7 @@ const Allocations = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[58%]">
+            <div className="w-[58%] pt-11">
               <div className="flex gap-3">
                 <Image width={24} height={24} src={usdc} alt="usdc" />
                 <span className="font-semibold text-[#90A3BF] leading-normal">
@@ -104,7 +105,9 @@ const Allocations = () => {
               </div>
             </div>
           </div>
-          <div className="w-[30%] h-[297px] bg-white border border-[#C3D4E9] rounded-[10px]"></div>
+          <div className="w-[30%]">
+            <DepositWithdraw />
+          </div>
         </div>
 
         <table className="w-full mt-11 bg-white text-left border border-[#C3D4E9]">

@@ -1,4 +1,6 @@
 import Down from "@/icons/Down";
+import { Input, Select, SelectItem } from "@nextui-org/react";
+import MyInput from "../DigiTrust/DateInput";
 
 const Strategy = () => {
   return (
@@ -19,41 +21,60 @@ const Strategy = () => {
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Strategy Status
           </span>
-          <div className="flex items-center justify-between mt-1 w-full h-[52px] px-3 bg-white flex font-normal text-base text-gray-800 border border-[#C3D4E9] rounded-lg">
-            <span>All</span>
-            <Down />
-          </div>
+          <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+              <option value="all">All</option>
+              <option value="something">Something</option>
+              <option value="other">Other</option>
+            </select>
+          </form>
         </div>
         <div className="w-[18%]">
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Trading Currency
           </span>
-          <div className="flex items-center justify-between mt-1 w-full h-[52px] px-3 bg-white flex font-normal text-base text-gray-800 border border-[#C3D4E9] rounded-lg">
-            <span>All</span>
-            <Down />
-          </div>
+          <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+              <option value="all">All</option>
+              <option value="somethine">Something</option>
+              <option value="other">Other</option>
+            </select>
+          </form>
         </div>
         <div className="w-[18%]">
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Pricing Currency
           </span>
-          <div className="flex items-center justify-between mt-1 w-full h-[52px] px-3 bg-white flex font-normal text-base text-gray-800 border border-[#C3D4E9] rounded-lg">
-            <span>All</span>
-            <Down />
-          </div>
+          <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+              <option value="all">All</option>
+              <option value="somethine">Something</option>
+              <option value="other">Other</option>
+            </select>
+          </form>
         </div>
         <div>
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Date
           </span>
           <div className="flex gap-2.5">
-            <div className="flex items-center justify-between mt-1 w-[210px] h-[52px] px-3 bg-white flex font-normal text-base text-gray-800 border border-[#C3D4E9] rounded-lg">
-              <span>Start day</span>
-              <Down />
+            <div className="flex items-center justify-between mt-1 w-[210px] h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
+              <MyInput
+                type="date"
+                label="Start day"
+                size="custom"
+                radius="lg"
+                value={"2024-01-01"}
+              />
             </div>
-            <div className="flex items-center justify-between mt-1 w-[210px] h-[52px] px-3 bg-white flex font-normal text-base text-gray-800 border border-[#C3D4E9] rounded-lg">
-              <span>End day</span>
-              <Down />
+            <div className="flex items-center justify-between mt-1 w-[210px] h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
+              <MyInput
+                type="date"
+                label="End day"
+                size="custom"
+                radius="lg"
+                value={"2024-05-01"}
+              />
             </div>
           </div>
         </div>
