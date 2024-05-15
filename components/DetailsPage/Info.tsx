@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 export default function Info() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  function clickHandler() {
+    setIsFollowing((prevState) => !prevState);
+  }
 
   useEffect(() => {
     const fetchDataDetails = async () => {
@@ -170,16 +175,19 @@ export default function Info() {
           </div>
 
           <div className="flex items-center gap-x-[14px]">
-            <button className="rounded-[10px] bg-blue-600 px-12 py-3 text-white">
-              Buy
+            <button
+              onClick={clickHandler}
+              className={`w-36 py-3 rounded-[10px] border ${
+                isFollowing
+                  ? "border-blue-600 text-blue-600"
+                  : "bg-blue-600 text-white"
+              } text-xl leading-normal font-medium tracking-tight`}
+            >
+              {isFollowing ? "Following" : "Follow"}
             </button>
 
-            <button className="rounded-[10px] border border-blue-600 px-12 py-3 text-blue-600">
-              Sell
-            </button>
-
-            <button className="rounded-[10px] border border-green-600 px-12 py-3 text-green-600">
-              Stake
+            <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600">
+              Invest
             </button>
           </div>
         </div>
