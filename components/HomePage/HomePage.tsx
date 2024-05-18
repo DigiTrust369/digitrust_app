@@ -5,13 +5,13 @@ import Vaults from "./Vaults";
 export default function HomePage() {
   return (
     <div>
-      <Layout>
+      {/* <Layout> */}
         {/* Hero banner */}
         <Banner time={8000} />
 
         {/* Vaults */}
         <Vaults />
-      </Layout>
+      {/* </Layout> */}
     </div>
   );
 }

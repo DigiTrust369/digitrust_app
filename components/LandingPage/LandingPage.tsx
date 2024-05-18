@@ -20,7 +20,7 @@ import rectangleBlueRight from "@/assets/images/rectangle-blue-right.png";
 export default function HomePage() {
   return (
     <div>
-      <Layout>
+      {/* <Layout> */}
         {/* Hero banner */}
         <section>
           <div className="relative min-h-full overflow-hidden">
@@ -1171,7 +1171,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-      </Layout>
+      {/* </Layout> */}
     </div>
   );
 }

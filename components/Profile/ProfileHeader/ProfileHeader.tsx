@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import styles from '../Profile.module.css';
 import {useWallet, ConnectModal,ConnectButton} from '@suiet/wallet-kit'
 import { Fragment, useEffect, useState } from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, modal} from "@nextui-org/react";
@@ -9,6 +8,8 @@ import SUIWalletIcon from "@/icons/SUIWalletIcon";
 import MetaMaskIcon from "@/icons/MetaMaskIcon";
 import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react'
 import KlayIcon from "@/icons/KlayIcon";
+import { PeraWalletConnect } from "@perawallet/connect";
+import AlgorandIcon from "@/icons/AlgorandIcon";
 
 export default function ProfileHeader() {
     const wallet = useWallet();
@@ -16,18 +17,49 @@ export default function ProfileHeader() {
     const [showModal, setShowModal] = useState(false);
     const { open } = useWeb3Modal();
     const EVMWallet = useWalletInfo().walletInfo;
+    const peraWallet = new PeraWalletConnect();
+
+    const [algoAccountAddress, setAlgoAccountAddress] = useState('');
+    const isConnectedToPeraWallet = !!algoAccountAddress;
+
+    function handleConnectWalletClick() {
+        peraWallet
+          .connect()
+          .then((newAccounts) => {
+            peraWallet.connector?.on("disconnect", handleDisconnectWalletClick);
+            setAlgoAccountAddress(newAccounts[0]);
+          })
+          .catch((error) => {
+            if (error?.data?.type !== "CONNECT_MODAL_CLOSED") {
+              console.log(error);
+            }
+          });
+      }
+    
+      function handleDisconnectWalletClick() {
+        peraWallet.disconnect();
+        setAlgoAccountAddress('');
+    }
+
+    useEffect(() => {
+        // Reconnect to the session when the component is mounted
+        peraWallet
+          .reconnectSession()
+          .then((accounts) => {
+            peraWallet.connector?.on("disconnect", handleDisconnectWalletClick);
+    
+            if (accounts.length) {
+                setAlgoAccountAddress(accounts[0]);
+            }
+          })
+          .catch((e) => console.log(e));
+      }, []);
 
     const { 
         select, 
         configuredWallets,  
         detectedWallets,  
-      } = useWallet();
-
-    // useEffect(() => {
-    //     console.log('wallet status', wallet.status)
-    //     console.log('connected wallet name', wallet.name)
-    //     console.log('connected account info', wallet.account)
-    //   }, [wallet.connected])
+    } = useWallet();
 
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -132,6 +164,7 @@ export default function ProfileHeader() {
                                 {/* <ConnectButton>Connect Wallet</ConnectButton> */}
                                 {wallet.connected ? <ConnectButton>Connect Wallet</ConnectButton> : 
                                     EVMWallet != undefined? <w3m-button />:
+                                    isConnectedToPeraWallet? <Button onPress={() => handleDisconnectWalletClick()}>{peraWallet.platform}{algoAccountAddress.substring(0,12)}...</Button>:
                                     <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
                                         Connect Wallet
                                     </button>
@@ -141,45 +174,52 @@ export default function ProfileHeader() {
                     </div>
                 </div>
             </header>
-            {!wallet.connected && EVMWallet == undefined && <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} 
-                isKeyboardDismissDisabled={true} scrollBehavior={'inside'} size="3xl">
+            {!wallet.connected && EVMWallet == undefined && !isConnectedToPeraWallet && 
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} 
+                isKeyboardDismissDisabled={true} scrollBehavior={'inside'} size="xl">
                 <ModalContent>
                     {(onClose) => (
                         <>
-                        <ModalHeader className="flex flex-col gap-1">Select Wallet</ModalHeader>
-                        <ModalBody>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                <Button className="text-align: left" color="primary" startContent={<MetaMaskIcon/>} onPress={() => open({ view: 'Connect' })}>
-                                    MetaMask
-                                </Button> 
-                            
-                            </div>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                <ConnectModal
-                                    open={showModal}
-                                    onOpenChange={(open) => setShowModal(open)}
-                                    >
-                                    <Button size="md" color="primary" startContent={<SUIWalletIcon/>}>
-                                        SUI Connect
-                                    </Button>
-                                </ConnectModal>
-                                <Button color="primary" startContent={<KlayIcon/>} onPress={() => open({ view: 'Networks' })}>
-                                    Klaytn Connect
-                                </Button>
-                            </div>
-                             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                            <Button color="primary" variant="light" onPress={()=>{setShowMore(!showMore) }}>
-                                   {showMore?'Show less':'Show more'}
-                            </Button> 
-                            { showMore &&
-                                <div className="grid grid-rows-4 grid-flow-col gap-4">
-                                    {listSuiWallet}
+                            <ModalHeader className="flex flex-col gap-1">Connect to a wallet</ModalHeader>
+                            <ModalBody>
+                                <div className="grid grid-rows-1 grid-flow-col gap-4">
+                                    <Button variant="bordered" className="font-bold" onPress={() => open({ view: 'Connect' })}>
+                                        <MetaMaskIcon/>MetaMask
+                                    </Button> 
                                 </div>
-                            }
-                            
-                        </ModalBody>
-                        <ModalFooter>
-                        </ModalFooter>
+                                <div className="grid grid-rows-1 grid-flow-col gap-4">
+                                    <Button variant="bordered" className="font-bold" startContent={<EVMWalletIcon/>} onPress={() => open({ view: 'Networks' })}>
+                                        EVM Chain Connect
+                                    </Button>
+                                </div>
+                                <div className="grid grid-rows-1 grid-flow-col gap-4">
+                                    <ConnectModal
+                                        open={showModal}
+                                        onOpenChange={(open) => setShowModal(open)}
+                                        >
+                                        <Button variant="bordered" className="font-bold" size="md" startContent={<SUIWalletIcon/>}>
+                                            SUI Connect
+                                        </Button>
+                                    </ConnectModal>
+                                </div>
+                                <div className="grid grid-rows-1 grid-flow-col gap-4">
+                                    <Button variant="bordered" className="font-bold" startContent={<AlgorandIcon/>} onPress={() => handleConnectWalletClick()}>
+                                        Algorand Connect
+                                    </Button> 
+                                </div>
+                                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                                <Button color="primary" variant="light" onPress={()=>{setShowMore(!showMore) }}>
+                                    {showMore?'Show less':'Show more'}
+                                </Button> 
+                                { showMore &&
+                                    <div className="grid grid-rows-4 grid-flow-col gap-2">
+                                        {listSuiWallet}
+                                    </div>
+                                }
+                                
+                            </ModalBody>
+                            <ModalFooter>
+                            </ModalFooter>
                         </>
                     )}
                     </ModalContent>

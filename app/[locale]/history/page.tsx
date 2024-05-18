@@ -7,9 +7,9 @@ import HistoryPage from "@/components/HistoryPage/HistoryPage";
 export default function Details() {
   return (
     <WalletKitProvider>
-      <LayoutSecond>
+      {/* <LayoutSecond> */}
         <HistoryPage />
-      </LayoutSecond>
+      {/* </LayoutSecond> */}
     </WalletKitProvider>
   );
 }

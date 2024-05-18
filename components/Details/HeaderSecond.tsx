@@ -3,6 +3,7 @@ import Link from "next/link";
 import SuiButton from "../SuiButton";
 
 export default function HeaderSecond() {
+
     return (
         <header className="font-feature-settings bg-blue-600 text-sm font-medium capitalize leading-normal text-white xl:text-base">
             <div className="container mx-auto py-[18px] xl:px-0">

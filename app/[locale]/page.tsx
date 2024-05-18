@@ -7,6 +7,8 @@ import {
   LandingPage,
 } from "@/components";
 import { WalletKitProvider } from "@mysten/wallet-kit";
+import dynamic from "next/dynamic";
+
 
 // function Home() {
 //   return (

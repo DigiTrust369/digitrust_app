@@ -14,7 +14,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     <WalletKitProvider>
       {/* <WalletProvider> */}
       <main className="overflow-hidden">
-        <Header />
+        {/* <Header /> */}
         <div className="container p-4 m-auto grid">
           <AssetTitle title={"DigiTrust - Basic"} />
           <div className="flex flex-col lg:flex-row mt-4">
@@ -148,7 +148,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        <Footer />
+        {/* <Footer /> */}
       </main>
       {/* </WalletProvider> */}
     </WalletKitProvider>

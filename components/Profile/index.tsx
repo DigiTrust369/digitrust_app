@@ -7,6 +7,7 @@ import TabInfoProfile from "./Tab";
 import {useWallet} from '@suiet/wallet-kit'
 import SkeletonProfile from "./SkeletonProfile/SkeletonProfile";
 import { useWalletInfo } from '@web3modal/wagmi/react';
+import { PeraWalletConnect } from "@perawallet/connect";
 
 type TVault = {
   name: string;
@@ -45,11 +46,13 @@ const ProfileContainer = (props: TProfileContainerProps) => {
 
   const suiwallet = useWallet();
   const EVMWallet = useWalletInfo().walletInfo;
+  const peraWallet = new PeraWalletConnect();
+  console.log(peraWallet.connector?.accounts);
 
   useEffect(() => {
-      console.log('wallet status', suiwallet.status)
-      console.log('connected wallet name', suiwallet.name)
-      console.log('connected account info', suiwallet.account)
+      // console.log('wallet status', suiwallet.status)
+      // console.log('connected wallet name', suiwallet.name)
+      // console.log('connected account info', suiwallet.account)
     }, [suiwallet.connected])
 
   return (

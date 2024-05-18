@@ -1,5 +1,4 @@
 'use client'
-
 import React, { ReactNode } from 'react'
 import { config, projectId } from '../config/index'
 
@@ -31,7 +30,9 @@ export default function Web3ModalProvider({
 }) {
   return (
     <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
     </WagmiProvider>
   )
 }
