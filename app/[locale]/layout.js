@@ -20,7 +20,6 @@ export async function generateMetadata(props) {
 }
 
 
-
 export default async function LocaleLayout(props) {
   const { children, params: { locale } = {} } = props;
     

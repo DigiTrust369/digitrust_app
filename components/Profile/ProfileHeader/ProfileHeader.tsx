@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import {useWallet, ConnectModal,ConnectButton} from '@suiet/wallet-kit'
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useMemo } from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, modal} from "@nextui-org/react";
 import EVMWalletIcon from "@/icons/EVMWalletIcon";
 import SUIWalletIcon from "@/icons/SUIWalletIcon";
@@ -10,6 +10,10 @@ import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react'
 import KlayIcon from "@/icons/KlayIcon";
 import { PeraWalletConnect } from "@perawallet/connect";
 import AlgorandIcon from "@/icons/AlgorandIcon";
+import ArbitrumIcon from "@/icons/ArbitrumIcon";
+import Down from "@/icons/Down";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection} from "@nextui-org/react";
+import SUIWallet from "@/icons/SUIWalletIcon";
 
 export default function ProfileHeader() {
     const wallet = useWallet();
@@ -65,18 +69,6 @@ export default function ProfileHeader() {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const listSuiWallet = [...configuredWallets, ...detectedWallets].map((wallet) => (
-    //     <Button color="primary"  key={wallet.name} startContent={wallet.iconUrl} onPress={() => {
-    //         // check if user installed the wallet
-    //         if (!wallet.installed) {
-    //           // do something like guiding users to install
-    //           window.open(wallet.downloadUrl.browserExtension); 
-    //           //return;
-    //         }
-    //         select(wallet.name);
-    //         onOpenChange()
-    //       }}>
-    //        {wallet.name}
-    //    </Button>
        <button className="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded inline-flex items-left"
         onClick={() => {
             // check if user installed the wallet
@@ -92,6 +84,9 @@ export default function ProfileHeader() {
             <span>{wallet.name}</span>
         </button>
       ));
+
+    const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui devnetchain<Down/></>);
+    const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
     
 
     return (
@@ -171,6 +166,55 @@ export default function ProfileHeader() {
                                 }
                             </div>
                         </div>
+                        <div className="ml-2">
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <div className="flex items-center gap-x-[5px] rounded-lg bg-white px-6 py-1.5 text-blue-600">
+                                        {selectedKeys}
+                                    </div>
+                                    {/* <Button 
+                                        variant="bordered" 
+                                        className="capitalize"
+                                        >
+                                    {selectedValue}
+                                    </Button> */}
+                                </DropdownTrigger>
+                                <DropdownMenu 
+                                    aria-label="Single selection example"
+                                    variant="flat"
+                                    disallowEmptySelection
+                                    selectionMode="single"
+                                >
+                                    <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
+                                        Sui devnet
+                                    </DropdownItem>
+                                    <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                        Sui testnet
+                                    </DropdownItem>
+                                    <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                        Sui mainnet
+                                    </DropdownItem>
+                                    <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
+                                        Klaytn testnet
+                                    </DropdownItem>
+                                    <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
+                                        Klaytn mainnet
+                                    </DropdownItem>
+                                    <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
+                                        Arbitrum testnet
+                                    </DropdownItem>
+                                    <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
+                                        Arbitrum mainnet
+                                    </DropdownItem>
+                                    <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
+                                        Algorand testnet
+                                    </DropdownItem>
+                                    <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
+                                        Algorand mainnet
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -183,31 +227,50 @@ export default function ProfileHeader() {
                             <ModalHeader className="flex flex-col gap-1">Connect to a wallet</ModalHeader>
                             <ModalBody>
                                 <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                    <Button variant="bordered" className="font-bold" onPress={() => open({ view: 'Connect' })}>
+                                    {/* <Button variant="bordered" className="font-bold" onPress={() => open({ view: 'Connect' })}>
                                         <MetaMaskIcon/>MetaMask
-                                    </Button> 
+                                    </Button>  */}
+                                    <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                            onClick={async() => open({ view: 'Connect' })}>
+                                        <MetaMaskIcon/>
+                                        <span className="text-current font-bold">Metamask</span>
+                                    </button>
                                 </div>
                                 <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                    <Button variant="bordered" className="font-bold" startContent={<EVMWalletIcon/>} onPress={() => open({ view: 'Networks' })}>
+                                    {/* <Button variant="bordered" className="font-bold" startContent={<EVMWalletIcon/>} onPress={() => open({ view: 'Networks' })}>
                                         EVM Chain Connect
-                                    </Button>
+                                    </Button> */}
+                                    <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                            onClick={async() => open({ view: 'Networks' })}>
+                                        <EVMWalletIcon/>
+                                        <span className="text-current font-bold">EVM Chain Connect</span>
+                                    </button>
                                 </div>
                                 <div className="grid grid-rows-1 grid-flow-col gap-4">
                                     <ConnectModal
                                         open={showModal}
                                         onOpenChange={(open) => setShowModal(open)}
                                         >
-                                        <Button variant="bordered" className="font-bold" size="md" startContent={<SUIWalletIcon/>}>
+                                        {/* <Button variant="bordered" className="font-bold" size="md" startContent={<SUIWalletIcon/>}>
                                             SUI Connect
-                                        </Button>
+                                        </Button> */}
+                                        <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md">
+                                            <SUIWalletIcon/>
+                                            <span className="text-current font-bold">SUI Connect</span>
+                                        </button>
                                     </ConnectModal>
                                 </div>
                                 <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                    <Button variant="bordered" className="font-bold" startContent={<AlgorandIcon/>} onPress={() => handleConnectWalletClick()}>
+                                    {/* <Button variant="bordered" className="font-bold" startContent={<AlgorandIcon/>} onPress={() => handleConnectWalletClick()}>
                                         Algorand Connect
-                                    </Button> 
+                                    </Button>  */}
+                                    <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                            onClick={() => handleConnectWalletClick()}>
+                                        <AlgorandIcon/>
+                                        <span className="text-current font-bold">Algorand Connect</span>
+                                    </button>
                                 </div>
-                                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                                <hr className="h-px my-0 bg-gray-200 border-0 dark:bg-gray-700"></hr>
                                 <Button color="primary" variant="light" onPress={()=>{setShowMore(!showMore) }}>
                                     {showMore?'Show less':'Show more'}
                                 </Button> 
