@@ -9,6 +9,7 @@ import suiLogo from "@/assets/images/logo_brands/sui_symbol_sea.svg";
 import aptosLogo from "@/assets/images/logo_brands/aptos_primary.svg";
 import klaytnLogo from "@/assets/images/logo_brands/klaytn-logo.svg";
 import algorandLogo from "@/assets/images/logo_brands/algorand_logo.png";
+import w3xLogo from "@/assets/images/logo_brands/w3x_logo.png";
 import accountAbtraction from "@/assets/images/account-abstraction.png";
 import timeline from "@/assets/images/bg-timeline.png";
 import investor from "@/assets/images/feature-investors.png";
@@ -67,16 +68,19 @@ export default function HomePage() {
 
                 <div className="space-y-16">
                   <div className="flex items-center gap-x-[22px] text-base font-medium capitalize leading-[20px]">
-                    <button className="rounded-[10px] bg-white px-6 py-4 text-sm text-blue-600 xl:text-base">
-                      Start Investing
-                    </button>
-
-                    <button className="rounded-[10px] border border-white px-6 py-4 text-sm xl:text-base">
-                      Explore
-                    </button>
+                    <a className="block" href="/home">
+                      <button className="rounded-[10px] bg-white px-6 py-4 text-sm text-blue-600 xl:text-base hover:bg-blue-50">
+                        Start Investing
+                      </button>
+                    </a>
+                    <a className="block" href="/home">
+                      <button className="rounded-[10px] border border-white px-6 py-4 text-sm xl:text-base hover:bg-blue-700 hover:text-white">
+                        Explore
+                      </button>
+                    </a>
                   </div>
 
-                  <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
+                  {/* <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
                     <div className="flex items-center gap-x-1.5 text-sm xl:text-base">
                       <span>
                         <svg
@@ -118,7 +122,7 @@ export default function HomePage() {
                       </span>
                       Great Service
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -134,7 +138,7 @@ export default function HomePage() {
         </section>
 
         {/* Logo brands */}
-        <section className="container mx-auto flex items-center justify-center gap-x-16 px-[275px] py-16">
+        <section className="container mx-auto flex items-center justify-center gap-x-14 px-[275px] py-16 bg-gray">
           <Image className="h-14" src={suiLogo} alt="sui logo"></Image>
 
           <Image className="h-14" src={aptosLogo} alt="aptos logo"></Image>
@@ -146,6 +150,12 @@ export default function HomePage() {
           ></Image>
 
           <Image className="h-14" src={klaytnLogo} alt="klaytn logo"></Image>
+
+          <Image
+            className="h-14 p-1 bg-black"
+            src={w3xLogo}
+            alt="w3x logo"
+          ></Image>
         </section>
 
         <hr />
