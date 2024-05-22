@@ -1,12 +1,25 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import detailBg from "@/assets/images/bg-detail.svg";
 import useTab from "@/components/Tabbar/useTab";
 import Info from "./Info";
-import Allocations from "./Allocations";
 import TabDetails from "./TabDetails";
-import Overview from "./Overview";
-import MorePools from "./MorePools";
+
+const Allocations = dynamic(
+  () => import("@/components/DetailsPage/Allocations"),
+  {
+    ssr: false,
+  }
+);
+
+const Overview = dynamic(() => import("@/components/DetailsPage/Overview"), {
+  ssr: false,
+});
+
+const MorePools = dynamic(() => import("@/components/DetailsPage/MorePools"), {
+  ssr: false,
+});
 
 export default function DetailsPage() {
   const [selectedTab, setSelectedTab] = useTab("overview");
@@ -48,7 +61,7 @@ export default function DetailsPage() {
   return (
     <>
       <Info />
-      <main className="px-[90px]">
+      <main className="px-[90px] pb-24">
         <div>
           <TabDetails
             selectedTab={selectedTab}

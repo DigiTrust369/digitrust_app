@@ -1,12 +1,31 @@
+"use client";
+
 import Image from "next/image";
 
 import bitcoin from "@/assets/images/crypto/bitcoin.svg";
-import usdc from "@/assets/images/crypto/usdc.svg";
 import ethereum from "@/assets/images/crypto/ethereum.svg";
-import optimism from "@/assets/images/crypto/optimism.svg";
-import tether from "@/assets/images/crypto/tether.svg";
-import ripple from "@/assets/images/crypto/ripple.svg";
 import bnb from "@/assets/images/crypto/bnb.svg";
+import tether from "@/assets/images/crypto/tether.svg";
+import usdc from "@/assets/images/crypto/usdc.svg";
+import optimism from "@/assets/images/crypto/optimism.svg";
+import dot from "@/assets/images/crypto/dot.svg";
+import yfi from "@/assets/images/crypto/yfi.svg";
+import bat from "@/assets/images/crypto/bat.svg";
+import btt from "@/assets/images/crypto/btt.svg";
+import dash from "@/assets/images/crypto/dash.svg";
+import doge from "@/assets/images/crypto/doge.svg";
+import uma from "@/assets/images/crypto/uma.svg";
+import uni from "@/assets/images/crypto/uni.svg";
+import sushi from "@/assets/images/crypto/sushi.svg";
+import xtz from "@/assets/images/crypto/xtz.svg";
+import sys from "@/assets/images/crypto/sys.svg";
+import stx from "@/assets/images/crypto/stx.svg";
+import ripple from "@/assets/images/crypto/ripple.svg";
+import ont from "@/assets/images/crypto/ont.svg";
+import eos from "@/assets/images/crypto/eos.svg";
+import chz from "@/assets/images/crypto/chz.svg";
+import enj from "@/assets/images/crypto/enj.svg";
+
 import depositIc from "@/assets/images/icons/deposit-icon.png";
 import downIc from "@/assets/images/icons/down-ic.png";
 import arrowDownUpIc from "@/assets/images/icons/arrow-up-down-ic.png";
@@ -21,8 +40,30 @@ const vaults = [
     logo: bitcoin,
     asset: "Bitcoin",
     symbol: "BTC",
-    price: "$2,000.00",
+    price: "$70,000.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "bitcoin",
+        img: bitcoin,
+      },
+      {
+        name: "yfi",
+        img: yfi,
+      },
+      {
+        name: "bat",
+        img: bat,
+      },
+      {
+        name: "btt",
+        img: btt,
+      },
+      {
+        name: "dash",
+        img: dash,
+      },
+    ],
     apy: chartAPY1,
     return: "24,32%",
   },
@@ -30,8 +71,30 @@ const vaults = [
     logo: ethereum,
     asset: "Ethereum",
     symbol: "ETH",
-    price: "$2,000.00",
+    price: "$4,000.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "ethereum",
+        img: ethereum,
+      },
+      {
+        name: "uni",
+        img: uni,
+      },
+      {
+        name: "doge",
+        img: doge,
+      },
+      {
+        name: "uma",
+        img: uma,
+      },
+      {
+        name: "sushi",
+        img: sushi,
+      },
+    ],
     apy: chartAPY1,
     return: "24,32%",
   },
@@ -39,8 +102,30 @@ const vaults = [
     logo: bnb,
     asset: "BNB",
     symbol: "BNB",
-    price: "$2,000.00",
+    price: "$1,000.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "bnb",
+        img: bnb,
+      },
+      {
+        name: "sys",
+        img: sys,
+      },
+      {
+        name: "ripple",
+        img: ripple,
+      },
+      {
+        name: "xtz",
+        img: xtz,
+      },
+      {
+        name: "stx",
+        img: stx,
+      },
+    ],
     apy: chartAPY2,
     return: "-1.57%",
   },
@@ -48,8 +133,30 @@ const vaults = [
     logo: tether,
     asset: "Tether",
     symbol: "USDT",
-    price: "$2,000.00",
+    price: "$1.01",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "tether",
+        img: tether,
+      },
+      {
+        name: "enj",
+        img: enj,
+      },
+      {
+        name: "ont",
+        img: ont,
+      },
+      {
+        name: "eos",
+        img: eos,
+      },
+      {
+        name: "chz",
+        img: chz,
+      },
+    ],
     apy: chartAPY1,
     return: "24,32%",
   },
@@ -57,26 +164,92 @@ const vaults = [
     logo: usdc,
     asset: "USDC",
     symbol: "USDC",
-    price: "$2,000.00",
+    price: "$1.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "usdc",
+        img: usdc,
+      },
+      {
+        name: "uni",
+        img: uni,
+      },
+      {
+        name: "sushi",
+        img: sushi,
+      },
+      {
+        name: "bat",
+        img: bat,
+      },
+      {
+        name: "ethereum",
+        img: ethereum,
+      },
+    ],
     apy: chartAPY1,
     return: "24,32%",
   },
   {
-    logo: ethereum,
-    asset: "Ethereum",
-    symbol: "ETH",
-    price: "$2,000.00",
+    logo: optimism,
+    asset: "Optimism",
+    symbol: "OP",
+    price: "$5.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "btt",
+        img: btt,
+      },
+      {
+        name: "uma",
+        img: uma,
+      },
+      {
+        name: "yfi",
+        img: yfi,
+      },
+      {
+        name: "doge",
+        img: doge,
+      },
+      {
+        name: "dash",
+        img: dash,
+      },
+    ],
     apy: chartAPY2,
     return: "-1.57%",
   },
   {
-    logo: bitcoin,
-    asset: "Bitcoin",
-    symbol: "BTC",
-    price: "$2,000.00",
+    logo: dot,
+    asset: "Polkadot",
+    symbol: "DOT",
+    price: "$10.00",
     tvl: "$118.42",
+    assets: [
+      {
+        name: "enj",
+        img: enj,
+      },
+      {
+        name: "chz",
+        img: chz,
+      },
+      {
+        name: "bnb",
+        img: bnb,
+      },
+      {
+        name: "xtz",
+        img: xtz,
+      },
+      {
+        name: "ont",
+        img: ont,
+      },
+    ],
     apy: chartAPY2,
     return: "-1.57%",
   },
@@ -176,7 +349,14 @@ export default function VaultsList() {
                 <td className="w-[13%] py-6">{vault.tvl}</td>
                 <td className="w-[14%] py-6">
                   <div className="w-full flex items-center">
-                    <Image
+                    {vault.assets.map((asset) => (
+                      <Image
+                        className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white [&:not(:first-child)]:-ml-[8px]"
+                        src={asset.img}
+                        alt={asset.name}
+                      />
+                    ))}
+                    {/* <Image
                       className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white"
                       src={bitcoin}
                       alt="bitcoin"
@@ -200,7 +380,7 @@ export default function VaultsList() {
                       className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white -ml-[8px]"
                       src={bitcoin}
                       alt="bitcoin"
-                    />
+                    /> */}
                   </div>
                 </td>
                 <td className="w-[13%] py-6">

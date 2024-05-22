@@ -1,78 +1,79 @@
 "use client";
 
+import Image from "next/image";
 import { Tab } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { useWalletKit } from "@mysten/wallet-kit";
+import usdc from "@/assets/images/crypto/usdc.svg";
 
 export default function DepositWithdraw() {
-  const { signAndExecuteTransactionBlock } = useWalletKit();
+  const [depositAmount, setDepositAmount] = useState("1206.73");
+  const [withdrawAmount, setWithdrawAmount] = useState("1206.73");
+
+  // const { signAndExecuteTransactionBlock } = useWalletKit();
 
   // Depost/ Withdraw
   async function withdraw(event: any) {
-    event.preventDefault();
-
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
-    const txb = new TransactionBlock();
-    const contractAddress =
-      "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
-    const contractModule = "dgt";
-    const contractMethod = "mint";
-    txb.moveCall({
-      target: `${contractAddress}::${contractModule}::${contractMethod}`,
-      arguments: [
-        txb.object(
-          "0x6109f11f58aad51a7f1ac9943a04d73b937ba6aca92287ff5e2e3f967d945ae7"
-        ),
-        txb.pure(130624111306),
-        txb.object(
-          "0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd"
-        ),
-      ],
-    });
-
-    await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
+    //   event.preventDefault();
+    //   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+    //   const txb = new TransactionBlock();
+    //   const contractAddress =
+    //     "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
+    //   const contractModule = "dgt";
+    //   const contractMethod = "mint";
+    //   txb.moveCall({
+    //     target: `${contractAddress}::${contractModule}::${contractMethod}`,
+    //     arguments: [
+    //       txb.object(
+    //         "0x6109f11f58aad51a7f1ac9943a04d73b937ba6aca92287ff5e2e3f967d945ae7"
+    //       ),
+    //       txb.pure(130624111306),
+    //       txb.object(
+    //         "0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd"
+    //       ),
+    //     ],
+    //   });
+    //   await signAndExecuteTransactionBlock({
+    //     transactionBlock: txb as any,
+    //   });
   }
 
   async function deposit_base(event: any) {
-    event.preventDefault();
-
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
-    const txb = new TransactionBlock();
-    const contractAddress =
-      "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
-    const contractModule = "book";
-    const contractMethod = "make_base_deposit";
-    txb.moveCall({
-      target: `${contractAddress}::${contractModule}::${contractMethod}`,
-      arguments: [
-        txb.object(
-          "0xfd0debf5753bae5ac2975d21e57a27bb6a86f6cf6c4e5eb411e205c383f83a02"
-        ),
-        txb.pure(
-          "0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453"
-        ),
-        txb.object(
-          "0xca9f8d3697a2a33291cfa6ea0d2f58afa873d7533f5b49d73caa962d77c1a260"
-        ),
-      ],
-      typeArguments: [
-        "0x2::sui::SUI", //QUOTE_COIN_TYPE,
-        "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT", //BASE_COIN_TYPE
-      ],
-    });
-
-    await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
+    //   event.preventDefault();
+    //   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+    //   const txb = new TransactionBlock();
+    //   const contractAddress =
+    //     "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
+    //   const contractModule = "book";
+    //   const contractMethod = "make_base_deposit";
+    //   txb.moveCall({
+    //     target: `${contractAddress}::${contractModule}::${contractMethod}`,
+    //     arguments: [
+    //       txb.object(
+    //         "0xfd0debf5753bae5ac2975d21e57a27bb6a86f6cf6c4e5eb411e205c383f83a02"
+    //       ),
+    //       txb.pure(
+    //         "0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453"
+    //       ),
+    //       txb.object(
+    //         "0xca9f8d3697a2a33291cfa6ea0d2f58afa873d7533f5b49d73caa962d77c1a260"
+    //       ),
+    //     ],
+    //     typeArguments: [
+    //       "0x2::sui::SUI", //QUOTE_COIN_TYPE,
+    //       "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT", //BASE_COIN_TYPE
+    //     ],
+    //   });
+    //   await signAndExecuteTransactionBlock({
+    //     transactionBlock: txb as any,
+    //   });
   }
 
   return (
     <div className="w-full rounded-[10px]">
-      <div className="w-full">
+      <div className="w-full h-[492px]">
         <Tab.Group>
           <Tab.List className="mb-[40px] flex items-center gap-x-[6px] rounded-xl bg-[#E0E9F4] p-1">
             <Tab as={Fragment}>
@@ -127,11 +128,18 @@ export default function DepositWithdraw() {
                 <div className="relative">
                   <div className="space-y-2">
                     <div className="space-y-2">
-                      <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
-                        <div className=" space-y-2">
-                          <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                            1206.73
-                          </div>
+                      <div className="flex justify-between items-center rounded-[10px] border border-gray-300 bg-white px-6 py-4">
+                        <div className="w-1/2 space-y-2">
+                          <input
+                            type="number"
+                            className=" w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
+                            value={
+                              depositAmount === "" ? "0.0000" : depositAmount
+                            }
+                            onChange={(event) =>
+                              setDepositAmount(event.target.value)
+                            }
+                          />
                           <div className="text-xs font-semibold leading-4 text-gray-500">
                             $1,206.73
                             <span className="text-red-600">(-0.0572%)</span>
@@ -193,11 +201,15 @@ export default function DepositWithdraw() {
                     </div>
 
                     <div className="space-y-2">
-                      <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
-                        <div className=" space-y-2">
-                          <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                            1206.73
-                          </div>
+                      <div className="flex justify-between items-center rounded-[10px] border border-gray-300 bg-white px-6 py-4">
+                        <div className="w-1/2 space-y-2">
+                          <input
+                            type="text"
+                            className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
+                            value={
+                              depositAmount === "" ? "0.0000" : depositAmount
+                            }
+                          />
                           <div className="text-xs font-semibold leading-4 text-gray-500">
                             $1,206.73
                             <span className="text-red-600">(-0.0572%)</span>
@@ -373,11 +385,18 @@ export default function DepositWithdraw() {
                 <div className="relative">
                   <div className="space-y-2">
                     <div className="space-y-2">
-                      <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
-                        <div className=" space-y-2">
-                          <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                            1206.73
-                          </div>
+                      <div className="flex justify-between items-center rounded-[10px] border border-gray-300 bg-white px-6 py-4">
+                        <div className="w-1/2 space-y-2">
+                          <input
+                            type="number"
+                            className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
+                            value={
+                              withdrawAmount === "" ? "0.0000" : withdrawAmount
+                            }
+                            onChange={(event) =>
+                              setWithdrawAmount(event.target.value)
+                            }
+                          />
                           <div className="text-xs font-semibold leading-4 text-gray-500">
                             $1,206.73
                             <span className="text-red-600">(-0.0572%)</span>
@@ -441,7 +460,7 @@ export default function DepositWithdraw() {
                   <div className="mt-8">
                     <div className="space-y-4">
                       <div className="mt-5 flex items-center justify-between rounded-xl border border-gray-300 bg-white px-5 py-3">
-                        <div className="flex items-center gap-x-2 font-medium leading-6 text-gray-900 lg:text-sm">
+                        <div className="flex items-center gap-x-2 font-medium leading-6 text-gray-900 lg:text-xs">
                           <span>
                             <svg
                               width="18"
@@ -460,7 +479,7 @@ export default function DepositWithdraw() {
                           </span>
                           1 USDT = 1.00021 USDC
                         </div>
-                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-sm">
+                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
                           Advanced Setting
                           <span>
                             <svg

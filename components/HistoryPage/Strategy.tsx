@@ -1,8 +1,41 @@
-import Down from "@/icons/Down";
-import { Input, Select, SelectItem } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+
 import MyInput from "../DigiTrust/DateInput";
 
+interface Data {
+  date: string;
+  name: string;
+  symbol: string;
+  quantity: number;
+  purchase_price: string;
+  current_price: string;
+  total_loss: string;
+  tx_hash: string;
+  exp_date: string;
+}
+
 const Strategy = () => {
+  let datas: Data[];
+
+  // Call Api
+  const [data, setData] = useState<any[]>();
+
+  useEffect(() => {
+    const fetchDataDetails = async () => {
+      // Api Default
+      const response = await fetch(
+        "https://dgt-dev.vercel.app/v1/portfolio_tracker?user_adr=0x12d2"
+      );
+      const data = await response.json();
+
+      setData(data);
+    };
+
+    fetchDataDetails();
+  }, []);
+  // End call api
+  datas = data || [];
+
   return (
     <>
       <div className="flex gap-[18px] py-6">
@@ -22,7 +55,7 @@ const Strategy = () => {
             Strategy Status
           </span>
           <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
-            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100 focus:outline-none">
               <option value="all">All</option>
               <option value="something">Something</option>
               <option value="other">Other</option>
@@ -34,7 +67,7 @@ const Strategy = () => {
             Trading Currency
           </span>
           <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
-            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100 focus:outline-none">
               <option value="all">All</option>
               <option value="somethine">Something</option>
               <option value="other">Other</option>
@@ -46,7 +79,7 @@ const Strategy = () => {
             Pricing Currency
           </span>
           <form className="mt-1 w-full h-[52px] bg-white flex font-normal text-base text-gray-800 rounded-lg">
-            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100">
+            <select className="px-3 w-full border border-[#C3D4E9] rounded-lg focus-visible:bg-gray-100 focus:outline-none">
               <option value="all">All</option>
               <option value="somethine">Something</option>
               <option value="other">Other</option>
@@ -80,56 +113,68 @@ const Strategy = () => {
         </div>
       </div>
       <div className="py-8">
-        <table className="w-full bg-white text-left  border border-[#C3D4E9]">
+        <table className="w-full px-1.5 bg-white text-left border border-[#C3D4E9]">
           <thead className="text-base	font-medium	text-gray-800 tracking-tight">
             <tr>
-              <th className="pl-1.5 py-6 border-b border-b-[#C3D4E9]">Date</th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">Trading pair</th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">
-                Strategy Type
+              <th className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
+                Date
               </th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">
-                Annualized Yield
+              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">Name</th>
+              <th className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
+                Symbol
               </th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">
-                Investment Amount
+              <th className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
+                Quantity
               </th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">Total Income</th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">
-                {"Number of runs/time"}
+              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                Purchase Price
               </th>
-              <th className="py-6 border-b border-b-[#C3D4E9]">
-                Strategy Status
+              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                Current Price
               </th>
-              <th className="pr-1.5 py-6 text-right border-b border-b-[#C3D4E9]">
-                Operation
+              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                Total Loss
+              </th>
+              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                Tx Hash
+              </th>
+              <th className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-right">
+                Expiration Date
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td className="pl-1.5 py-6 border-b border-b-[#C3D4E9]">Date</td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">Trading pair</td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">
-                Strategy Type
-              </td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">
-                Annualized Yield
-              </td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">
-                Investment Amount
-              </td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">Total Income</td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">
-                {"Number of runs/time"}
-              </td>
-              <td className="py-6 border-b border-b-[#C3D4E9]">
-                Strategy Status
-              </td>
-              <td className="pr-1.5 py-6 text-right border-b border-b-[#C3D4E9]">
-                Operation
-              </td>
-            </tr>
+          <tbody className="text-base	text-gray-800 tracking-tight">
+            {datas.map((data: any) => (
+              <tr>
+                <td className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
+                  {data.date}
+                </td>
+                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.name}
+                </td>
+                <td className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.symbol}
+                </td>
+                <td className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.quantity}
+                </td>
+                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.purchase_price}
+                </td>
+                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.current_price}
+                </td>
+                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.total_loss}
+                </td>
+                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+                  {data.tx_hash}
+                </td>
+                <td className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-center">
+                  {data.exp_date}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
