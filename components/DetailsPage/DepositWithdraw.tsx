@@ -106,7 +106,7 @@ export default function DepositWithdraw() {
 
           <Tab.Panels>
             <Tab.Panel>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <div className="isolate inline-flex -space-x-px rounded-[10px] bg-white shadow-sm">
                   <button className="relative inline-flex items-center rounded-l-[10px] p-2 text-sm text-gray-900 ring-1 ring-inset ring-gray-300">
                     15%
@@ -375,6 +375,170 @@ export default function DepositWithdraw() {
                       </span>
                       Deposit
                     </button>
+                  </div>
+                </div>
+              </div> */}
+              <div className="space-y-2">
+                <div className="relative">
+                  <div className="space-y-2">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center rounded-[10px] border border-gray-300 bg-white px-6 py-4">
+                        <div className="w-1/2 space-y-2">
+                          <input
+                            type="number"
+                            className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
+                            value={
+                              depositAmount === "" ? "0.0000" : depositAmount
+                            }
+                            onChange={(event) =>
+                              setDepositAmount(event.target.value)
+                            }
+                          />
+                          <div className="text-xs font-semibold leading-4 text-gray-500">
+                            $1,206.73
+                            <span className="text-red-600">(-0.0572%)</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <button className="flex items-center gap-x-[10px] rounded-xl border border-gray-300 bg-[#FAFBFF] px-4 py-3 text-gray-900">
+                            <span>
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g clipPath="url(#clip0_242_12250)">
+                                  <path
+                                    d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z"
+                                    fill="#2775C9"
+                                  />
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M11.28 7.54458V6.79518C11.28 6.39753 11.6024 6.07518 12 6.07518C12.3976 6.07518 12.72 6.39753 12.72 6.79518V7.54198C14.0229 7.73815 14.9161 8.4789 15.1546 9.53435C15.2063 9.76325 15.0626 9.99074 14.8337 10.0424C14.803 10.0494 14.7716 10.0529 14.7401 10.0529H14.3506C14.0354 10.0529 13.7486 9.87085 13.6144 9.58565C13.366 9.0576 12.7772 8.75354 11.9931 8.75354C11.0125 8.75354 10.3508 9.23479 10.3508 9.95666C10.3508 10.5342 10.79 10.871 11.8547 11.1237L12.8533 11.3523C14.6159 11.7553 15.3618 12.4832 15.3618 13.7766C15.3618 15.2098 14.3613 16.1791 12.72 16.4076V17.2752C12.72 17.6728 12.3976 17.9952 12 17.9952C11.6024 17.9952 11.28 17.6728 11.28 17.2752V16.4212C9.8262 16.2457 8.84433 15.4762 8.61369 14.2989C8.57574 14.1052 8.70201 13.9174 8.89572 13.8795C8.91835 13.875 8.94136 13.8728 8.96443 13.8728L9.55574 13.8729C9.82337 13.8729 10.0671 14.0269 10.182 14.2686C10.4543 14.8411 11.1509 15.1963 12.0232 15.1963C13.0699 15.1963 13.7978 14.6789 13.7978 13.9571C13.7978 13.3314 13.3526 12.9705 12.2578 12.7118L11.1329 12.4471C9.5327 12.0802 8.77473 11.3102 8.77473 10.071C8.77473 8.73648 9.78205 7.77693 11.28 7.54458ZM3 12.0004C3 8.02903 5.59223 4.66081 9.18314 3.48306C9.40993 3.40868 9.65407 3.53223 9.72845 3.75902C9.74271 3.80249 9.74997 3.84794 9.74997 3.89369L9.74998 4.14735C9.74998 4.53401 9.51544 4.88202 9.15705 5.02715C6.39432 6.14592 4.44643 8.84655 4.44643 12.0004C4.44643 15.1527 6.39244 17.8522 9.15306 18.9719C9.5139 19.1183 9.74998 19.4688 9.74998 19.8582L9.74999 20.0697C9.74999 20.3233 9.54445 20.5288 9.29089 20.5288C9.24162 20.5288 9.19266 20.5209 9.14591 20.5054C5.57432 19.3166 3 15.9579 3 12.0004ZM21 12.0004C21 15.9486 18.4379 19.3007 14.8794 20.4969C14.6295 20.5809 14.3589 20.4464 14.2749 20.1965C14.2584 20.1475 14.25 20.0961 14.25 20.0444V19.8749C14.25 19.4761 14.4914 19.117 14.8606 18.9664C17.614 17.8433 19.5536 15.1474 19.5536 12.0004C19.5536 8.85623 17.6176 6.16252 14.8684 5.03751C14.4944 4.88445 14.25 4.52044 14.25 4.11631V3.96178C14.25 3.69598 14.4655 3.48051 14.7313 3.48051C14.7835 3.48051 14.8354 3.48902 14.8849 3.50569C18.4405 4.70347 21 8.05417 21 12.0004Z"
+                                    fill="white"
+                                  />
+                                </g>
+                                <defs>
+                                  <clipPath id="clip0_242_12250">
+                                    <rect width="24" height="24" fill="white" />
+                                  </clipPath>
+                                </defs>
+                              </svg>
+                            </span>
+                            <div>USDC</div>
+                            <span>
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M10.0002 13.8765L4.26367 8.13989L5.73681 6.66675L10.0002 10.9302L14.2637 6.66675L15.7368 8.13989L10.0002 13.8765Z"
+                                  fill="#0D121F"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                          <p className="text-right text-xs font-medium leading-4 text-gray-300">
+                            Balance: 1509.00
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <div className="space-y-4">
+                      <div className="mt-5 flex items-center justify-between rounded-xl border border-gray-300 bg-white px-5 py-3">
+                        <div className="flex items-center gap-x-2 font-medium leading-6 text-gray-900 lg:text-xs">
+                          <span>
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9ZM8.25 6.75V5.25H9.75V6.75H8.25ZM8.25 12.75V8.25H9.75V12.75H8.25Z"
+                                fill="#0D121F"
+                              />
+                            </svg>
+                          </span>
+                          1 USDT = 1.00021 USDC
+                        </div>
+                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
+                          Advanced Setting
+                          <span>
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M6.00005 8.32582L2.55811 4.88388L3.44199 4L6.00005 6.55806L8.55811 4L9.44199 4.88388L6.00005 8.32582Z"
+                                fill="#0D121F"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={deposit_base}
+                        className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
+                      >
+                        <span>
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8.0625 10.3125L12 14.25L15.9375 10.3125"
+                              fill="white"
+                            />
+                            <path
+                              d="M8.0625 10.3125L12 14.25L15.9375 10.3125"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12 3.75V14.25"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M20.25 14.25V19.5C20.25 19.6989 20.171 19.8897 20.0303 20.0303C19.8897 20.171 19.6989 20.25 19.5 20.25H4.5C4.30109 20.25 4.11032 20.171 3.96967 20.0303C3.82902 19.8897 3.75 19.6989 3.75 19.5V14.25"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        Deposit
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
