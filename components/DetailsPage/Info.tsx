@@ -5,6 +5,7 @@ export default function Info() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
 
   function clickHandler() {
     setIsFollowing((prevState) => !prevState);
@@ -178,12 +179,21 @@ export default function Info() {
             <button
               onClick={clickHandler}
               className={`w-36 py-3 rounded-[10px] border ${
-                isFollowing
+                isFollowing && !isUnFollowedDisplayed
                   ? "border-blue-600 text-blue-600"
                   : "bg-blue-600 text-white"
+              } ${
+                isFollowing && isUnFollowedDisplayed
+                  ? "bg-red-300 text-white"
+                  : ""
               } text-xl leading-normal font-medium tracking-tight`}
+              onMouseEnter={() => setIsUnFollowedDisplayed(true)}
+              onMouseLeave={() => setIsUnFollowedDisplayed(false)}
             >
-              {isFollowing ? "Following" : "Follow"}
+              {/* {isFollowing ? "Following" : "Follow"} */}
+              {isFollowing && !isUnFollowedDisplayed && "Following"}
+              {isFollowing && isUnFollowedDisplayed && "Unfollow"}
+              {!isFollowing && "Follow"}
             </button>
 
             <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600">

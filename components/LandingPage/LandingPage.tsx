@@ -1,11 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Layout from "./HomeLayout";
 import bannerHero from "@/assets/images/bg-Hero.png";
 import imageHero from "@/assets/images/imageHero.png";
-import aws from "@/assets/images/logo_brands/amazon.png";
-import messari from "@/assets/images/logo_brands/messari.png";
-import blockPi from "@/assets/images/logo_brands/blockPi.png";
-import coinMarketCap from "@/assets/images/logo_brands/coin-market-cap.png";
+import suiLogo from "@/assets/images/logo_brands/sui_symbol_sea.svg";
+import aptosLogo from "@/assets/images/logo_brands/aptos_primary.svg";
+import klaytnLogo from "@/assets/images/logo_brands/klaytn-logo.svg";
+import algorandLogo from "@/assets/images/logo_brands/algorand_logo.png";
+import w3xLogo from "@/assets/images/logo_brands/w3x_logo.png";
 import accountAbtraction from "@/assets/images/account-abstraction.png";
 import timeline from "@/assets/images/bg-timeline.png";
 import investor from "@/assets/images/feature-investors.png";
@@ -16,8 +20,25 @@ import multiSignatureVaults from "@/assets/images/multi-signature-vaults.png";
 import aiVerify from "@/assets/images/ai-verified-audit-for-smart-contracts.png";
 import rectangleBlue from "@/assets/images/rectangle-blue.png";
 import rectangleBlueRight from "@/assets/images/rectangle-blue-right.png";
+import minus from "@/assets/images/icons/minus.svg";
+import plus from "@/assets/images/icons/plus.svg";
 
 export default function HomePage() {
+  const [isOpen, setIsOpen] = useState({
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+  });
+
+  function toggleHandler(key: string, open: boolean) {
+    setIsOpen((prev) => ({
+      ...prev,
+      [key]: open,
+    }));
+  }
+
   return (
     <div>
       <Layout>
@@ -47,16 +68,19 @@ export default function HomePage() {
 
                 <div className="space-y-16">
                   <div className="flex items-center gap-x-[22px] text-base font-medium capitalize leading-[20px]">
-                    <button className="rounded-[10px] bg-white px-6 py-4 text-sm text-blue-600 xl:text-base">
-                      Start Investing
-                    </button>
-
-                    <button className="rounded-[10px] border border-white px-6 py-4 text-sm xl:text-base">
-                      Explore
-                    </button>
+                    <a className="block" href="/home">
+                      <button className="rounded-[10px] bg-white px-6 py-4 text-sm text-blue-600 xl:text-base hover:bg-blue-50">
+                        Start Investing
+                      </button>
+                    </a>
+                    <a className="block" href="/home">
+                      <button className="rounded-[10px] border border-white px-6 py-4 text-sm xl:text-base hover:bg-blue-700 hover:text-white">
+                        Explore
+                      </button>
+                    </a>
                   </div>
 
-                  <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
+                  {/* <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
                     <div className="flex items-center gap-x-1.5 text-sm xl:text-base">
                       <span>
                         <svg
@@ -98,7 +122,7 @@ export default function HomePage() {
                       </span>
                       Great Service
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -114,14 +138,24 @@ export default function HomePage() {
         </section>
 
         {/* Logo brands */}
-        <section className="container mx-auto flex items-center justify-center gap-x-[50px] px-[275px] py-16 xl:px-0">
-          <Image className="" src={aws} alt="amazon"></Image>
+        <section className="container mx-auto flex items-center justify-center gap-x-14 px-[275px] py-16 bg-gray">
+          <Image className="h-14" src={suiLogo} alt="sui logo"></Image>
 
-          <Image className="" src={messari} alt="messari"></Image>
+          <Image className="h-14" src={aptosLogo} alt="aptos logo"></Image>
 
-          <Image className="" src={blockPi} alt="blockPi"></Image>
+          <Image
+            className="h-14"
+            src={algorandLogo}
+            alt="algorand logo"
+          ></Image>
 
-          <Image className="" src={coinMarketCap} alt="coinMarketCap"></Image>
+          <Image className="h-14" src={klaytnLogo} alt="klaytn logo"></Image>
+
+          <Image
+            className="h-14 p-1 bg-black"
+            src={w3xLogo}
+            alt="w3x logo"
+          ></Image>
         </section>
 
         <hr />
@@ -724,7 +758,9 @@ export default function HomePage() {
               <h1 className="text-4xl font-bold leading-tight text-gray-800 xl:text-[50px]">
                 Investment in easy mode in just 3 steps
               </h1>
-              <Button>Get Started</Button>
+              <a className="block" href="/home">
+                <Button>Get Started</Button>
+              </a>
             </div>
 
             <div className="relative flex justify-between gap-x-5">
@@ -885,21 +921,26 @@ export default function HomePage() {
                     <div className="flex flex-col items-center pt-14 sm:flex-row">
                       <div className="mx-auto mt-24 flex w-full items-start justify-start">
                         <div className="flex w-full justify-end sm:w-1/2 sm:pr-8">
-                          <div className="rounded-timelineLeft mt-6 flex h-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white lg:w-[150px] xl:text-4xl 2xl:w-[80px]">
+                          <div className="rounded-timelineLeft mt-6 flex w-[75px] h-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white lg:w-[75px] xl:text-4xl 2xl:w-[80px]">
                             1
                           </div>
-                          <div className="max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
+                          <div className="w-[482px] max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
                             <div className="space-y-6">
                               <h1 className="text-3xl font-semibold leading-[30px]">
-                                Tittle Sample
+                                Q2-2024
                               </h1>
                               <div className="flex items-start gap-x-4">
                                 <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
 
                                 <p className="pl-6">
-                                  Lorem ipsum dolor sit amet consectetur,
-                                  adipisicing elit. Error voluptate veritatis
-                                  assumenda deleniti rerum!
+                                  Support profile sharing from smart contract
+                                </p>
+                              </div>
+                              <div className="flex items-start gap-x-4">
+                                <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
+
+                                <p className="pl-6">
+                                  Support to create on-chain vault
                                 </p>
                               </div>
                             </div>
@@ -918,24 +959,31 @@ export default function HomePage() {
                     <div className="flex flex-col items-center pt-14 sm:flex-row">
                       <div className="mx-auto flex w-full items-start justify-end">
                         <div className="flex w-full justify-start sm:w-1/2 sm:pl-8">
-                          <div className="max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
+                          <div className="w-[482px] max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
                             <div className="space-y-6">
                               <h1 className="text-3xl font-semibold leading-[30px]">
-                                Tittle Sample
+                                Q3-2024
                               </h1>
                               <div className="flex items-start gap-x-4">
                                 <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
 
                                 <p className="pl-6">
-                                  Lorem ipsum dolor sit amet consectetur,
-                                  adipisicing elit. Error voluptate veritatis
-                                  assumenda deleniti rerum!
+                                  Integrate indexer protocol to check on-chain
+                                  performance of managers
+                                </p>
+                              </div>
+                              <div className="flex items-start gap-x-4">
+                                <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
+
+                                <p className="pl-6">
+                                  Integrate dex protocol to verify manager
+                                  actions
                                 </p>
                               </div>
                             </div>
                           </div>
 
-                          <div className="rounded-timelineRight mt-6 flex h-[75px] w-[150px] items-center justify-center bg-blue-600 text-2xl font-bold text-white xl:text-4xl 2xl:w-[80px]">
+                          <div className="rounded-timelineRight mt-6 flex h-[75px] w-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white xl:text-4xl 2xl:w-[80px]">
                             2
                           </div>
                         </div>
@@ -952,21 +1000,27 @@ export default function HomePage() {
                     <div className="flex flex-col items-center pt-14 sm:flex-row">
                       <div className="mx-auto flex w-full items-start justify-start">
                         <div className="flex w-full justify-end sm:w-1/2 sm:pr-8">
-                          <div className="rounded-timelineLeft mt-6 flex h-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white lg:w-[150px] xl:text-4xl 2xl:w-[80px]">
+                          <div className="rounded-timelineLeft mt-6 flex w-[75px] h-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white lg:w-[75px] xl:text-4xl 2xl:w-[80px]">
                             3
                           </div>
-                          <div className="max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
+                          <div className="w-[482px] max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
                             <div className="space-y-6">
                               <h1 className="text-3xl font-semibold leading-[30px]">
-                                Tittle Sample
+                                Q4-2024
                               </h1>
                               <div className="flex items-start gap-x-4">
                                 <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
 
                                 <p className="pl-6">
-                                  Lorem ipsum dolor sit amet consectetur,
-                                  adipisicing elit. Error voluptate veritatis
-                                  assumenda deleniti rerum!
+                                  Support on-chain monitor to make funding
+                                  allocation automatically
+                                </p>
+                              </div>
+                              <div className="flex items-start gap-x-4">
+                                <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
+
+                                <p className="pl-6">
+                                  Selling package fee to support AI feature
                                 </p>
                               </div>
                             </div>
@@ -985,24 +1039,29 @@ export default function HomePage() {
                     <div className="flex flex-col items-center pt-14 sm:flex-row">
                       <div className="mx-auto flex w-full items-start justify-end">
                         <div className="flex w-full justify-start sm:w-1/2 sm:pl-8">
-                          <div className="mb-24 max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
+                          <div className="w-[482px] max-w-lg rounded-[10px] border border-card bg-blue-50 pb-[60px] pl-[30px] pr-[20px] pt-[30px]">
                             <div className="space-y-6">
                               <h1 className="text-3xl font-semibold leading-[30px]">
-                                Tittle Sample
+                                Future
                               </h1>
                               <div className="flex items-start gap-x-4">
                                 <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
 
                                 <p className="pl-6">
-                                  Lorem ipsum dolor sit amet consectetur,
-                                  adipisicing elit. Error voluptate veritatis
-                                  assumenda deleniti rerum!
+                                  Support to tokenize real-world asset
+                                </p>
+                              </div>
+                              <div className="flex items-start gap-x-4">
+                                <div className="absolute mt-1.5 h-3 w-3 rounded-full bg-gray-800"></div>
+
+                                <p className="pl-6">
+                                  Building DAO community for funding managers
                                 </p>
                               </div>
                             </div>
                           </div>
 
-                          <div className="rounded-timelineRight mt-6 flex h-[75px] w-[150px] items-center justify-center bg-blue-600 text-2xl font-bold text-white xl:text-4xl 2xl:w-[80px]">
+                          <div className="rounded-timelineRight mt-6 flex h-[75px] w-[75px] items-center justify-center bg-blue-600 text-2xl font-bold text-white xl:text-4xl 2xl:w-[80px]">
                             4
                           </div>
                         </div>
@@ -1024,150 +1083,118 @@ export default function HomePage() {
           <h1 className="mb-[120px] text-center text-[50px] font-bold leading-[130%]">
             Frequently Ask Questions
           </h1>
+
           <div className="grid grid-cols-2 gap-[30px]">
-            <div className="h-[230px] w-full space-x-[30px] rounded-[10px] border border-card bg-white">
-              <div className="space-y-3 p-[30px]">
-                <div className="flex items-center gap-[30px]">
-                  <div className="h-[5px] w-[30px] rounded-3xl bg-blue-600"></div>
-                  <div>What make DigiTrust different from others ?</div>
-                </div>
-                <p className="opacity-7 max-w-lg pl-[60px] font-normal text-gray-600">
-                  On Nansen, Debank, it shows how much you have and what's going
-                  on the market. On Nimbus, we show how much you have and what's
-                  going on with your CURRENT INVESTMENT and then suggest you
-                  adjust it to reduce risk and maximize the return
+            <div>
+              <details
+                onToggle={(event) =>
+                  toggleHandler("1", event.currentTarget.open)
+                }
+                className="py-9 pr-14 bg-white border border-card rounded-[10px] mb-[30px]"
+              >
+                <summary className="pl-8 flex items-center gap-[30px] [list-style:none] opacity-85 text-lg font-semibold leading-6 text-gray-800 2xl:text-xl">
+                  <Image
+                    className="w-[30px] h-[30px] opacity-80"
+                    src={isOpen[1] ? minus : plus}
+                    alt="icon"
+                  />
+                  <h1>What is DigiTrust?</h1>
+                </summary>
+                <p className="opacity-70 pl-[92px] pt-4 max-w-lg text-base font-normal text-gray-600">
+                  DigiTrust is a decentralized asset management protocol that
+                  leverages blockchain technology to allow users to securely
+                  manage, invest, and trade digital assets without
+                  intermediaries.
                 </p>
-              </div>
+              </details>
+              <details
+                onToggle={(event) =>
+                  toggleHandler("2", event.currentTarget.open)
+                }
+                className="py-9 pr-14 bg-white border border-card rounded-[10px]"
+              >
+                <summary className="pl-8 flex items-center gap-[30px] [list-style:none] opacity-85 text-lg font-semibold leading-6 text-gray-800 2xl:text-xl">
+                  <Image
+                    className="w-[30px] h-[30px] opacity-80"
+                    src={isOpen[2] ? minus : plus}
+                    alt="icon"
+                  />
+                  <h1>How do I start using DigiTrust?</h1>
+                </summary>
+                <p className="opacity-70 pl-[92px] pt-4 max-w-lg text-base font-normal text-gray-600">
+                  To use DigiTrust, you need a compatible digital wallet.
+                  Connect your wallet to the DigiTrust platform, deposit your
+                  assets, and you can begin managing your portfolio and engaging
+                  in various financial activities.
+                </p>
+              </details>
             </div>
 
-            <div className="grid gap-[30px]">
-              <div className="h-[100px] w-full space-x-[30px] rounded-[10px] border border-card bg-white">
-                <button className="flex h-full items-center gap-x-[30px] px-[30px]">
-                  <svg
-                    className="h-auto w-[30px] text-gray-800"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      opacity="0.8"
-                      y="12.5"
-                      width="30"
-                      height="5"
-                      rx="2.5"
-                      fill="currentColor"
-                    />
-                    <rect
-                      opacity="0.8"
-                      x="17.5"
-                      width="30"
-                      height="5"
-                      rx="2.5"
-                      transform="rotate(90 17.5 0)"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <h1 className="text-xs font-semibold leading-[130%] text-gray-800 2xl:text-xl">
-                    What is benefit of using DigiTrust 2?
-                  </h1>
-                </button>
-              </div>
-
-              <div className="h-[100px] w-full space-x-[30px] rounded-[10px] border border-card bg-white">
-                <button className="flex h-full items-center gap-x-[30px] px-[30px]">
-                  <svg
-                    className="h-auto w-[30px] text-gray-800"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      opacity="0.8"
-                      y="12.5"
-                      width="30"
-                      height="5"
-                      rx="2.5"
-                      fill="currentColor"
-                    />
-                    <rect
-                      opacity="0.8"
-                      x="17.5"
-                      width="30"
-                      height="5"
-                      rx="2.5"
-                      transform="rotate(90 17.5 0)"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <h1 className="text-xs font-semibold leading-[130%] text-gray-800 2xl:text-xl">
-                    What is benefit of using DigiTrust 2?
-                  </h1>
-                </button>
-              </div>
-            </div>
-
-            <div className="h-[100px] w-full space-x-[30px] rounded-[10px] border border-card bg-white">
-              <button className="flex h-full items-center gap-x-[30px] px-[30px]">
-                <svg
-                  className="h-auto w-[30px] text-gray-800"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    opacity="0.8"
-                    y="12.5"
-                    width="30"
-                    height="5"
-                    rx="2.5"
-                    fill="currentColor"
+            <div>
+              <details
+                onToggle={(event) =>
+                  toggleHandler("3", event.currentTarget.open)
+                }
+                className="py-9 pr-14 bg-white border border-card rounded-[10px] mb-[30px]"
+              >
+                <summary className="pl-8 flex items-center gap-[30px] [list-style:none] opacity-85 text-lg font-semibold leading-6 text-gray-800 2xl:text-xl">
+                  <Image
+                    className="w-[30px] h-[30px] opacity-80"
+                    src={isOpen[3] ? minus : plus}
+                    alt="icon"
                   />
-                  <rect
-                    opacity="0.8"
-                    x="17.5"
-                    width="30"
-                    height="5"
-                    rx="2.5"
-                    transform="rotate(90 17.5 0)"
-                    fill="currentColor"
+                  <h1>Is DigiTrust secure?</h1>
+                </summary>
+                <p className="opacity-70 pl-[92px] pt-4 max-w-lg text-base font-normal text-gray-600">
+                  DigiTrust employs high-security standards using advanced
+                  cryptographic techniques. However, it’s important to be aware
+                  of potential risks like smart contract vulnerabilities and
+                  market volatility. Always review security audits and community
+                  feedback.
+                </p>
+              </details>
+              <details
+                onToggle={(event) =>
+                  toggleHandler("4", event.currentTarget.open)
+                }
+                className="py-9 pr-14 bg-white border border-card rounded-[10px] mb-[30px]"
+              >
+                <summary className="pl-8 flex items-center gap-[30px] [list-style:none] opacity-85 text-lg font-semibold leading-6 text-gray-800 2xl:text-xl">
+                  <Image
+                    className="w-[30px] h-[30px] opacity-80"
+                    src={isOpen[4] ? minus : plus}
+                    alt="icon"
                   />
-                </svg>
-                <h1 className="text-xs font-semibold leading-[130%] text-gray-800 2xl:text-xl">
-                  What is benefit of using DigiTrust 2?
-                </h1>
-              </button>
-            </div>
-
-            <div className="h-[100px] w-full space-x-[30px] rounded-[10px] border border-card bg-white">
-              <button className="flex h-full items-center gap-x-[30px] px-[30px]">
-                <svg
-                  className="h-auto w-[30px] text-gray-800"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    opacity="0.8"
-                    y="12.5"
-                    width="30"
-                    height="5"
-                    rx="2.5"
-                    fill="currentColor"
+                  <h1>Can I earn passive income with DigiTrust?</h1>
+                </summary>
+                <p className="opacity-70 pl-[92px] pt-4 max-w-lg text-base font-normal text-gray-600">
+                  Yes, DigiTrust offers opportunities to earn passive income
+                  through staking, yield farming, and lending. These
+                  decentralized finance (DeFi) activities enable users to grow
+                  their assets over time.
+                </p>
+              </details>
+              <details
+                onToggle={(event) =>
+                  toggleHandler("5", event.currentTarget.open)
+                }
+                className="py-9 pr-14 bg-white border border-card rounded-[10px]"
+              >
+                <summary className="pl-8 flex items-center gap-[30px] [list-style:none] opacity-85 text-lg font-semibold leading-6 text-gray-800 2xl:text-xl">
+                  <Image
+                    className="w-[30px] h-[30px] opacity-80"
+                    src={isOpen[5] ? minus : plus}
+                    alt="icon"
                   />
-                  <rect
-                    opacity="0.8"
-                    x="17.5"
-                    width="30"
-                    height="5"
-                    rx="2.5"
-                    transform="rotate(90 17.5 0)"
-                    fill="currentColor"
-                  />
-                </svg>
-                <h1 className="text-xs font-semibold leading-[130%] text-gray-800 2xl:text-xl">
-                  What is benefit of using DigiTrust 2?
-                </h1>
-              </button>
+                  <h1>How is DigiTrust governed?</h1>
+                </summary>
+                <p className="opacity-70 pl-[92px] pt-4 max-w-lg text-base font-normal text-gray-600">
+                  DigiTrust is governed by a decentralized autonomous
+                  organization (DAO), where token holders can propose and vote
+                  on changes to the protocol. This ensures community-driven
+                  decision-making.
+                </p>
+              </details>
             </div>
           </div>
         </section>

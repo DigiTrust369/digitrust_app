@@ -11,7 +11,7 @@ import DepositWithdraw from "./DepositWithdraw";
 export default function Overview() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
-  const { signAndExecuteTransactionBlock } = useWalletKit();
+  // const { signAndExecuteTransactionBlock } = useWalletKit();
 
   useEffect(() => {
     const fetchDataDetails = async () => {
@@ -115,65 +115,65 @@ export default function Overview() {
   // End chart
 
   // Depost/ Withdraw
-  async function withdraw(event: any) {
-    event.preventDefault();
+  // async function withdraw(event: any) {
+  //   event.preventDefault();
 
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
-    const txb = new TransactionBlock();
-    const contractAddress =
-      "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
-    const contractModule = "dgt";
-    const contractMethod = "mint";
-    txb.moveCall({
-      target: `${contractAddress}::${contractModule}::${contractMethod}`,
-      arguments: [
-        txb.object(
-          "0x6109f11f58aad51a7f1ac9943a04d73b937ba6aca92287ff5e2e3f967d945ae7"
-        ),
-        txb.pure(130624111306),
-        txb.object(
-          "0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd"
-        ),
-      ],
-    });
+  //   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  //   const txb = new TransactionBlock();
+  //   const contractAddress =
+  //     "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
+  //   const contractModule = "dgt";
+  //   const contractMethod = "mint";
+  //   txb.moveCall({
+  //     target: `${contractAddress}::${contractModule}::${contractMethod}`,
+  //     arguments: [
+  //       txb.object(
+  //         "0x6109f11f58aad51a7f1ac9943a04d73b937ba6aca92287ff5e2e3f967d945ae7"
+  //       ),
+  //       txb.pure(130624111306),
+  //       txb.object(
+  //         "0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd"
+  //       ),
+  //     ],
+  //   });
 
-    await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
-  }
+  //   await signAndExecuteTransactionBlock({
+  //     transactionBlock: txb as any,
+  //   });
+  // }
 
-  async function deposit_base(event: any) {
-    event.preventDefault();
+  // async function deposit_base(event: any) {
+  //   event.preventDefault();
 
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
-    const txb = new TransactionBlock();
-    const contractAddress =
-      "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
-    const contractModule = "book";
-    const contractMethod = "make_base_deposit";
-    txb.moveCall({
-      target: `${contractAddress}::${contractModule}::${contractMethod}`,
-      arguments: [
-        txb.object(
-          "0xfd0debf5753bae5ac2975d21e57a27bb6a86f6cf6c4e5eb411e205c383f83a02"
-        ),
-        txb.pure(
-          "0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453"
-        ),
-        txb.object(
-          "0xca9f8d3697a2a33291cfa6ea0d2f58afa873d7533f5b49d73caa962d77c1a260"
-        ),
-      ],
-      typeArguments: [
-        "0x2::sui::SUI", //QUOTE_COIN_TYPE,
-        "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT", //BASE_COIN_TYPE
-      ],
-    });
+  //   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  //   const txb = new TransactionBlock();
+  //   const contractAddress =
+  //     "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
+  //   const contractModule = "book";
+  //   const contractMethod = "make_base_deposit";
+  //   txb.moveCall({
+  //     target: `${contractAddress}::${contractModule}::${contractMethod}`,
+  //     arguments: [
+  //       txb.object(
+  //         "0xfd0debf5753bae5ac2975d21e57a27bb6a86f6cf6c4e5eb411e205c383f83a02"
+  //       ),
+  //       txb.pure(
+  //         "0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453"
+  //       ),
+  //       txb.object(
+  //         "0xca9f8d3697a2a33291cfa6ea0d2f58afa873d7533f5b49d73caa962d77c1a260"
+  //       ),
+  //     ],
+  //     typeArguments: [
+  //       "0x2::sui::SUI", //QUOTE_COIN_TYPE,
+  //       "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT", //BASE_COIN_TYPE
+  //     ],
+  //   });
 
-    await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
-  }
+  //   await signAndExecuteTransactionBlock({
+  //     transactionBlock: txb as any,
+  //   });
+  // }
 
   return (
     <>
