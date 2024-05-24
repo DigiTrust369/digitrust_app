@@ -7,7 +7,7 @@ const TopVaults = () => {
         <h1 className="font-semibold text-[#2563EB] text-[36px] leading-[32px]">
           Top TVL Vaults
         </h1>
-        <div className="p-1 h-12 flex items-center h-[44px] bg-[#E0E9F4] text-[#90A3BF] rounded-xl">
+        <div className="p-1 flex items-center h-[44px] bg-[#E0E9F4] text-[#90A3BF] rounded-xl">
           <button className="h-full px-[30px] rounded-lg flex items-center justify-center hover:bg-white hover:text-[#2563EB]">
             Top TVL
           </button>

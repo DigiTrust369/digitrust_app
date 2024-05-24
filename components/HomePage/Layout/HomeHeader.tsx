@@ -68,16 +68,18 @@ export default function Header() {
       </nav>
 
       {/* Button */}
-      <Button>
-        <div className="flex gap-[10px]">
-          <Image
-            className="w-[20px] h-[20px] object-cover"
-            src={walletIc}
-            alt="wallet-icon"
-          />
-          <span>Connect Wallet</span>
-        </div>
-      </Button>
+      <div className="tour-login">
+        <Button>
+          <div className="flex gap-[10px]">
+            <Image
+              className="w-[20px] h-[20px] object-cover"
+              src={walletIc}
+              alt="wallet-icon"
+            />
+            <span>Connect Wallet</span>
+          </div>
+        </Button>
+      </div>
     </header>
   );
 }

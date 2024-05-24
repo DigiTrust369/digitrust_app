@@ -14,11 +14,11 @@ const MainLayout = () => {
     console.log(pathname);
   return (
     <>
-        {
+    {/* {
        pathname != '' && pathname == 'home' && <HomeHeader></HomeHeader>
-    }
+    } */}
     {
-       pathname != '' && pathname != 'home' && <ProfileHeader></ProfileHeader>
+       pathname != '' && <ProfileHeader></ProfileHeader>
     }
     {
        pathname == '' && <Header></Header>

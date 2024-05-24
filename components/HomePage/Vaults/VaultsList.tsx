@@ -1,5 +1,5 @@
+'use client'
 import Image from "next/image";
-
 import bitcoin from "@/assets/images/crypto/bitcoin.svg";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import ethereum from "@/assets/images/crypto/ethereum.svg";
@@ -15,6 +15,7 @@ import filterIc from "@/assets/images/icons/filter-icon.svg";
 import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
+
 
 const vaults = [
   {
@@ -83,6 +84,7 @@ const vaults = [
 ];
 
 export default function VaultsList() {
+
   return (
     <div className="pt-[80px]">
       <div className="flex items-start justify-between">
@@ -208,7 +210,7 @@ export default function VaultsList() {
                 </td>
                 <td className="w-[12%] py-6 text-[#10B981]">{vault.return}</td>
                 <td className="pr-6 py-6">
-                  <button className="border rounded-[10px] border-[#2563EB]">
+                  <button className="border rounded-[10px] border-[#2563EB] tour-post">
                     <div className="flex items-center px-[26px] gap-2 py-[5px] text-[#2563EB]">
                       <Image
                         className="w-[18px] h-[18px]"

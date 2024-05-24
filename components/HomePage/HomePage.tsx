@@ -2,7 +2,7 @@ import Banner from "./Banner";
 import Layout from "./HomeLayout";
 import Vaults from "./Vaults";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div>
       {/* <Layout> */}

@@ -189,7 +189,7 @@ export default function MorePools() {
                                 </div>
 
                                 <div>
-                                    <button className="flex w-full items-center justify-center gap-x-2 rounded-lg bg-blue-600 py-3 leading-[150%] -tracking-[0.32px] text-white duration-200 hover:bg-blue-500">
+                                    <button className="flex w-full items-center justify-center gap-x-2 rounded-lg bg-blue-600 py-3 leading-[150%] -tracking-[0.32px] text-white duration-200 hover:bg-blue-500 tour-contact">
                                         <span>
                                             <svg
                                                 width="24"

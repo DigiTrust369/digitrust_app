@@ -117,7 +117,7 @@ export default function ProfileHeader() {
                         </div>
 
                         {/* Navigations */}
-                        <nav className="hidden lg:block">
+                        <nav className="hidden lg:block justify-items-center">
                             <ul className="flex gap-x-10">
                                 {[
                                     ["1", "Product", "/"],
@@ -133,7 +133,7 @@ export default function ProfileHeader() {
                         </nav>
 
                         {/* Button */}
-                        <div className="flex flex-1 justify-end">
+                        <div className="flex flex-1 ml-5 justify-end">
                             <div className="flex items-center gap-x-[10px] rounded-lg bg-white px-6 py-4 text-blue-600">
                                 <span>
                                     <svg
@@ -164,57 +164,58 @@ export default function ProfileHeader() {
                                         Connect Wallet
                                     </button>
                                 }
+                                   <div>
+                                    <Dropdown>
+                                        <DropdownTrigger>
+                                            <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
+                                                {selectedKeys}
+                                            </div>
+                                            {/* <Button 
+                                                variant="bordered" 
+                                                className="capitalize"
+                                                >
+                                            {selectedValue}
+                                            </Button> */}
+                                        </DropdownTrigger>
+                                        <DropdownMenu 
+                                            aria-label="Single selection example"
+                                            variant="flat"
+                                            disallowEmptySelection
+                                            selectionMode="single"
+                                        >
+                                            <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
+                                                Sui devnet
+                                            </DropdownItem>
+                                            {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                                Sui testnet
+                                            </DropdownItem>
+                                            <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                                Sui mainnet
+                                            </DropdownItem> */}
+                                            <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
+                                                Klaytn testnet
+                                            </DropdownItem>
+                                            {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
+                                                Klaytn mainnet
+                                            </DropdownItem> */}
+                                            <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
+                                                Arbitrum testnet
+                                            </DropdownItem>
+                                            {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
+                                                Arbitrum mainnet
+                                            </DropdownItem> */}
+                                            <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
+                                                Algorand testnet
+                                            </DropdownItem>
+                                            {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
+                                                Algorand mainnet
+                                            </DropdownItem> */}
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </div>
                             </div>
                         </div>
-                        <div className="ml-2">
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <div className="flex items-center gap-x-[5px] rounded-lg bg-white px-6 py-1.5 text-blue-600">
-                                        {selectedKeys}
-                                    </div>
-                                    {/* <Button 
-                                        variant="bordered" 
-                                        className="capitalize"
-                                        >
-                                    {selectedValue}
-                                    </Button> */}
-                                </DropdownTrigger>
-                                <DropdownMenu 
-                                    aria-label="Single selection example"
-                                    variant="flat"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                >
-                                    <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
-                                        Sui devnet
-                                    </DropdownItem>
-                                    <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                        Sui testnet
-                                    </DropdownItem>
-                                    <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                        Sui mainnet
-                                    </DropdownItem>
-                                    <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
-                                        Klaytn testnet
-                                    </DropdownItem>
-                                    <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
-                                        Klaytn mainnet
-                                    </DropdownItem>
-                                    <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
-                                        Arbitrum testnet
-                                    </DropdownItem>
-                                    <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
-                                        Arbitrum mainnet
-                                    </DropdownItem>
-                                    <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
-                                        Algorand testnet
-                                    </DropdownItem>
-                                    <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
-                                        Algorand mainnet
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
+                     
                     </div>
                 </div>
             </header>
