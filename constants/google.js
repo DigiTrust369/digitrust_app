@@ -1,7 +1,8 @@
-const google = {
+export const google = {
   CLIENT_EMAIL: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
   PRIVATE_KEY: process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY,
+  SPREADSHEET_ID: process.env.NEXT_PUBLIC_GOOGLE_SPREADSHEET_ID,
   SHEET_ID: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
 };
 
-export default google;
+export const scriptURL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;

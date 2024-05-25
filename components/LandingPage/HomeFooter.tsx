@@ -1,7 +1,10 @@
+"use client";
+
 import { FormEvent, useState } from "react";
 import Image from "next/image";
 import LFooter from "./Footer";
 import bgNewsletter from "@/assets/images/bg-newsletter.png";
+import { scriptURL } from "@/constants/google";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -10,20 +13,29 @@ export default function Footer() {
     event.preventDefault();
 
     const form = {
-      email,
+      Wallet: "0x12345",
+      Email: email,
+      Date: new Date(),
     };
 
-    const response = await fetch("/api/route", {
+    console.log(form);
+    var keyValuePairs = [];
+
+    for (let [key, value] of Object.entries(form)) {
+      keyValuePairs.push(key + "=" + value);
+    }
+
+    var formDataString = keyValuePairs.join("&");
+
+    const response = await fetch(scriptURL, {
+      redirect: "follow",
+      mode: "no-cors",
       method: "POST",
+      body: formDataString,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain;charset=utf-8",
       },
-      body: JSON.stringify(form),
     });
-
-    const data = await response.json();
-
-    alert(data.data.tableRange);
 
     setEmail("");
   }
@@ -50,7 +62,7 @@ export default function Footer() {
               </p>
             </div>
             <div className="text-gray-800">
-              <form onSubmit={submitHandler}>
+              <form onSubmit={submitHandler} method="post">
                 <input
                   className="w-[500px] rounded-full py-[25px] pl-[30px] pr-[200px] focus:outline-none xl:text-base"
                   type="text"
