@@ -6,10 +6,10 @@ import HistoryPage from "@/components/HistoryPage/HistoryPage";
 
 export default function Details() {
   return (
-    <WalletKitProvider>
-      <LayoutSecond>
+    // <WalletKitProvider>
+    //   <LayoutSecond>
         <HistoryPage />
-      </LayoutSecond>
-    </WalletKitProvider>
+    //   </LayoutSecond>
+    // </WalletKitProvider>
   );
 }

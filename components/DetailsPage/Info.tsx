@@ -1,11 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
+import { toast } from 'react-hot-toast';
+import {copyVault,client} from "@/constants/suiSignTransaction";
+import { useWallet } from '@suiet/wallet-kit';
 
 export default function Info() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
+
+  //Value for copy vault
+  const wallet = useWallet();
+  const [vault,setVault] = useState('');
+  const [addr,setAddr] = useState('');
 
   function clickHandler() {
     setIsFollowing((prevState) => !prevState);
@@ -24,6 +32,29 @@ export default function Info() {
     fetchDataDetails();
   }, []);
   // End call api
+
+  const goToCopyVault = async() => {
+    setVault("1997");
+    setAddr("0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd")
+    const res = await copyVault(wallet,vault,addr);
+    if(res != 'fall' && res != null)
+      toast.success("Transaction Success!\n Hash transaction block is "+res,
+      {style:{
+        maxWidth: '800px',
+        },
+        duration:5000
+      });
+    if (res == 'fall')
+      toast.error("Transaction fail!")
+  };
+
+  useEffect(() => {
+    async function doWork() {
+      await goToCopyVault();
+    }
+    doWork();
+  }, []);
+
 
   return (
     <section className="px-[90px] bg-blue-50 lg:bg-details xl:object-contain 2xl:bg-none">
@@ -196,7 +227,7 @@ export default function Info() {
               {!isFollowing && "Follow"}
             </button>
 
-            <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600">
+            <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600" onClick={async()=> goToCopyVault()}>
               Invest
             </button>
           </div>
