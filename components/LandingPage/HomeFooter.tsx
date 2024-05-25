@@ -5,6 +5,7 @@ import Image from "next/image";
 import LFooter from "./Footer";
 import bgNewsletter from "@/assets/images/bg-newsletter.png";
 import { scriptURL } from "@/constants/google";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -18,7 +19,6 @@ export default function Footer() {
       Date: new Date(),
     };
 
-    console.log(form);
     var keyValuePairs = [];
 
     for (let [key, value] of Object.entries(form)) {
@@ -37,11 +37,14 @@ export default function Footer() {
       },
     });
 
+    toast.success("Thank you for subscribing!");
+
     setEmail("");
   }
 
   return (
     <footer className="text-sm xl:text-base">
+      <Toaster />
       {/* Newsletter */}
       <div className="p-[90px] border-b border-b-[#C3D4E9]">
         <div className="relative h-full w-full overflow-hidden rounded-[10px] object-cover">
