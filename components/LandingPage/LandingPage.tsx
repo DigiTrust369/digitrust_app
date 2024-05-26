@@ -9,6 +9,10 @@ import suiLogo from "@/assets/images/logo_brands/sui_symbol_sea.svg";
 import aptosLogo from "@/assets/images/logo_brands/aptos_primary.svg";
 import klaytnLogo from "@/assets/images/logo_brands/klaytn-logo.svg";
 import algorandLogo from "@/assets/images/logo_brands/algorand_logo.png";
+import aws from "@/assets/images/logo_brands/amazon.png";
+import messari from "@/assets/images/logo_brands/messari.png";
+import coinMarketCap from "@/assets/images/logo_brands/coin-market-cap.png";
+import blockPi from "@/assets/images/logo_brands/blockPi.png";
 import w3xLogo from "@/assets/images/logo_brands/w3x_logo.png";
 import accountAbtraction from "@/assets/images/account-abstraction.png";
 import timeline from "@/assets/images/bg-timeline.png";
@@ -139,7 +143,7 @@ export default function HomePage() {
 
         {/* Logo brands */}
         <section className="container mx-auto flex items-center justify-center gap-x-14 px-[275px] py-16 bg-gray">
-          <Image className="h-14" src={suiLogo} alt="sui logo"></Image>
+          {/* <Image className="h-14" src={suiLogo} alt="sui logo"></Image>
 
           <Image className="h-14" src={aptosLogo} alt="aptos logo"></Image>
 
@@ -149,13 +153,15 @@ export default function HomePage() {
             alt="algorand logo"
           ></Image>
 
-          <Image className="h-14" src={klaytnLogo} alt="klaytn logo"></Image>
+          <Image className="h-14" src={klaytnLogo} alt="klaytn logo"></Image> */}
+          <Image className="" src={aws} alt="amazon"></Image>
 
-          <Image
-            className="h-14 p-1 bg-black"
-            src={w3xLogo}
-            alt="w3x logo"
-          ></Image>
+          <Image className="" src={messari} alt="messari"></Image>
+
+          <Image className="" src={blockPi} alt="blockPi"></Image>
+
+          <Image className="" src={coinMarketCap} alt="coinMarketCap"></Image>
+          <Image className="h-14" src={w3xLogo} alt="w3x logo"></Image>
         </section>
 
         <hr />

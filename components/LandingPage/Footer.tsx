@@ -112,7 +112,7 @@ export default function Footer() {
             </Link>
 
             {/* Twiiter */}
-            <Link href="/">
+            <Link href="https://twitter.com/DigiTrust_369">
               <svg
                 className="text-socialLink h-auto w-7"
                 xmlns="http://www.w3.org/2000/svg"
