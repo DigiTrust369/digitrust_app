@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import bitcoin from "@/assets/images/crypto/bitcoin.svg";
@@ -35,17 +36,34 @@ import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
 
+interface Vault {
+  url: string;
+  vault_id: string;
+  vault_name: string;
+  symbol: string;
+  price: string;
+  return: number;
+  tvl: number;
+  monthly_return: string;
+  daily_return: string;
+  manager: string;
+  des: string;
+  timestamp: number;
+  chain: string;
+  period: any;
+  asset?: string[];
+  assets: {
+    name: string;
+    img: string;
+  }[];
+}
+
 const vaults = [
   {
-    logo: bitcoin,
-    asset: "Bitcoin",
-    symbol: "BTC",
-    price: "$70,000.00",
-    tvl: "$118.42",
     assets: [
       {
         name: "bitcoin",
-        img: bitcoin,
+        img: "https://dd.dexscreener.com/ds-data/tokens/sui/0x76cb819b01abed502bee8a702b4c2d547532c12f25001c9dea795a5e631c26f1::fud::fud.png",
       },
       {
         name: "yfi",
@@ -65,14 +83,8 @@ const vaults = [
       },
     ],
     apy: chartAPY1,
-    return: "24,32%",
   },
   {
-    logo: ethereum,
-    asset: "Ethereum",
-    symbol: "ETH",
-    price: "$4,000.00",
-    tvl: "$118.42",
     assets: [
       {
         name: "ethereum",
@@ -96,14 +108,8 @@ const vaults = [
       },
     ],
     apy: chartAPY1,
-    return: "24,32%",
   },
   {
-    logo: bnb,
-    asset: "BNB",
-    symbol: "BNB",
-    price: "$1,000.00",
-    tvl: "$118.42",
     assets: [
       {
         name: "bnb",
@@ -127,14 +133,8 @@ const vaults = [
       },
     ],
     apy: chartAPY2,
-    return: "-1.57%",
   },
   {
-    logo: tether,
-    asset: "Tether",
-    symbol: "USDT",
-    price: "$1.01",
-    tvl: "$118.42",
     assets: [
       {
         name: "tether",
@@ -158,104 +158,110 @@ const vaults = [
       },
     ],
     apy: chartAPY1,
-    return: "24,32%",
   },
-  {
-    logo: usdc,
-    asset: "USDC",
-    symbol: "USDC",
-    price: "$1.00",
-    tvl: "$118.42",
-    assets: [
-      {
-        name: "usdc",
-        img: usdc,
-      },
-      {
-        name: "uni",
-        img: uni,
-      },
-      {
-        name: "sushi",
-        img: sushi,
-      },
-      {
-        name: "bat",
-        img: bat,
-      },
-      {
-        name: "ethereum",
-        img: ethereum,
-      },
-    ],
-    apy: chartAPY1,
-    return: "24,32%",
-  },
-  {
-    logo: optimism,
-    asset: "Optimism",
-    symbol: "OP",
-    price: "$5.00",
-    tvl: "$118.42",
-    assets: [
-      {
-        name: "btt",
-        img: btt,
-      },
-      {
-        name: "uma",
-        img: uma,
-      },
-      {
-        name: "yfi",
-        img: yfi,
-      },
-      {
-        name: "doge",
-        img: doge,
-      },
-      {
-        name: "dash",
-        img: dash,
-      },
-    ],
-    apy: chartAPY2,
-    return: "-1.57%",
-  },
-  {
-    logo: dot,
-    asset: "Polkadot",
-    symbol: "DOT",
-    price: "$10.00",
-    tvl: "$118.42",
-    assets: [
-      {
-        name: "enj",
-        img: enj,
-      },
-      {
-        name: "chz",
-        img: chz,
-      },
-      {
-        name: "bnb",
-        img: bnb,
-      },
-      {
-        name: "xtz",
-        img: xtz,
-      },
-      {
-        name: "ont",
-        img: ont,
-      },
-    ],
-    apy: chartAPY2,
-    return: "-1.57%",
-  },
+  // {
+  //   assets: [
+  //     {
+  //       name: "usdc",
+  //       img: usdc,
+  //     },
+  //     {
+  //       name: "uni",
+  //       img: uni,
+  //     },
+  //     {
+  //       name: "sushi",
+  //       img: sushi,
+  //     },
+  //     {
+  //       name: "bat",
+  //       img: bat,
+  //     },
+  //     {
+  //       name: "ethereum",
+  //       img: ethereum,
+  //     },
+  //   ],
+  //   apy: chartAPY1,
+  // },
+  // {
+  //   assets: [
+  //     {
+  //       name: "btt",
+  //       img: btt,
+  //     },
+  //     {
+  //       name: "uma",
+  //       img: uma,
+  //     },
+  //     {
+  //       name: "yfi",
+  //       img: yfi,
+  //     },
+  //     {
+  //       name: "doge",
+  //       img: doge,
+  //     },
+  //     {
+  //       name: "dash",
+  //       img: dash,
+  //     },
+  //   ],
+  //   apy: chartAPY2,
+  // },
+  // {
+  //   assets: [
+  //     {
+  //       name: "enj",
+  //       img: enj,
+  //     },
+  //     {
+  //       name: "chz",
+  //       img: chz,
+  //     },
+  //     {
+  //       name: "bnb",
+  //       img: bnb,
+  //     },
+  //     {
+  //       name: "xtz",
+  //       img: xtz,
+  //     },
+  //     {
+  //       name: "ont",
+  //       img: ont,
+  //     },
+  //   ],
+  //   apy: chartAPY2,
+  // },
 ];
 
 export default function VaultsList() {
+  const [data, setData] = useState<any>();
+
+  let vaultsList: Vault[];
+
+  // Call Api
+  useEffect(() => {
+    const fetchDataDetails = async () => {
+      // Api Default
+      const response = await fetch("https://dgt-dev.vercel.app/v1/vaults");
+      const data = await response.json();
+
+      setData(data);
+    };
+
+    fetchDataDetails();
+  }, []);
+  // End call api
+
+  vaultsList = data || [];
+
+  const mergedData = vaults.map((obj1, index) => {
+    return { ...obj1, ...vaultsList[index] };
+  });
+  console.log(mergedData);
+
   return (
     <div className="pt-[80px]">
       <div className="flex items-start justify-between">
@@ -326,22 +332,24 @@ export default function VaultsList() {
                 />
               </th>
               <th className="w-[14%] py-6">Asset</th>
-              <th className="w-[13%] py-6">APY</th>
+              <th className="w-[13%] py-6">7 Days</th>
               <th className="w-[12%] py-6">Return</th>
               <th className="pr-6 py-6"></th>
             </tr>
           </thead>
           <tbody>
-            {vaults.map((vault) => (
+            {mergedData.map((vault) => (
               <tr className="border-b border-[#C3D4E9]">
                 <td className="w-[20%] pl-6 py-6">
                   <div className="flex items-center gap-4">
                     <Image
                       className="h-[32px] w-[32px]"
-                      src={vault.logo}
-                      alt="bitcoin"
+                      src={vault.url}
+                      alt={vault.vault_name}
+                      width={32}
+                      height={32}
                     />
-                    <span>{vault.asset}</span>
+                    <span>{vault.vault_name}</span>
                     <span className="text-[#90A3BF]">{vault.symbol}</span>
                   </div>
                 </td>
@@ -354,39 +362,18 @@ export default function VaultsList() {
                         className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white [&:not(:first-child)]:-ml-[8px]"
                         src={asset.img}
                         alt={asset.name}
+                        width={26}
+                        height={26}
                       />
                     ))}
-                    {/* <Image
-                      className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white"
-                      src={bitcoin}
-                      alt="bitcoin"
-                    />
-                    <Image
-                      className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white -ml-[8px]"
-                      src={ethereum}
-                      alt="ethereum"
-                    />
-                    <Image
-                      className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white -ml-[8px]"
-                      src={bitcoin}
-                      alt="bitcoin"
-                    />
-                    <Image
-                      className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white -ml-[8px]"
-                      src={ethereum}
-                      alt="ethereum"
-                    />
-                    <Image
-                      className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white -ml-[8px]"
-                      src={bitcoin}
-                      alt="bitcoin"
-                    /> */}
                   </div>
                 </td>
                 <td className="w-[13%] py-6">
                   <Image src={vault.apy} alt="chart" />
                 </td>
-                <td className="w-[12%] py-6 text-[#10B981]">{vault.return}</td>
+                <td className="w-[12%] py-6 text-[#10B981]">
+                  {vault.monthly_return}
+                </td>
                 <td className="pr-6 py-6">
                   <button className="border rounded-[10px] border-[#2563EB]">
                     <div className="flex items-center px-[26px] gap-2 py-[5px] text-[#2563EB]">
