@@ -16,6 +16,12 @@ const nextConfig = {
         port: "",
         pathname: "/ds-data/tokens/**",
       },
+      {
+        protocol: "https",
+        hostname: "xkqpczltzicnmbqvihbc.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/logos/**",
+      },
     ],
   },
   webpack: (config, { isServer }) => {

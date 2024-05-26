@@ -68,7 +68,7 @@ export default function Footer() {
               <form onSubmit={submitHandler} method="post">
                 <input
                   className="w-[500px] rounded-full py-[25px] pl-[30px] pr-[200px] focus:outline-none xl:text-base"
-                  type="text"
+                  type="email"
                   placeholder="Enter your Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}

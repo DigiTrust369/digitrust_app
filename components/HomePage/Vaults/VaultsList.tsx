@@ -260,6 +260,7 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
+  console.log(mergedData);
 
   return (
     <div className="pt-[80px]">
