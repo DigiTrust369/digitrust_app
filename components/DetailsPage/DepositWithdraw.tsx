@@ -1,12 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Tab } from "@headlessui/react";
 import { Fragment, useState,useEffect } from "react";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
-import { useWalletKit } from "@mysten/wallet-kit";
-import usdc from "@/assets/images/crypto/usdc.svg";
 import {withdrawBase,makeBaseDeposit,client} from "@/constants/suiSignTransaction";
 import { useWallet } from '@suiet/wallet-kit';
 import { toast } from 'react-hot-toast';
@@ -18,18 +13,20 @@ export default function DepositWithdraw() {
   const wallet = useWallet();
   const [chainID,setChainID] = useState(0);
   const [walletCoinID,setwalletCoinID] = useState('');
-  
+  const { isOnbordaVisible } = useOnborda();
 
   useEffect(() => {
-    async function doWork() {
+    async function doWork2() {
       const info:any = await client.call('suix_getAllCoins', [wallet.account?.address]);
       console.log(info.data[0].coinObjectId);
       setwalletCoinID(info.data[0].coinObjectId);
     }
-    doWork();
+    doWork2();
   },[wallet.connected])
 
   const goToMakeBaseDeposit = async(work:number) =>{
+    if(isOnbordaVisible) 
+      return
     if(work==1){
       const res = await makeBaseDeposit(wallet,walletCoinID);
       if(res != 'fall' && res != null)
@@ -45,6 +42,8 @@ export default function DepositWithdraw() {
   }
 
 const goToWithdrawBase = async(work:number) =>{
+    if(isOnbordaVisible)
+      return
     if(work==2){
       setChainID(18)
       const res = await withdrawBase(wallet,chainID,"0xfdbb0880dc9deb47ba164a661eda4625f01110836db75b2fc15f800394ebe55b");
@@ -61,9 +60,15 @@ const goToWithdrawBase = async(work:number) =>{
 }
 
   useEffect(() => {
+  
     async function doWork() {
-      await goToMakeBaseDeposit(0);
-      await goToWithdrawBase(0);
+      if(isOnbordaVisible)
+        return
+      else{
+        await goToMakeBaseDeposit(0);
+        await goToWithdrawBase(0);
+      }
+
     }
     doWork();
   }, []);

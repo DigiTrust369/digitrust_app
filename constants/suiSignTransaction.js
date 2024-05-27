@@ -25,7 +25,7 @@ export function hello() {
     console.log('hello');
 }
 
-export async function placeBaseMarketOrder(wallet,chainValue,trust){
+export const placeBaseMarketOrder = async (wallet,chainValue,trust)=>{
     if(wallet.connected){
         const tx = new TransactionBlock();
         tx.moveCall({

@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
 import {copyVault} from "@/constants/suiSignTransaction";
 import { useWallet } from '@suiet/wallet-kit';
+import { useOnborda } from "onborda";
 
 export default function Info() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
+  const { isOnbordaVisible } = useOnborda();
 
   //Value for copy vault
   const wallet = useWallet();
@@ -34,6 +36,8 @@ export default function Info() {
   // End call api
 
   const goToCopyVault = async() => {
+    if(isOnbordaVisible)
+      return
     setVault("1997");
     setAddr("0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd")
     const res = await copyVault(wallet,vault,addr);
@@ -49,10 +53,15 @@ export default function Info() {
   };
 
   useEffect(() => {
-    async function doWork() {
-      await goToCopyVault();
+    async function doWork3() {
+      if(isOnbordaVisible)
+        return
+      else
+      {
+        await goToCopyVault();
+      }
     }
-    doWork();
+    doWork3();
   }, []);
 
 
