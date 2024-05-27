@@ -159,9 +159,9 @@ export default function ProfileHeader() {
                                 <div>
                                     {wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ? (
                                         <div>
-                                            <Link href={"/wallet/0xx1231c1312"}  className="mr-2 hover:text-blue-400">History</Link>
+                                            <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
                                             <b className="ml-2">|</b>
-                                            <Link className="ml-2" href={"/profile/abc"}>Profile</Link>
+                                            <Link className="ml-2" href={"/profile"}>Profile</Link>
                                         </div>
                                     ):(<div></div>)}
                                     <div className="grid grid-cols-2 gap-1">
