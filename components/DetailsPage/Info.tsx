@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
-import {copyVault,client} from "@/constants/suiSignTransaction";
+import {copyVault} from "@/constants/suiSignTransaction";
 import { useWallet } from '@suiet/wallet-kit';
 
 export default function Info() {
@@ -227,7 +227,7 @@ export default function Info() {
               {!isFollowing && "Follow"}
             </button>
 
-            <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600" onClick={async()=> goToCopyVault()}>
+            <button id="onborda-step2" className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600" onClick={async()=> goToCopyVault()}>
               Invest
             </button>
           </div>

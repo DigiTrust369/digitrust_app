@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import Button from "@/components/Button";
 import walletIc from "@/assets/images/icons/wallet-ic.png";
+import { useOnborda } from "onborda";
+import { Button } from "@material-tailwind/react";
+
 
 const navLinks = [
   {
@@ -30,6 +32,10 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const { startOnborda } = useOnborda();
+  const handleStartOnborda = () => {
+    startOnborda();
+  };
   return (
     <header className="flex items-center justify-between px-[60px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-white">
       {/* Logo */}
@@ -68,16 +74,18 @@ export default function Header() {
       </nav>
 
       {/* Button */}
-      <Button>
-        <div className="flex gap-[10px]">
-          <Image
-            className="w-[20px] h-[20px] object-cover"
-            src={walletIc}
-            alt="wallet-icon"
-          />
-          <span>Connect Wallet</span>
-        </div>
-      </Button>
+      <a className="block">
+        <Button className="bg-blue-500 text-white" onClick={handleStartOnborda}>
+          <div className="flex gap-[10px]">
+            <Image
+              className="w-[20px] h-[20px] object-cover"
+              src={walletIc}
+              alt="wallet-icon"
+            />
+            <span>Connect Wallet</span>
+          </div>
+        </Button>
+      </a>
     </header>
   );
 }

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import ProfileHeader from '@/components/Profile/ProfileHeader/ProfileHeader';
 import Header from '@/components/LandingPage/HomeHeader';
 
+
 const HomeHeader = dynamic(() => import('@/components/HomePage/Layout/HomeHeader'), {
   ssr: false,
 });

@@ -10,6 +10,7 @@ import usdc from "@/assets/images/crypto/usdc.svg";
 import {withdrawBase,makeBaseDeposit,client} from "@/constants/suiSignTransaction";
 import { useWallet } from '@suiet/wallet-kit';
 import { toast } from 'react-hot-toast';
+import { useOnborda } from "onborda";
 
 export default function DepositWithdraw() {
   const [depositAmount, setDepositAmount] = useState("1206.73");
@@ -17,6 +18,7 @@ export default function DepositWithdraw() {
   const wallet = useWallet();
   const [chainID,setChainID] = useState(0);
   const [walletCoinID,setwalletCoinID] = useState('');
+  
 
   useEffect(() => {
     async function doWork() {
@@ -28,8 +30,7 @@ export default function DepositWithdraw() {
   },[wallet.connected])
 
   const goToMakeBaseDeposit = async(work:number) =>{
-
-    if(work!=0){
+    if(work==1){
       const res = await makeBaseDeposit(wallet,walletCoinID);
       if(res != 'fall' && res != null)
         toast.success("Transaction Success!\n Hash transaction block is "+res,
@@ -44,7 +45,7 @@ export default function DepositWithdraw() {
   }
 
 const goToWithdrawBase = async(work:number) =>{
-    if(work!=0){
+    if(work==2){
       setChainID(18)
       const res = await withdrawBase(wallet,chainID,"0xfdbb0880dc9deb47ba164a661eda4625f01110836db75b2fc15f800394ebe55b");
       if(res != 'fall' && res != null)
@@ -148,14 +149,14 @@ const goToWithdrawBase = async(work:number) =>{
             </Tab>
             <Tab as={Fragment}>
               {({ selected }) => (
-                <button
+                <button 
                   className={
                     selected
                       ? "w-full rounded-lg border-none bg-white px-8 py-2 font-semibold leading-[150%] -tracking-[0.32px] text-blue-600 shadow-elevation focus:outline-none"
                       : "w-full rounded-lg px-8 py-2 leading-[150%] -tracking-[0.32px] text-gray-500"
                   }
                 >
-                  Withdraw
+                 <a id="onborda-step4">Withdraw</a> 
                 </button>
               )}
             </Tab>
@@ -555,6 +556,7 @@ const goToWithdrawBase = async(work:number) =>{
                       </div>
 
                       <button
+                        id="onborda-step3"
                         onClick={async()=>goToMakeBaseDeposit(1)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >
@@ -722,6 +724,7 @@ const goToWithdrawBase = async(work:number) =>{
                       </div>
 
                       <button
+                        id="onborda-step5"
                         onClick={async()=>goToWithdrawBase(2)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >

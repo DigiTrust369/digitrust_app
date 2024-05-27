@@ -388,7 +388,7 @@ export default function VaultsList() {
                 </td>
                 <td className="w-[12%] py-6 text-[#10B981]">{vault.return}</td>
                 <td className="pr-6 py-6">
-                  <button className="border rounded-[10px] border-[#2563EB]">
+                  <button className="border rounded-[10px] border-[#2563EB]" id="onborda-step1">
                     <div className="flex items-center px-[26px] gap-2 py-[5px] text-[#2563EB]">
                       <Image
                         className="w-[18px] h-[18px]"

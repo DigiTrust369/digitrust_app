@@ -156,63 +156,73 @@ export default function ProfileHeader() {
                                         />
                                     </svg>
                                 </span>
-                                {/* <ConnectButton>Connect Wallet</ConnectButton> */}
-                                {wallet.connected ? <ConnectButton>Connect Wallet</ConnectButton> : 
-                                    EVMWallet != undefined? <w3m-button />:
-                                    isConnectedToPeraWallet? <Button onPress={() => handleDisconnectWalletClick()}>{peraWallet.platform}{algoAccountAddress.substring(0,12)}...</Button>:
-                                    <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
-                                        Connect Wallet
-                                    </button>
-                                }
-                                   <div>
-                                    <Dropdown>
-                                        <DropdownTrigger>
-                                            <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
-                                                {selectedKeys}
-                                            </div>
-                                            {/* <Button 
-                                                variant="bordered" 
-                                                className="capitalize"
+                                <div>
+                                    {wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ? (
+                                        <div>
+                                            <Link href={"/wallet/0xx1231c1312"}  className="mr-2 hover:text-blue-400">History</Link>
+                                            <b className="ml-2">|</b>
+                                            <Link className="ml-2" href={"/profile/abc"}>Profile</Link>
+                                        </div>
+                                    ):(<div></div>)}
+                                    <div className="grid grid-cols-2 gap-1">
+                                        {wallet.connected ? <ConnectButton>Connect Wallet</ConnectButton> : 
+                                            EVMWallet != undefined? <w3m-button />:
+                                            isConnectedToPeraWallet? <Button onPress={() => handleDisconnectWalletClick()}>{peraWallet.platform}{algoAccountAddress.substring(0,12)}...</Button>:
+                                            <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
+                                                Connect Wallet
+                                            </button>
+                                        }
+                                        <div className={wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ?'ml-10':''}>
+                                            <Dropdown>
+                                                <DropdownTrigger>
+                                                    <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
+                                                        {selectedKeys}
+                                                    </div>
+                                                    {/* <Button 
+                                                        variant="bordered" 
+                                                        className="capitalize"
+                                                        >
+                                                    {selectedValue}
+                                                    </Button> */}
+                                                </DropdownTrigger>
+                                                <DropdownMenu 
+                                                    aria-label="Single selection example"
+                                                    variant="flat"
+                                                    disallowEmptySelection
+                                                    selectionMode="single"
                                                 >
-                                            {selectedValue}
-                                            </Button> */}
-                                        </DropdownTrigger>
-                                        <DropdownMenu 
-                                            aria-label="Single selection example"
-                                            variant="flat"
-                                            disallowEmptySelection
-                                            selectionMode="single"
-                                        >
-                                            <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
-                                                Sui devnet
-                                            </DropdownItem>
-                                            {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                Sui testnet
-                                            </DropdownItem>
-                                            <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                Sui mainnet
-                                            </DropdownItem> */}
-                                            <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
-                                                Klaytn testnet
-                                            </DropdownItem>
-                                            {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
-                                                Klaytn mainnet
-                                            </DropdownItem> */}
-                                            <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
-                                                Arbitrum testnet
-                                            </DropdownItem>
-                                            {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
-                                                Arbitrum mainnet
-                                            </DropdownItem> */}
-                                            <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
-                                                Algorand testnet
-                                            </DropdownItem>
-                                            {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
-                                                Algorand mainnet
-                                            </DropdownItem> */}
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </div>
+                                                    <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
+                                                        Sui
+                                                    </DropdownItem>
+                                                    {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                                        Sui testnet
+                                                    </DropdownItem>
+                                                    <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                                        Sui mainnet
+                                                    </DropdownItem> */}
+                                                    <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
+                                                        Klaytn
+                                                    </DropdownItem>
+                                                    {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
+                                                        Klaytn mainnet
+                                                    </DropdownItem> */}
+                                                    <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
+                                                        Arbitrum
+                                                    </DropdownItem>
+                                                    {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
+                                                        Arbitrum mainnet
+                                                    </DropdownItem> */}
+                                                    <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
+                                                        Algorand
+                                                    </DropdownItem>
+                                                    {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
+                                                        Algorand mainnet
+                                                    </DropdownItem> */}
+                                                </DropdownMenu>
+                                            </Dropdown>
+                                        </div>           
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                      

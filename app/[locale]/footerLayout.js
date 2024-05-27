@@ -11,7 +11,6 @@ const SecondFooter = dynamic(() => import('@/components/HomePage/Layout/HomeFoot
 
 const FooterLayout = () => {
     const pathname = usePathname().replace('/','');
-    console.log(pathname);
   return (
     <>
     {
