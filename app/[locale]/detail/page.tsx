@@ -6,10 +6,10 @@ import DetailsPage from "@/components/DetailsPage/DetailsPage";
 
 export default function Details() {
   return (
-    <WalletKitProvider>
-      <LayoutSecond>
+    // <WalletKitProvider>
+    //   <LayoutSecond>
         <DetailsPage />
-      </LayoutSecond>
-    </WalletKitProvider>
+    //   </LayoutSecond>
+    // </WalletKitProvider>
   );
 }

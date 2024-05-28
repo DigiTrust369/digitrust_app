@@ -4,7 +4,7 @@ import React from "react";
 const PortfolioProfile = () => {
   return (
     <div>
-       <h1>This is portfolio</h1>
+       <h1>Coming soon</h1>
     </div>
   );
 };

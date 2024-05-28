@@ -1,16 +1,79 @@
 "use client";
 
-import Image from "next/image";
 import { Tab } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
-import { useWalletKit } from "@mysten/wallet-kit";
-import usdc from "@/assets/images/crypto/usdc.svg";
+import { Fragment, useState,useEffect } from "react";
+import {withdrawBase,makeBaseDeposit,client} from "@/constants/suiSignTransaction";
+import { useWallet } from '@suiet/wallet-kit';
+import { toast } from 'react-hot-toast';
+import { useOnborda } from "onborda";
 
 export default function DepositWithdraw() {
   const [depositAmount, setDepositAmount] = useState("1206.73");
   const [withdrawAmount, setWithdrawAmount] = useState("1206.73");
+  const wallet = useWallet();
+  const [chainID,setChainID] = useState(0);
+  const [walletCoinID,setwalletCoinID] = useState('');
+  const { isOnbordaVisible } = useOnborda();
+
+  useEffect(() => {
+    async function doWork2() {
+      const info:any = await client.call('suix_getAllCoins', [wallet.account?.address]);
+      console.log(info.data[0].coinObjectId);
+      setwalletCoinID(info.data[0].coinObjectId);
+    }
+    doWork2();
+  },[wallet.connected])
+
+  const goToMakeBaseDeposit = async(work:number) =>{
+    if(isOnbordaVisible) 
+      return
+    if(work==1){
+      const res = await makeBaseDeposit(wallet,walletCoinID);
+      if(res != 'fall' && res != null)
+        toast.success("Transaction Success!\n Hash transaction block is "+res,
+        {style:{
+          maxWidth: '800px',
+          },
+          duration:5000
+        });
+      if (res == 'fall')
+        toast.error("Transaction fail!")
+    }
+  }
+
+const goToWithdrawBase = async(work:number) =>{
+    if(isOnbordaVisible)
+      return
+    if(work==2){
+      setChainID(18)
+      const res = await withdrawBase(wallet,chainID,"0xfdbb0880dc9deb47ba164a661eda4625f01110836db75b2fc15f800394ebe55b");
+      if(res != 'fall' && res != null)
+        toast.success("Transaction Success!\n Hash transaction block is "+res,
+        {style:{
+          maxWidth: '800px',
+          },
+          duration:5000
+        });
+      if (res == 'fall')
+        toast.error("Transaction fail!")
+    }
+}
+
+  useEffect(() => {
+  
+    async function doWork() {
+      if(isOnbordaVisible)
+        return
+      else{
+        await goToMakeBaseDeposit(0);
+        await goToWithdrawBase(0);
+      }
+
+    }
+    doWork();
+  }, []);
+
+
 
   // const { signAndExecuteTransactionBlock } = useWalletKit();
 
@@ -91,14 +154,14 @@ export default function DepositWithdraw() {
             </Tab>
             <Tab as={Fragment}>
               {({ selected }) => (
-                <button
+                <button 
                   className={
                     selected
                       ? "w-full rounded-lg border-none bg-white px-8 py-2 font-semibold leading-[150%] -tracking-[0.32px] text-blue-600 shadow-elevation focus:outline-none"
                       : "w-full rounded-lg px-8 py-2 leading-[150%] -tracking-[0.32px] text-gray-500"
                   }
                 >
-                  Withdraw
+                 <a id="onborda-step4">Withdraw</a> 
                 </button>
               )}
             </Tab>
@@ -498,7 +561,8 @@ export default function DepositWithdraw() {
                       </div>
 
                       <button
-                        onClick={deposit_base}
+                        id="onborda-step3"
+                        onClick={async()=>goToMakeBaseDeposit(1)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >
                         <span>
@@ -665,7 +729,8 @@ export default function DepositWithdraw() {
                       </div>
 
                       <button
-                        onClick={withdraw}
+                        id="onborda-step5"
+                        onClick={async()=>goToWithdrawBase(2)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >
                         <span>

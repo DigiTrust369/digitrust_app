@@ -1,6 +1,3 @@
-import Header from "./Layout/HomeHeader";
-import Footer from "@/components/LandingPage/Footer";
-
 export default function HomeLayout({
   children,
 }: {
@@ -8,9 +5,7 @@ export default function HomeLayout({
 }) {
   return (
     <div>
-      <Header />
       {children}
-      <Footer />
     </div>
   );
 }

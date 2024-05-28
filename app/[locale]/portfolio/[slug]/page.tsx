@@ -1,20 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Header, Footer, MappleTab, ChartSimpleArea } from "@/components";
-import { ConnectButton } from "@suiet/wallet-kit";
-// import { WalletProvider } from "@suiet/wallet-kit";
-import { WalletKitProvider } from "@mysten/wallet-kit";
-import SuiButton from "@/components/SuiButton";
+import { MappleTab, ChartSimpleArea } from "@/components";
 import AssetTitle from "@/components/Mapple/AssetTitle";
-
 
 export default function Page({ params }: { params: { slug: string } }) {
   return (
-    <WalletKitProvider>
-      {/* <WalletProvider> */}
       <main className="overflow-hidden">
-        <Header />
         <div className="container p-4 m-auto grid">
           <AssetTitle title={"DigiTrust - Basic"} />
           <div className="flex flex-col lg:flex-row mt-4">
@@ -147,10 +139,6 @@ export default function Page({ params }: { params: { slug: string } }) {
             </div>
           </div>
         </div>
-
-        <Footer />
       </main>
-      {/* </WalletProvider> */}
-    </WalletKitProvider>
   );
 }

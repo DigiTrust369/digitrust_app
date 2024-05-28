@@ -8,10 +8,10 @@ import { WalletKitProvider } from "@mysten/wallet-kit";
 export default function Page({ params }: { params: { slug: string } }) {
 
   return (
-    <WalletKitProvider>
-        <LayoutSecond>
+    // <WalletKitProvider>
+    //     <LayoutSecond>
             <DigiTrustWallet/>
-        </LayoutSecond>
-    </WalletKitProvider>
+    //     </LayoutSecond>
+    // </WalletKitProvider>
   );
 }
