@@ -11,24 +11,15 @@ export default function DepositWithdraw() {
   const [depositAmount, setDepositAmount] = useState("1206.73");
   const [withdrawAmount, setWithdrawAmount] = useState("1206.73");
   const wallet = useWallet();
-  const [chainID,setChainID] = useState(0);
-  const [walletCoinID,setwalletCoinID] = useState('');
+  const [orderID,setOrderID] = useState(0);
   const { isOnbordaVisible } = useOnborda();
 
-  useEffect(() => {
-    async function doWork2() {
-      const info:any = await client.call('suix_getAllCoins', [wallet.account?.address]);
-      console.log(info.data[0].coinObjectId);
-      setwalletCoinID(info.data[0].coinObjectId);
-    }
-    doWork2();
-  },[wallet.connected])
 
   const goToMakeBaseDeposit = async(work:number) =>{
     if(isOnbordaVisible) 
       return
     if(work==1){
-      const res = await makeBaseDeposit(wallet,walletCoinID);
+      const res = await makeBaseDeposit(wallet);
       if(res != 'fall' && res != null)
         toast.success("Transaction Success!\n Hash transaction block is "+res,
         {style:{
@@ -37,7 +28,12 @@ export default function DepositWithdraw() {
           duration:5000
         });
       if (res == 'fall')
-        toast.error("Transaction fail!")
+        {
+          const loadingToast =  toast.loading("Loading...");
+          setTimeout(() => {
+            toast.dismiss(loadingToast);
+          }, 2000);
+        }
     }
   }
 
@@ -45,8 +41,9 @@ const goToWithdrawBase = async(work:number) =>{
     if(isOnbordaVisible)
       return
     if(work==2){
-      setChainID(18)
-      const res = await withdrawBase(wallet,chainID,"0xfdbb0880dc9deb47ba164a661eda4625f01110836db75b2fc15f800394ebe55b");
+      setOrderID(Math.floor(Math.random() * 999));
+      console.log(orderID);
+      const res = await withdrawBase(wallet,orderID);
       if(res != 'fall' && res != null)
         toast.success("Transaction Success!\n Hash transaction block is "+res,
         {style:{
@@ -55,7 +52,12 @@ const goToWithdrawBase = async(work:number) =>{
           duration:5000
         });
       if (res == 'fall')
-        toast.error("Transaction fail!")
+        {
+          const loadingToast =  toast.loading("Loading...");
+          setTimeout(() => {
+            toast.dismiss(loadingToast);
+          }, 2000);
+        }
     }
 }
 

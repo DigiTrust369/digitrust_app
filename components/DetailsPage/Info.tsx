@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import {copyVault} from "@/constants/suiSignTransaction";
 import { useWallet } from '@suiet/wallet-kit';
 import { useOnborda } from "onborda";
+import { env } from "process";
 
 export default function Info() {
   // Call Api
@@ -14,8 +15,6 @@ export default function Info() {
 
   //Value for copy vault
   const wallet = useWallet();
-  const [vault,setVault] = useState('');
-  const [addr,setAddr] = useState('');
 
   function clickHandler() {
     setIsFollowing((prevState) => !prevState);
@@ -38,9 +37,7 @@ export default function Info() {
   const goToCopyVault = async() => {
     if(isOnbordaVisible)
       return
-    setVault("1997");
-    setAddr("0x4cc7eac61ace69d47b64b974b15d3dee7277e34abc57de69228106e393418dcd")
-    const res = await copyVault(wallet,vault,addr);
+    const res = await copyVault(wallet);
     if(res != 'fall' && res != null)
       toast.success("Transaction Success!\n Hash transaction block is "+res,
       {style:{
@@ -48,8 +45,13 @@ export default function Info() {
         },
         duration:5000
       });
-    if (res == 'fall')
-      toast.error("Transaction fail!")
+    if (res == 'fall'){
+      const loadingToast =  toast.loading("Loading...");
+      setTimeout(() => {
+        toast.dismiss(loadingToast);
+      }, 2000);
+    }
+      
   };
 
   useEffect(() => {
