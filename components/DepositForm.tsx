@@ -92,8 +92,8 @@ const DepositForm = () => {
       amount: amount,
     };
 
-    console.log(amount);
-    console.log(data);
+    // console.log(amount);
+    // console.log(data);
 
     const client = new SuiClient({ url: getFullnodeUrl("devnet") });
     // const allCoins = await client.getMoveCallMetrics({
@@ -136,7 +136,7 @@ const DepositForm = () => {
     //   alert('Sui sent successfully');
     // });
 
-    console.log(txb);
+    // console.log(txb);
 
     // fetch('/api/submit', {
     //   method: 'POST',

@@ -17,7 +17,7 @@ const TabInfoProfile = () => {
     onSelectTabChange(value);
   }
   return (
-    <div>
+    <div className="mt-3">
         <Tabs value={tabSelected} onChange={handleTabChange}>
             <Tab index="portfolio"><Transactions_fill state={tabSelected=='portfolio'}/> Portfolio</Tab>
             <Tab index="pools"><PieChart state={tabSelected=='pools'}/>Managed Pools</Tab>

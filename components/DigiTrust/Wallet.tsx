@@ -22,7 +22,7 @@ async function getTransactions(wallet: string) {
 
 const Wallet = (wallet:any) => {
   const [transactions, setTransactions] = useState<Transaction[] | null>(null);
- const { currentAccount } = useWalletKit();
+//  const { currentAccount } = useWalletKit();
 
   // useEffect(() => {
   //   const fetchTransactions = async () => {

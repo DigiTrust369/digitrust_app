@@ -1,11 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
+import { toast } from 'react-hot-toast';
+import {copyVault} from "@/constants/suiSignTransaction";
+import { useWallet } from '@suiet/wallet-kit';
+import { useOnborda } from "onborda";
+import { env } from "process";
 
 export default function Info() {
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
+  const { isOnbordaVisible } = useOnborda();
+
+  //Value for copy vault
+  const wallet = useWallet();
 
   function clickHandler() {
     setIsFollowing((prevState) => !prevState);
@@ -24,6 +33,39 @@ export default function Info() {
     fetchDataDetails();
   }, []);
   // End call api
+
+  const goToCopyVault = async() => {
+    if(isOnbordaVisible)
+      return
+    const res = await copyVault(wallet);
+    if(res != 'fall' && res != null)
+      toast.success("Transaction Success!\n Hash transaction block is "+res,
+      {style:{
+        maxWidth: '800px',
+        },
+        duration:5000
+      });
+    if (res == 'fall'){
+      const loadingToast =  toast.loading("Loading...");
+      setTimeout(() => {
+        toast.dismiss(loadingToast);
+      }, 2000);
+    }
+      
+  };
+
+  useEffect(() => {
+    async function doWork3() {
+      if(isOnbordaVisible)
+        return
+      else
+      {
+        await goToCopyVault();
+      }
+    }
+    doWork3();
+  }, []);
+
 
   return (
     <section className="px-[90px] bg-blue-50 lg:bg-details xl:object-contain 2xl:bg-none">
@@ -196,7 +238,7 @@ export default function Info() {
               {!isFollowing && "Follow"}
             </button>
 
-            <button className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600">
+            <button id="onborda-step2" className="w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600" onClick={async()=> goToCopyVault()}>
               Invest
             </button>
           </div>

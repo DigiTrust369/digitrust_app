@@ -4,7 +4,7 @@ import React from "react";
 const GovernanceProfile = () => {
   return (
     <div>
-       <h1>This is governance</h1>
+       <h1>Coming soon</h1>
     </div>
   );
 };
