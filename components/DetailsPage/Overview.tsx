@@ -259,7 +259,7 @@ export default function Overview() {
                   ))}
 
                   <div className=" text-xs tracking-wider text-gray-800">
-                    16:00 - 9 Dec, 2023
+                    24:11 - 31 May, 2024
                   </div>
                 </div>
 

@@ -15,7 +15,7 @@ const CLOCK_OBJECT_ID='0x6';
 const QUOTE_COIN_TYPE='0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT';
 const BASE_COIN_TYPE='0x2::sui::SUI';
 const SUI_FEE_COIN_ID='0xb3098bccce11b1b729a24382b9b15a3c447d2d2ceda01e51a517620baa8370ca';
-const BASE_COIN_ID='0x2f5cac79399b523413aee575dc7dad4919ba51533867dc04f14110698e19960d';
+const BASE_COIN_ID='0xa4869e6be0a5810d1bfdb645329218b57d63ab12aabce6f4f9ae573855e6db9b';
 const ACCOUNT1_CAP_ID='0xfdbb0880dc9deb47ba164a661eda4625f01110836db75b2fc15f800394ebe55b';// your sui coin id in your wallet
 const rpcUrl = getFullnodeUrl('testnet');
 
@@ -98,7 +98,7 @@ export const makeBaseDeposit  = async (wallet,coinID) => {
         const tx = new TransactionBlock();
         tx.moveCall({
           target: `${packageObjectId}::${moduleVault}::make_base_deposit`,
-          arguments: [tx.pure(POOL_ID),tx.pure(BASE_COIN_ID),tx.pure(coinID)],
+          arguments: [tx.pure(POOL_ID),tx.pure(BASE_COIN_ID),tx.pure(ACCOUNT1_CAP_ID)],
           typeArguments: [BASE_COIN_TYPE,QUOTE_COIN_TYPE]
         });
         try{

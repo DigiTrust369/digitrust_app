@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import btc from "@/assets/images/crypto/bitcoin.svg";
+import stx from "@/assets/images/crypto/stx.svg";
+import uma from "@/assets/images/crypto/uma.svg";
 import PieChart from "@/components/Chart/PieChart/PieChart";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import { useWalletKit } from "@mysten/wallet-kit";
@@ -20,6 +22,7 @@ interface Asset {
   };
   dgt_score: number;
   status: boolean;
+  url: string;
 }
 
 const Allocations = () => {
@@ -60,11 +63,11 @@ const Allocations = () => {
                   <div className="flex gap-3 justify-center">
                     <Image width={24} height={24} src={usdc} alt="usdc" />
                     <span className="font-semibold text-[#90A3BF] leading-normal">
-                      AAVE
+                      USDC
                     </span>
                   </div>
                   <div className="font-semibold text-[32px] leading-normal tracking-tighter">
-                    39.11%
+                    24.11%
                   </div>
                 </div>
               </div>
@@ -72,7 +75,7 @@ const Allocations = () => {
                 <div className="flex gap-3">
                   <Image width={24} height={24} src={usdc} alt="usdc" />
                   <span className="font-semibold text-[#90A3BF] leading-normal">
-                    AAVE
+                    USDC
                   </span>
                 </div>
                 <h3 className="pt-4 pb-3 font-normal text-gray-800 leading-7">
@@ -120,7 +123,7 @@ const Allocations = () => {
                   <tr className="border-b border-b-[#C3D4E9] text-gray-800 font-medium leading-normal">
                     <td className="w-[30%] h-12 pl-6 py-6">
                       <div className="flex items-center ">
-                        <Image className="w-8	h-8" src={btc} alt="bitcoin" />
+                        <Image className="w-8	h-8" src={asset.url.includes("stx") ? stx:uma} alt="bitcoin" />
                         <span className="ml-4">{asset.symbol}</span>
                       </div>
                     </td>

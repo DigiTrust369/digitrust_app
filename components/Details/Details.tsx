@@ -226,7 +226,7 @@ export default function Details() {
                                 aHYPE
                             </div> */}
                             <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
-                                Live on Avalanche
+                                Live on SUI
                             </div>
                         </div>
 
@@ -586,7 +586,7 @@ export default function Details() {
                                         ))}
 
                                         <div className=" text-xs tracking-wider text-gray-800">
-                                            16:00 - 9 Dec, 2023
+                                            24:00 - 31 May, 2024
                                         </div>
                                     </div>
 
@@ -715,7 +715,7 @@ export default function Details() {
                                                         <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
                                                             <div className=" space-y-2">
                                                                 <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                                                                    1206.73
+                                                                    2411.07
                                                                 </div>
                                                                 <div className="text-xs font-semibold leading-4 text-gray-500">
                                                                     $1,206.73
@@ -790,7 +790,7 @@ export default function Details() {
                                                         <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
                                                             <div className=" space-y-2">
                                                                 <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                                                                    1206.73
+                                                                    2411.07
                                                                 </div>
                                                                 <div className="text-xs font-semibold leading-4 text-gray-500">
                                                                     $1,206.73
@@ -904,7 +904,7 @@ export default function Details() {
                                                             </span>
                                                             1 USDT = 1.00021 USDC
                                                         </div>
-                                                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-sm">
+                                                        {/* <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-sm">
                                                             Advanced Setting
                                                             <span>
                                                                 <svg
@@ -922,7 +922,7 @@ export default function Details() {
                                                                     />
                                                                 </svg>
                                                             </span>
-                                                        </button>
+                                                        </button> */}
                                                     </div>
 
                                                     <button onClick={deposit_base} className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500">
@@ -976,7 +976,7 @@ export default function Details() {
                                                         <div className="flex justify-between rounded-[10px] border border-gray-300 bg-white px-6 py-4">
                                                             <div className=" space-y-2">
                                                                 <div className=" text-2xl font-semibold leading-10 -tracking-[0.26px]">
-                                                                    1206.73
+                                                                    2411.07
                                                                 </div>
                                                                 <div className="text-xs font-semibold leading-4 text-gray-500">
                                                                     $1,206.73
@@ -1069,7 +1069,7 @@ export default function Details() {
                                                                 </span>
                                                                 1 USDT = 1.00021 USDC
                                                             </div>
-                                                            <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-sm">
+                                                            {/* <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-sm">
                                                                 Advanced Setting
                                                                 <span>
                                                                     <svg
@@ -1087,7 +1087,7 @@ export default function Details() {
                                                                         />
                                                                     </svg>
                                                                 </span>
-                                                            </button>
+                                                            </button> */}
                                                         </div>
 
                                                         <button onClick={withdraw} className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500">

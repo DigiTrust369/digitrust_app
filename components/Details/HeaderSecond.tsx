@@ -30,7 +30,7 @@ export default function HeaderSecond() {
                     </div>
 
                     {/* Navigations */}
-                    <nav className="hidden lg:block">
+                    {/* <nav className="hidden lg:block">
                         <ul className="flex gap-x-10">
                             {[
                                 ["1", "Product", "/"],
@@ -43,7 +43,7 @@ export default function HeaderSecond() {
                                 </li>
                             ))}
                         </ul>
-                    </nav>
+                    </nav> */}
 
                     {/* Button */}
                     <div className="flex flex-1 justify-end">

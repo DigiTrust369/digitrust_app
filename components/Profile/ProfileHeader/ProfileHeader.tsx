@@ -117,7 +117,7 @@ export default function ProfileHeader() {
                         </div>
 
                         {/* Navigations */}
-                        <nav className="hidden lg:block justify-items-center">
+                        {/* <nav className="hidden lg:block justify-items-center">
                             <ul className="flex gap-x-10">
                                 {[
                                     ["1", "Product", "/"],
@@ -130,7 +130,7 @@ export default function ProfileHeader() {
                                     </li>
                                 ))}
                             </ul>
-                        </nav>
+                        </nav> */}
 
                         {/* Button */}
                         <div className="flex flex-1 ml-5 justify-end">

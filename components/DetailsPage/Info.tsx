@@ -118,7 +118,7 @@ export default function Info() {
               aHYPE
           </div> */}
             <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
-              Live on Avalanche
+              Live on SUI
             </div>
           </div>
 

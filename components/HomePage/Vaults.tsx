@@ -6,7 +6,7 @@ export default function Vaults() {
     <section className="bg-[#FAFBFF] py-[70px] ">
       <div className="w-[85%] mx-[auto] my-[0]">
         {/* Top TVL Vaults */}
-        <TopVaults />
+        {/* <TopVaults /> */}
 
         {/* All Vaults */}
         <VaultsList />

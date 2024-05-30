@@ -20,12 +20,12 @@ const TopVaults = () => {
         </div>
       </div>
       {/* List Vaults */}
-      <div className="flex justify-between mt-10">
+      {/* <div className="flex justify-between mt-10">
         <TopVault />
         <TopVault />
         <TopVault />
         <TopVault />
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -18,29 +18,29 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection} f
 import SUIWallet from "@/icons/SUIWalletIcon";
 
 const navLinks = [
-  {
-    id: 1,
-    title: "Marketplace",
-    link: "/",
-  },
+  // {
+  //   id: 1,
+  //   title: "Marketplace",
+  //   link: "/",
+  // },
 
-  {
-    id: 2,
-    title: "My Portfolio",
-    link: "/",
-  },
+  // {
+  //   id: 2,
+  //   title: "My Portfolio",
+  //   link: "/",
+  // },
 
-  {
-    id: 3,
-    title: "Manage",
-    link: "/",
-  },
+  // {
+  //   id: 3,
+  //   title: "Manage",
+  //   link: "/",
+  // },
 
-  {
-    id: 4,
-    title: "About Us",
-    link: "/",
-  },
+  // {
+  //   id: 4,
+  //   title: "About Us",
+  //   link: "/",
+  // },
 ];
 
 export default function Header() {

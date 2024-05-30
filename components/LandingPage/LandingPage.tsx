@@ -802,12 +802,8 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold leading-[30px] -tracking-[0.9px] text-gray-800 xl:text-3xl">
-                      Invest ...
-                    </h2>
-                    <p className="text-sm leading-[30px] -tracking-[0.32px] text-gray-600 xl:text-base">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Amet quibusdam, aliquid quas, impedit
-                    </p>
+                      Invest
+                    </h2>                    
                   </div>
                 </div>
               </div>
@@ -844,12 +840,8 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold leading-[30px] -tracking-[0.9px] text-gray-800 xl:text-3xl">
-                      Rebalance ...
-                    </h2>
-                    <p className="text-sm leading-[30px] -tracking-[0.32px] text-gray-600 xl:text-base">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Amet quibusdam, aliquid quas, impedit
-                    </p>
+                      Rebalance
+                    </h2>                   
                   </div>
                 </div>
               </div>
@@ -886,12 +878,8 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold leading-[30px] -tracking-[0.9px] text-gray-800 xl:text-3xl">
-                      Monitor ....
-                    </h2>
-                    <p className="text-sm leading-[30px] -tracking-[0.32px] text-gray-600 xl:text-base">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Amet quibusdam, aliquid quas, impedit
-                    </p>
+                      Monitor
+                    </h2>                    
                   </div>
                 </div>
               </div>

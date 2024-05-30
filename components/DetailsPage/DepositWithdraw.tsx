@@ -539,7 +539,7 @@ const goToWithdrawBase = async(work:number) =>{
                           </span>
                           1 USDT = 1.00021 USDC
                         </div>
-                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
+                        {/* <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
                           Advanced Setting
                           <span>
                             <svg
@@ -557,7 +557,7 @@ const goToWithdrawBase = async(work:number) =>{
                               />
                             </svg>
                           </span>
-                        </button>
+                        </button> */}
                       </div>
 
                       <button
@@ -707,7 +707,7 @@ const goToWithdrawBase = async(work:number) =>{
                           </span>
                           1 USDT = 1.00021 USDC
                         </div>
-                        <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
+                        {/* <button className="flex items-center gap-x-1.5 font-medium leading-6 text-gray-900 lg:text-xs">
                           Advanced Setting
                           <span>
                             <svg
@@ -725,7 +725,7 @@ const goToWithdrawBase = async(work:number) =>{
                               />
                             </svg>
                           </span>
-                        </button>
+                        </button> */}
                       </div>
 
                       <button
