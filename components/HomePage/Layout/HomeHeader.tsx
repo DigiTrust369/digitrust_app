@@ -79,25 +79,34 @@ export default function Header() {
   const [userSalt, setUserSalt] = useState<string>();
   const [zkLoginUserAddress, setZkLoginUserAddress] = useState("");
   const [oauthParams, setOauthParams] =useState<queryString.ParsedQuery<string>>();
-
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const getOauthParams = async () => {
       const location =  window.location.hash;
-      if(location!=null)
+      if(location!=null && location!='')
       {
         const res = queryString.parse(location);
         console.log(res)
         setOauthParams(res);
       }
+      else{
+        setEmail(window.localStorage.getItem('userEmail') as string);
+        setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
+      }
 
    }
    getOauthParams();
   }, []);
+
   const logOutWallet = ()=>{
     setZkLoginUserAddress("");
+    setEmail("");
+    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('userAddress','');
     window.location.hash = "";
   }
+
   const beginZkLogin = async() =>
   {
     var myToast = toast.loading("Getting key pair...")
@@ -138,12 +147,22 @@ export default function Header() {
       client_id: process.env.NEXT_PUBLIC_CLIENT_ID as string,
       redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI as string,
       response_type: "id_token",
-      scope: "openid",
+      scope: "openid email",
       nonce: newNonce,
     });
-    const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
-    window.location.replace(loginURL);
-    toast.dismiss(myToast);
+    // const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+    // window.location.replace(loginURL);
+    // toast.dismiss(myToast);
+
+    try {
+      const { data } = await axios.get(process.env.NEXT_PUBLIC_OPENID_PROVIDER_URL as string);
+      const authUrl = `${data.authorization_endpoint}?${params}`;
+      window.location.href = authUrl;
+      toast.dismiss(myToast);
+    } catch (error) {
+        console.error('Error initiating Google login:', error);
+        toast.dismiss(myToast);
+    }
   }
 
   useEffect(() => {
@@ -152,6 +171,10 @@ export default function Header() {
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:",NewdecodedJwt);
+        console.log("Your email",NewdecodedJwt?.email)
+        window.localStorage.setItem('userEmail',NewdecodedJwt?.email)
+        setEmail(NewdecodedJwt?.email)
+
         setJwtString(oauthParams?.id_token as string);
         setDecodedJwt(NewdecodedJwt);
         setTimeout(() => {
@@ -180,6 +203,7 @@ export default function Header() {
           const NewzkLoginUserAddress = jwtToAddress(jw, salt);
           setZkLoginUserAddress(NewzkLoginUserAddress);
           console.log(NewzkLoginUserAddress);
+          window.localStorage.setItem("userAddress",NewzkLoginUserAddress);
         }, 300);
       }
     }
@@ -198,37 +222,6 @@ export default function Header() {
     }
     getFaucet();
   }, [zkLoginUserAddress]);
-
-
-
-  // useEffect(() => {
-  //   console.log(oauthParams);
-  //   // const privateKey = window.sessionStorage.getItem(
-  //   //   KEY_PAIR_SESSION_STORAGE_KEY
-  //   // );
-  //   // if (privateKey) {
-  //   //   const ephemeralKeyPair = Ed25519Keypair.fromSecretKey(
-  //   //     fromB64(privateKey)
-  //   //   );
-  //   //   setEphemeralKeyPair(ephemeralKeyPair);
-  //   // }
-  //   // const randomness = window.sessionStorage.getItem(
-  //   //   RANDOMNESS_SESSION_STORAGE_KEY
-  //   // );
-  //   // if (randomness) {
-  //   //   setRandomness(randomness);
-  //   // }
-  //   // const userSalt = window.localStorage.getItem(USER_SALT_LOCAL_STORAGE_KEY);
-  //   // if (userSalt) {
-  //   //   setUserSalt(userSalt);
-  //   // }
-
-  //   // const maxEpoch = window.localStorage.getItem(MAX_EPOCH_LOCAL_STORAGE_KEY);
-
-  //   // if (maxEpoch) {
-  //   //   setMaxEpoch(Number(maxEpoch));
-  //   // }
-  // }, []);
 
 
   
@@ -319,7 +312,14 @@ export default function Header() {
                             <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
                                   onClick={async() => logOutWallet()}>
                               <GoogleIcon/>
-                              <span className="text-blue-600 font-bold">{zkLoginUserAddress.substring(0,10)}...</span>
+                              <span className="text-blue-600 font-bold">
+                                <div>
+                                  {email}
+                                </div>
+                                <div className="bg-gray-500 text-white">
+                                  {zkLoginUserAddress.substring(0,16)}...
+                                </div>
+                              </span>
                             </button>
                           }
                           <div className='ml-1'>

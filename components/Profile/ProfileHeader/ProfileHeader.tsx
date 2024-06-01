@@ -1,10 +1,7 @@
 "use client";
 import Link from "next/link";
-import {useWallet, ConnectModal,ConnectButton} from '@suiet/wallet-kit'
-import { Fragment, useEffect, useState, useMemo } from "react";
-import EVMWalletIcon from "@/icons/EVMWalletIcon";
+import { Fragment, useEffect, useState, useCallback } from "react";
 import SUIWalletIcon from "@/icons/SUIWalletIcon";
-import MetaMaskIcon from "@/icons/MetaMaskIcon";
 import KlayIcon from "@/icons/KlayIcon";
 
 import AlgorandIcon from "@/icons/AlgorandIcon";
@@ -12,11 +9,175 @@ import ArbitrumIcon from "@/icons/ArbitrumIcon";
 import Down from "@/icons/Down";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection} from "@nextui-org/react";
 import SUIWallet from "@/icons/SUIWalletIcon";
+import GoogleIcon from "@/icons/GoogleIcon";
+import queryString from "query-string";
+import toast from "react-hot-toast";
+import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import {
+  genAddressSeed,
+  generateNonce,
+  generateRandomness,
+  getExtendedEphemeralPublicKey,
+  getZkLoginSignature,
+  jwtToAddress,
+} from "@mysten/zklogin";
+
+import { JwtPayload, jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { SuiClient } from "@mysten/sui.js/client";
+
+const suiClient = new SuiClient({ url: process.env.NEXT_PUBLIC_FULLNODE_URL as string });
 
 export default function ProfileHeader() {
+    const [ephemeralKeyPair, setEphemeralKeyPair] = useState<Ed25519Keypair>();
+    const [currentEpoch, setCurrentEpoch] = useState("");
+    const [maxEpoch, setMaxEpoch] = useState(0);
+    const [nonce, setNonce] = useState("");
+    const [jwtString, setJwtString] = useState("");
+    const [decodedJwt, setDecodedJwt] = useState<JwtPayload>();
+    const [randomness, setRandomness] = useState("");
+    const [userSalt, setUserSalt] = useState<string>();
+    const [zkLoginUserAddress, setZkLoginUserAddress] = useState("");
+    const [oauthParams, setOauthParams] =useState<queryString.ParsedQuery<string>>();
+    const [email, setEmail] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui<Down/></>);
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
-    
+
+    useEffect(() => {
+        const getOauthParams = async () => {
+          const location =  window.location.hash;
+          if(location!=null && location!='')
+          {
+            const res = queryString.parse(location);
+            console.log(res)
+            setOauthParams(res);
+          }
+          else{
+            setEmail(window.localStorage.getItem('userEmail') as string);
+            setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
+          }
+       }
+       getOauthParams();
+      }, []);
+
+    const logOutWallet = ()=>{
+    setZkLoginUserAddress("");
+    setEmail("");
+    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('userAddress','');
+    window.location.hash = "";
+    }
+
+    const beginZkLogin = async() =>
+        {
+          var myToast = toast.loading("Getting key pair...")
+          const ephemeralKeyPair = Ed25519Keypair.generate();
+          window.sessionStorage.setItem(
+            process.env.NEXT_PUBLIC_KEY_PAIR_SESSION_STORAGE_KEY as string,
+            ephemeralKeyPair.export().privateKey
+          );
+          setEphemeralKeyPair(ephemeralKeyPair);
+          console.log(ephemeralKeyPair);
+      
+          //Get epoch
+          const { epoch } = await suiClient.getLatestSuiSystemState();
+      
+          setCurrentEpoch(epoch);
+          window.localStorage.setItem(
+            process.env.NEXT_PUBLIC_MAX_EPOCH_LOCAL_STORAGE_KEY as string,
+            String(Number(epoch) + 10)
+          );
+          console.log(currentEpoch);
+          setMaxEpoch(Number(epoch) + 10);
+          console.log('currentEpoch',currentEpoch);
+      
+          //Get randomness
+          const randomness = generateRandomness();
+          console.log('randomness:',randomness)
+      
+          //Set Nonce
+          const newNonce = generateNonce(
+            ephemeralKeyPair.getPublicKey(),
+            maxEpoch,
+            randomness
+          );
+          setNonce(newNonce);
+          console.log(nonce);
+      
+          const params = new URLSearchParams({
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID as string,
+            redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI as string,
+            response_type: "id_token",
+            scope: "openid email",
+            nonce: newNonce,
+          });
+          // const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+          // window.location.replace(loginURL);
+          // toast.dismiss(myToast);
+      
+          try {
+            const { data } = await axios.get(process.env.NEXT_PUBLIC_OPENID_PROVIDER_URL as string);
+            const authUrl = `${data.authorization_endpoint}?${params}`;
+            window.location.href = authUrl;
+            toast.dismiss(myToast);
+          } catch (error) {
+              console.error('Error initiating Google login:', error);
+              toast.dismiss(myToast);
+          }
+        }
+      
+        useEffect(() => {
+          const getUserAddress = async () => {
+            if (oauthParams && oauthParams?.id_token) {
+              console.log("login google");
+              const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
+              console.log("Decode token:",NewdecodedJwt);
+              console.log("Your email",NewdecodedJwt?.email)
+              window.localStorage.setItem('userEmail',NewdecodedJwt?.email)
+              setEmail(NewdecodedJwt?.email)
+      
+              setJwtString(oauthParams?.id_token as string);
+              setDecodedJwt(NewdecodedJwt);
+              setTimeout(() => {
+                var salt = window.localStorage.getItem('demo_user_salt_key_pair');
+                if(salt == null && salt == ''){
+                  salt = generateRandomness();
+                  console.log('New salt is:',salt);
+                }
+                else
+                {
+                  console.log('Current salt is:',salt);
+                }
+                
+                const jw = oauthParams?.id_token as string;
+                window.localStorage.setItem(
+                  process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
+                  salt as string
+                );
+      
+                setUserSalt(salt as string);
+                if (!salt) {
+                  console.log('Not detect salt!');
+                  return;
+                }
+                console.log(jw);
+                const NewzkLoginUserAddress = jwtToAddress(jw, salt);
+                setZkLoginUserAddress(NewzkLoginUserAddress);
+                console.log(NewzkLoginUserAddress);
+                window.localStorage.setItem("userAddress",NewzkLoginUserAddress);
+              }, 300);
+            }
+          }
+          getUserAddress();
+        }, [oauthParams]);
+      
+        
+        useEffect(() => {
+          const getFaucet = async () => {
+            console.log("Your address is:",zkLoginUserAddress)
+          }
+          getFaucet();
+        }, [zkLoginUserAddress]);
 
     return (
         <Fragment>
@@ -86,7 +247,7 @@ export default function ProfileHeader() {
                                     </svg>
                                 </span>
                                 <div>
-                                    {false  ? (
+                                    {zkLoginUserAddress != ''  ? (
                                         <div>
                                             <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
                                             <b className="ml-2">|</b>
@@ -94,9 +255,23 @@ export default function ProfileHeader() {
                                         </div>
                                     ):(<div></div>)}
                                     <div className="grid grid-cols-2 gap-1">
-                                        {
-                                            <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center">
-                                                Connect Wallet
+                                     { zkLoginUserAddress == ""?
+                                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                                onClick={async() => beginZkLogin()}>
+                                            <GoogleIcon/>
+                                            <span className="text-blue-600 font-bold">LOGIN</span>
+                                            </button>: 
+                                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                                onClick={async() => logOutWallet()}>
+                                            <GoogleIcon/>
+                                            <span className="text-blue-600 font-bold">
+                                                <div>
+                                                {email}
+                                                </div>
+                                                <div className="bg-gray-500 text-white">
+                                                {zkLoginUserAddress.substring(0,16)}...
+                                                </div>
+                                            </span>
                                             </button>
                                         }
                                         <div className='ml-1'>
@@ -152,7 +327,6 @@ export default function ProfileHeader() {
                                 </div> 
                             </div>
                         </div>
-                     
                     </div>
                 </div>
             </header>

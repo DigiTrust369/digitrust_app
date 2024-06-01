@@ -7,7 +7,6 @@ import { OnbordaProvider } from "onborda";
 // eslint-disable-next-line react/function-component-definition
 export default async function LocaleProvider(props) {
   const { children, locale = DEFAULT_LOCALE } = props;
-
   const messages = await getMessages(locale);
 
   return (
