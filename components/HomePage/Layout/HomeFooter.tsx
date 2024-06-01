@@ -149,7 +149,7 @@ export default function Footer() {
           <Button>Contact Us</Button>
         </div>
 
-        <div className="space-y-10 lg:flex lg:justify-end lg:gap-x-[75px] lg:space-y-0">
+        <div className="hidden sm:display-block space-y-10 lg:flex lg:justify-end lg:gap-x-[75px] lg:space-y-0">
           <nav>
             <ul className="space-y-3 text-sm leading-[20px] lg:space-y-[48px] xl:text-base">
               {navLinksLeft.map((item) => (
@@ -200,7 +200,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between bg-blue-600 px-[60px] py-10 text-white xl:px-[100px]">
+      <div className="flex flex-wrap sm:flex-nowrap gap-y-5 items-center justify-between bg-blue-600 px-[60px] py-10 text-white xl:px-[100px]">
         <p>© 2023 DIGITRUST - All Rights Reserved</p>
         <div className="flex items-center gap-x-24">
           <Link href="/">Terms of use</Link>

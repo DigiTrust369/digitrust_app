@@ -15,10 +15,20 @@ const Allocations = dynamic(
 
 const Overview = dynamic(() => import("@/components/DetailsPage/Overview"), {
   ssr: false,
+  loading: () => (
+    <p className="p-12 text-center text-lg font-medium leading-4 text-gray-300">
+      Loading...
+    </p>
+  ),
 });
 
 const MorePools = dynamic(() => import("@/components/DetailsPage/MorePools"), {
   ssr: false,
+  loading: () => (
+    <p className="p-12 text-center text-lg font-medium leading-4 text-gray-300">
+      Loading...
+    </p>
+  ),
 });
 
 export default function DetailsPage() {

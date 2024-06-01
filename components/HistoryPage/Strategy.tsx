@@ -38,18 +38,18 @@ const Strategy = () => {
 
   return (
     <>
-      <div className="flex gap-[18px] py-6">
-        <span className="text-xl text-gray-800 font-semibold">
-          Strategy Management
+      <div className="flex gap-[18px] py-4 sm:py-6">
+        <span className="text-2xl sm:text-3xl text-gray-800 font-semibold">
+          History
         </span>
-        <span className="px-3 bg-blue-100 font-medium text-blue-600 text-base leading-7 rounded-[7px]">
+        {/* <span className="px-3 bg-blue-100 font-medium text-blue-600 text-base leading-7 rounded-[7px]">
           Current Strategy
         </span>
         <span className="px-3 bg-[#E0E9F4] font-medium text-[#90A3BF] text-base leading-7 rounded-[7px]">
           Historical Strategy
-        </span>
+        </span> */}
       </div>
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <div className="w-[18%]">
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Strategy Status
@@ -111,70 +111,80 @@ const Strategy = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="py-8">
-        <table className="w-full px-1.5 bg-white text-left border border-[#C3D4E9]">
-          <thead className="text-base	font-medium	text-gray-800 tracking-tight">
+      </div> */}
+      <div className="sm:py-8 overflow-x-auto">
+        <table className="table-auto w-full px-1.5 bg-white text-left border border-[#C3D4E9]">
+          <thead className="text-sm sm:text-base	font-medium	text-gray-800 tracking-tight">
             <tr>
-              <th className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[9%] pl-1.5 px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Date
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">Name</th>
-              <th className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                Name
+              </th>
+              <th className="w-[9%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Symbol
               </th>
-              <th className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[11%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Quantity
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Purchase Price
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Current Price
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Total Loss
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
+              <th className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
                 Tx Hash
               </th>
-              <th className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-right">
+              <th className="w-[11%] pr-1.5 px-2 py-6 border-b border-b-[#C3D4E9] text-right whitespace-nowrap">
                 Expiration Date
               </th>
             </tr>
           </thead>
-          <tbody className="text-base	text-gray-800 tracking-tight">
-            {datas.map((data: any) => (
+          <tbody className="text-sm sm:text-base	text-gray-800 tracking-tight">
+            {datas.length != 0 ? (
+              datas.map((data: any) => (
+                <tr>
+                  <td className="w-[9%] pl-1.5 px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.date}
+                  </td>
+                  <td className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.name}
+                  </td>
+                  <td className="w-[9%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.symbol}
+                  </td>
+                  <td className="w-[11%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.quantity}
+                  </td>
+                  <td className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.purchase_price}
+                  </td>
+                  <td className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.current_price}
+                  </td>
+                  <td className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.total_loss}
+                  </td>
+                  <td className="w-[12%] px-2 py-6 border-b border-b-[#C3D4E9] whitespace-nowrap">
+                    {data.tx_hash}
+                  </td>
+                  <td className="w-[11%] pr-1.5 px-2 py-6 border-b border-b-[#C3D4E9] text-center whitespace-nowrap">
+                    {data.exp_date}
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
-                  {data.date}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.name}
-                </td>
-                <td className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.symbol}
-                </td>
-                <td className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.quantity}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.purchase_price}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.current_price}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.total_loss}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.tx_hash}
-                </td>
-                <td className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-center">
-                  {data.exp_date}
+                <td colSpan={9} className="text-center py-5">
+                  No history
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

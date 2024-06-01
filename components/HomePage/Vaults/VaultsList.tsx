@@ -263,51 +263,51 @@ export default function VaultsList() {
   console.log(mergedData);
 
   return (
-    <div className="pt-[80px]">
-      <div className="flex items-start justify-between">
+    <div className="sm:pt-[80px]">
+      <div className="flex flex-wrap sm:flex-nowrap items-start justify-between">
         <div>
-          <h1 className="font-semibold text-[#2563EB] text-[36px] leading-[54px]">
+          <h1 className="font-semibold text-[#2563EB] text-3xl sm:text-[36px] sm:leading-[54px]">
             All Vaults
           </h1>
           <p className="pt-1 text-[#90A3BF] leading-6">Overview</p>
         </div>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
           <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
-            <button type="submit" className="px-[17px] py-[14px]">
-              {/* <FontAwesomeIcon
+            <button type="submit" className="px-[17px] py-[14px]"> */}
+        {/* <FontAwesomeIcon
                 icon={faSearch}
                 width="1.25rem"
                 height="1.25rem"
                 color="#2563EB"
               /> */}
-              <Image className="w-5 h-5" src={searchIc} alt="search-icon" />
+        {/* <Image className="w-5 h-5" src={searchIc} alt="search-icon" />
             </button>
             <input type="text" placeholder="Search to a vault" name="search" />
-          </form>
+          </form> */}
 
-          <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
-            <button type="submit" className="px-[17px] py-[14px]">
-              {/* <FontAwesomeIcon
+        {/* <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
+            <button type="submit" className="px-[17px] py-[14px]"> */}
+        {/* <FontAwesomeIcon
                 icon={faFilter}
                 width="1.25rem"
                 height="1.25rem"
                 color="#2563EB"
               /> */}
-              <Image className="w-5 h-5" src={filterIc} alt="filter-icon" />
+        {/* <Image className="w-5 h-5" src={filterIc} alt="filter-icon" />
             </button>
             <input type="text" placeholder="Filter by: Newest" name="filter" />
             <Image className="mr-[9px]" src={downIc} alt="down-icon" />
-          </form>
+          </form> */}
 
-          <button className="rounded-[6px] bg-blue-600 px-5 py-2.5 text-white duration-200 hover:bg-blue-600/85 xl:px-6">
-            <div className="flex gap-3">
-              {/* <FontAwesomeIcon
+        {/* <button className="rounded-[6px] bg-blue-600 px-5 py-2.5 text-white duration-200 hover:bg-blue-600/85 xl:px-6">
+            <div className="flex gap-3"> */}
+        {/* <FontAwesomeIcon
                 icon={faFileDownload}
                 width="14px"
                 height="17px"
                 color="white"
               /> */}
-              <Image
+        {/* <Image
                 className="w-3.5 h-auto"
                 src={downloadIc}
                 alt="download-icon"
@@ -315,33 +315,36 @@ export default function VaultsList() {
               <span className="leading-6">Export</span>
             </div>
           </button>
-        </div>
+        </div> */}
       </div>
-      <div>
-        <table className="mt-[30px] w-full text-base text-left text-[#1F2937] border border-[#C3D4E9] rounded-lg">
+      <div className="overflow-x-auto">
+        <table className="table-auto mt-[30px] w-max sm:w-full text-xs sm:text-base text-left text-[#1F2937] border border-[#C3D4E9] rounded-lg">
           <thead>
             <tr className="border-b border-[#C3D4E9]">
-              <th className="w-[20%] pl-6 py-6">Vault Name</th>
-              <th className="w-[14%] py-6">Price</th>
-              <th className="w-[13%] flex items-center gap-1 py-6">
-                <span>TVL</span>
-                <Image
+              <th className="w-[20%] pl-2 sm:pl-6 py-6 whitespace-nowrap">
+                Vault Name
+              </th>
+              <th className="w-[14%] px-2 py-6 whitespace-nowrap">Price</th>
+              <th className="w-[13%] px-2 flex items-center gap-1 py-6 whitespace-nowrap">
+                TVL
+                {/* <Image
                   className="w-[16px] h-[16px]"
                   src={arrowDownUpIc}
                   alt="arrow-icon"
-                />
+                /> */}
               </th>
-              <th className="w-[14%] py-6">Asset</th>
-              <th className="w-[13%] py-6">7 Days</th>
-              <th className="w-[12%] py-6">Return</th>
-              <th className="pr-6 py-6"></th>
+
+              <th className="w-[14%] px-2 py-6 whitespace-nowrap">Asset</th>
+              <th className="w-[13%] px-2 py-6 whitespace-nowrap">7 Days</th>
+              <th className="w-[12%] px-2 py-6 whitespace-nowrap">Return</th>
+              <th className="pr-2 sm:pr-6 py-6 whitespace-nowrap"></th>
             </tr>
           </thead>
           <tbody>
             {mergedData.map((vault) => (
               <tr className="border-b border-[#C3D4E9]">
-                <td className="w-[20%] pl-6 py-6">
-                  <div className="flex items-center gap-4">
+                <td className="w-[20%] pl-2 sm:pl-6 py-6 whitespace-nowrap">
+                  <div className="flex items-center gap-1 sm:gap-4">
                     <Image
                       className="h-[32px] w-[32px]"
                       src={vault.url}
@@ -353,9 +356,13 @@ export default function VaultsList() {
                     <span className="text-[#90A3BF]">{vault.symbol}</span>
                   </div>
                 </td>
-                <td className="w-[14%] py-6">{vault.price}</td>
-                <td className="w-[13%] py-6">{vault.tvl}</td>
-                <td className="w-[14%] py-6">
+                <td className="w-[14%] px-2 py-6 whitespace-nowrap">
+                  {vault.price}
+                </td>
+                <td className="w-[13%] px-2 py-6 whitespace-nowrap">
+                  {vault.tvl}
+                </td>
+                <td className="w-[14%] px-2 py-6 whitespace-nowrap overflow-hidden">
                   <div className="w-full flex items-center">
                     {vault.assets.map((asset) => (
                       <Image
@@ -368,17 +375,20 @@ export default function VaultsList() {
                     ))}
                   </div>
                 </td>
-                <td className="w-[13%] py-6">
+                <td className="w-[13%] px-2 py-6 whitespace-nowrap">
                   <Image src={vault.apy} alt="chart" />
                 </td>
-                <td className="w-[12%] py-6 text-[#10B981]">
+                <td className="w-[12%] px-2 py-6 text-[#10B981] whitespace-nowrap">
                   {vault.monthly_return}
                 </td>
-                <td className="pr-6 py-6">
-                  <button className="border rounded-[10px] border-[#2563EB]" id="onborda-step1">
-                    <div className="flex items-center px-[26px] gap-2 py-[5px] text-[#2563EB]">
+                <td className="pr-2 sm:pr-6 py-6 whitespace-nowrap">
+                  <button
+                    className="border rounded-[10px] border-[#2563EB]"
+                    id="onborda-step1"
+                  >
+                    <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">
                       <Image
-                        className="w-[18px] h-[18px]"
+                        className="hidden sm:block w-[18px] h-[18px]"
                         src={depositIc}
                         alt="deposit-icon"
                       />
