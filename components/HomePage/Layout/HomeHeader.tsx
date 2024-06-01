@@ -1,21 +1,46 @@
+'use client';
 import Link from "next/link";
-import Image from "next/image";
-import walletIc from "@/assets/images/icons/wallet-ic.png";
 import { useOnborda } from "onborda";
-import {useWallet, ConnectModal,ConnectButton} from '@suiet/wallet-kit'
 import { Fragment, useEffect, useState, useMemo } from "react";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, modal} from "@nextui-org/react";
-import EVMWalletIcon from "@/icons/EVMWalletIcon";
 import SUIWalletIcon from "@/icons/SUIWalletIcon";
-import MetaMaskIcon from "@/icons/MetaMaskIcon";
-import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react'
 import KlayIcon from "@/icons/KlayIcon";
-import { PeraWalletConnect } from "@perawallet/connect";
+
 import AlgorandIcon from "@/icons/AlgorandIcon";
 import ArbitrumIcon from "@/icons/ArbitrumIcon";
 import Down from "@/icons/Down";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection} from "@nextui-org/react";
 import SUIWallet from "@/icons/SUIWalletIcon";
+import AptosIcon from "@/icons/AptosIcon";
+import GoogleIcon from "@/icons/GoogleIcon";
+import toast from "react-hot-toast";
+import queryString from "query-string";
+import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
+import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import {
+  genAddressSeed,
+  generateNonce,
+  generateRandomness,
+  getExtendedEphemeralPublicKey,
+  getZkLoginSignature,
+  jwtToAddress,
+} from "@mysten/zklogin";
+
+import {
+  KEY_PAIR_SESSION_STORAGE_KEY,
+  FULLNODE_URL,MAX_EPOCH_LOCAL_STORAGE_KEY,
+  CLIENT_ID,
+  REDIRECT_URI,
+  RANDOMNESS_SESSION_STORAGE_KEY,
+  USER_SALT_LOCAL_STORAGE_KEY,
+  SUI_DEVNET_FAUCET
+  } from '@/constants/zkLogin'
+
+import { JwtPayload, jwtDecode } from "jwt-decode";
+import { fromB64 } from "@mysten/bcs";
+import axios from "axios";
+
+// const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
+const suiClient = new SuiClient({ url: FULLNODE_URL });
 
 const navLinks = [
   {
@@ -48,87 +73,188 @@ export default function Header() {
   const handleStartOnborda = () => {
     startOnborda();
   };
-  const wallet = useWallet();
-  const [showMore, setShowMore] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const { open } = useWeb3Modal();
-  const EVMWallet = useWalletInfo().walletInfo;
-  const peraWallet = new PeraWalletConnect();
-  const [algoAccountAddress, setAlgoAccountAddress] = useState('');
-  const isConnectedToPeraWallet = !!algoAccountAddress;
 
-  function handleConnectWalletClick() {
-      peraWallet
-        .connect()
-        .then((newAccounts) => {
-          peraWallet.connector?.on("disconnect", handleDisconnectWalletClick);
-          setAlgoAccountAddress(newAccounts[0]);
-        })
-        .catch((error) => {
-          if (error?.data?.type !== "CONNECT_MODAL_CLOSED") {
-            console.log(error);
-          }
-        });
-    }
-  
-    function handleDisconnectWalletClick() {
-      peraWallet.disconnect();
-      setAlgoAccountAddress('');
+  const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui<Down/></>);
+  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+
+
+  //zkLogin
+  const [ephemeralKeyPair, setEphemeralKeyPair] = useState<Ed25519Keypair>();
+  const [currentEpoch, setCurrentEpoch] = useState("");
+  const [maxEpoch, setMaxEpoch] = useState(0);
+  const [nonce, setNonce] = useState("");
+  const [jwtString, setJwtString] = useState("");
+  const [decodedJwt, setDecodedJwt] = useState<JwtPayload>();
+  const [randomness, setRandomness] = useState("");
+  const [userSalt, setUserSalt] = useState<string>();
+  const [zkLoginUserAddress, setZkLoginUserAddress] = useState("");
+  const [oauthParams, setOauthParams] =useState<queryString.ParsedQuery<string>>();
+
+
+  useEffect(() => {
+    const getOauthParams = async () => {
+      const location =  window.location.hash;
+      if(location!=null)
+      {
+        const res = queryString.parse(location);
+        console.log(res)
+        setOauthParams(res);
+      }
+
+   }
+   getOauthParams();
+  }, []);
+  const logOutWallet = ()=>{
+    setZkLoginUserAddress("");
+    window.location.hash = "";
+  }
+  const beginZkLogin = async() =>
+  {
+    var myToast = toast.loading("Getting key pair...")
+    const ephemeralKeyPair = Ed25519Keypair.generate();
+    window.sessionStorage.setItem(
+      KEY_PAIR_SESSION_STORAGE_KEY,
+      ephemeralKeyPair.export().privateKey
+    );
+    setEphemeralKeyPair(ephemeralKeyPair);
+    console.log(ephemeralKeyPair);
+
+    //Get epoch
+    const { epoch } = await suiClient.getLatestSuiSystemState();
+
+    setCurrentEpoch(epoch);
+    window.localStorage.setItem(
+      MAX_EPOCH_LOCAL_STORAGE_KEY,
+      String(Number(epoch) + 10)
+    );
+    console.log(currentEpoch);
+    setMaxEpoch(Number(epoch) + 10);
+    console.log('currentEpoch',currentEpoch);
+
+    //Get randomness
+    const randomness = generateRandomness();
+    console.log('randomness:',randomness)
+
+    //Set Nonce
+    const newNonce = generateNonce(
+      ephemeralKeyPair.getPublicKey(),
+      maxEpoch,
+      randomness
+    );
+    setNonce(newNonce);
+    console.log(nonce);
+    const params = new URLSearchParams({
+      client_id: CLIENT_ID,
+      redirect_uri: REDIRECT_URI,
+      response_type: "id_token",
+      scope: "openid",
+      nonce: newNonce,
+    });
+    const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+    window.location.replace(loginURL);
+    toast.dismiss(myToast);
   }
 
   useEffect(() => {
-      // Reconnect to the session when the component is mounted
-      peraWallet
-        .reconnectSession()
-        .then((accounts) => {
-          peraWallet.connector?.on("disconnect", handleDisconnectWalletClick);
+    const getUserAddress = async () => {
+      if (oauthParams && oauthParams?.id_token) {
+        console.log("login google");
+        const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
+        console.log("Decode token:",NewdecodedJwt);
+        setJwtString(oauthParams?.id_token as string);
+        setDecodedJwt(NewdecodedJwt);
+        setTimeout(() => {
+          var salt = window.localStorage.getItem('demo_user_salt_key_pair');
+          if(salt == null && salt == ''){
+            salt = generateRandomness();
+            console.log('New salt is:',salt);
+          }
+          else
+          {
+            console.log('Current salt is:',salt);
+          }
+          
+          const jw = oauthParams?.id_token as string;
+          window.localStorage.setItem(
+            USER_SALT_LOCAL_STORAGE_KEY,
+            salt as string
+          );
+
+          setUserSalt(salt as string);
+          if (!salt) {
+            console.log('Not detect salt!');
+            return;
+          }
+          console.log(jw);
+          const NewzkLoginUserAddress = jwtToAddress(jw, salt);
+          setZkLoginUserAddress(NewzkLoginUserAddress);
+          console.log(NewzkLoginUserAddress);
+        }, 300);
+      }
+    }
+    getUserAddress();
+  }, [oauthParams]);
+
   
-          if (accounts.length) {
-              setAlgoAccountAddress(accounts[0]);
-          }
-        })
-        .catch((e) => console.log(e));
-    }, []);
+  useEffect(() => {
+    const getFaucet = async () => {
+      console.log("Your address is:",zkLoginUserAddress)
+      // if (!zkLoginUserAddress) {
+      //   return;
+      // }
+      // else
+      // {
+      //   console.log("Your address is:",zkLoginUserAddress)
+      // }
+      // const myToast = toast.loading("Get your first point");
+      // try {
+      //   await axios.post(SUI_DEVNET_FAUCET, {
+      //     FixedAmountRequest: {
+      //       recipient: zkLoginUserAddress,
+      //     },
+      //   });
+      //   toast.dismiss(myToast);
+      // } catch (error) {
+      //   toast.dismiss(myToast);
+      // } finally {
+      //   toast.dismiss(myToast);
+      // }
+    }
+    getFaucet();
+  }, [zkLoginUserAddress]);
 
-    useEffect(() => {
-      console.log(wallet.address);
-      if(wallet.connected && wallet?.address != localStorage.getItem('wallet'))
-        {
-          if(wallet?.address != undefined)
-            localStorage.setItem('wallet',wallet?.address);
-          handleStartOnborda();
-        }
-      
-    }, [wallet.connected]);
-
-  const { 
-      select, 
-      configuredWallets,  
-      detectedWallets,  
-  } = useWallet();
 
 
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  // useEffect(() => {
+  //   console.log(oauthParams);
+  //   // const privateKey = window.sessionStorage.getItem(
+  //   //   KEY_PAIR_SESSION_STORAGE_KEY
+  //   // );
+  //   // if (privateKey) {
+  //   //   const ephemeralKeyPair = Ed25519Keypair.fromSecretKey(
+  //   //     fromB64(privateKey)
+  //   //   );
+  //   //   setEphemeralKeyPair(ephemeralKeyPair);
+  //   // }
+  //   // const randomness = window.sessionStorage.getItem(
+  //   //   RANDOMNESS_SESSION_STORAGE_KEY
+  //   // );
+  //   // if (randomness) {
+  //   //   setRandomness(randomness);
+  //   // }
+  //   // const userSalt = window.localStorage.getItem(USER_SALT_LOCAL_STORAGE_KEY);
+  //   // if (userSalt) {
+  //   //   setUserSalt(userSalt);
+  //   // }
 
-  const listSuiWallet = [...configuredWallets, ...detectedWallets].map((wallet) => (
-     <button className="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded inline-flex items-left"
-      onClick={() => {
-          // check if user installed the wallet
-          if (!wallet.installed) {
-            // do something like guiding users to install
-            window.open(wallet.downloadUrl.browserExtension); 
-            //return;
-          }
-          select(wallet.name);
-          onOpenChange()
-        }}>
-          <img src={wallet.iconUrl} alt="Icon" className="w-4 h-4 mr-2"></img>
-          <span>{wallet.name}</span>
-      </button>
-    ));
+  //   // const maxEpoch = window.localStorage.getItem(MAX_EPOCH_LOCAL_STORAGE_KEY);
 
-  const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui devnetchain<Down/></>);
-  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+  //   // if (maxEpoch) {
+  //   //   setMaxEpoch(Number(maxEpoch));
+  //   // }
+  // }, []);
+
+
   
   return (
     <Fragment>
@@ -170,167 +296,110 @@ export default function Header() {
 
       {/* Button */}
       <div className="flex justify-end">
-                            <div className="flex items-center gap-x-[10px] rounded-lg bg-blue-600 px-6 py-4 text-white">
-                                <span>
-                                    <svg
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 20 20"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M3.125 5V15C3.125 15.3315 3.2567 15.6495 3.49112 15.8839C3.72554 16.1183 4.04348 16.25 4.375 16.25H16.875C17.0408 16.25 17.1997 16.1842 17.3169 16.0669C17.4342 15.9497 17.5 15.7908 17.5 15.625V6.875C17.5 6.70924 17.4342 6.55027 17.3169 6.43306C17.1997 6.31585 17.0408 6.25 16.875 6.25H4.375C4.04348 6.25 3.72554 6.1183 3.49112 5.88388C3.2567 5.64946 3.125 5.33152 3.125 5ZM3.125 5C3.125 4.66848 3.2567 4.35054 3.49112 4.11612C3.72554 3.8817 4.04348 3.75 4.375 3.75H15"
-                                            stroke="white"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            d="M14.0625 12.0312C14.494 12.0312 14.8438 11.6815 14.8438 11.25C14.8438 10.8185 14.494 10.4688 14.0625 10.4688C13.631 10.4688 13.2812 10.8185 13.2812 11.25C13.2812 11.6815 13.631 12.0312 14.0625 12.0312Z"
-                                            fill="white"
-                                        />
-                                    </svg>
-                                </span>
-                                <div>
-                                    {wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ? (
-                                        <div>
-                                            <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
-                                            <b className="ml-2">|</b>
-                                            <Link className="ml-2" href={"/profile"}>Profile</Link>
-                                        </div>
-                                    ):(<div></div>)}
-                                    <div className="grid grid-cols-2 gap-1">
-                                        {wallet.connected ? <ConnectButton>Connect Wallet</ConnectButton> : 
-                                            EVMWallet != undefined? <w3m-button />:
-                                            isConnectedToPeraWallet? <Button onPress={() => handleDisconnectWalletClick()}>{peraWallet.platform}{algoAccountAddress.substring(0,12)}...</Button>:
-                                            <button className="bg-white text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
-                                                Connect Wallet
-                                            </button>
-                                        }
-                                        <div className={wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ?'ml-10':''}>
-                                            <Dropdown>
-                                                <DropdownTrigger>
-                                                    <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
-                                                        {selectedKeys}
-                                                    </div>
-                                                    {/* <Button 
-                                                        variant="bordered" 
-                                                        className="capitalize"
-                                                        >
-                                                    {selectedValue}
-                                                    </Button> */}
-                                                </DropdownTrigger>
-                                                <DropdownMenu 
-                                                    aria-label="Single selection example"
-                                                    variant="flat"
-                                                    disallowEmptySelection
-                                                    selectionMode="single"
-                                                >
-                                                    <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
-                                                        Sui
-                                                    </DropdownItem>
-                                                    {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                        Sui testnet
-                                                    </DropdownItem>
-                                                    <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                        Sui mainnet
-                                                    </DropdownItem> */}
-                                                    <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
-                                                        Klaytn
-                                                    </DropdownItem>
-                                                    {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
-                                                        Klaytn mainnet
-                                                    </DropdownItem> */}
-                                                    <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
-                                                        Arbitrum
-                                                    </DropdownItem>
-                                                    {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
-                                                        Arbitrum mainnet
-                                                    </DropdownItem> */}
-                                                    <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
-                                                        Algorand
-                                                    </DropdownItem>
-                                                    {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
-                                                        Algorand mainnet
-                                                    </DropdownItem> */}
-                                                </DropdownMenu>
-                                            </Dropdown>
-                                        </div>           
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-    </header>
-       {!wallet.connected && EVMWallet == undefined && !isConnectedToPeraWallet && 
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} 
-            isKeyboardDismissDisabled={true} scrollBehavior={'inside'} size="xl">
-            <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader className="flex flex-col gap-1">Connect to a wallet</ModalHeader>
-                        <ModalBody>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                {/* <Button variant="bordered" className="font-bold" onPress={() => open({ view: 'Connect' })}>
-                                    <MetaMaskIcon/>MetaMask
-                                </Button>  */}
-                                <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
-                                        onClick={async() => open({ view: 'Connect' })}>
-                                    <MetaMaskIcon/>
-                                    <span className="text-current font-bold">Metamask</span>
-                                </button>
-                            </div>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                {/* <Button variant="bordered" className="font-bold" startContent={<EVMWalletIcon/>} onPress={() => open({ view: 'Networks' })}>
-                                    EVM Chain Connect
-                                </Button> */}
-                                <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
-                                        onClick={async() => open({ view: 'Networks' })}>
-                                    <EVMWalletIcon/>
-                                    <span className="text-current font-bold">EVM Chain Connect</span>
-                                </button>
-                            </div>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                <ConnectModal
-                                    open={showModal}
-                                    onOpenChange={(open) => setShowModal(open)}
-                                    >
-                                    {/* <Button variant="bordered" className="font-bold" size="md" startContent={<SUIWalletIcon/>}>
-                                        SUI Connect
-                                    </Button> */}
-                                    <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md">
-                                        <SUIWalletIcon/>
-                                        <span className="text-current font-bold">SUI Connect</span>
-                                    </button>
-                                </ConnectModal>
-                            </div>
-                            <div className="grid grid-rows-1 grid-flow-col gap-4">
-                                {/* <Button variant="bordered" className="font-bold" startContent={<AlgorandIcon/>} onPress={() => handleConnectWalletClick()}>
-                                    Algorand Connect
-                                </Button>  */}
-                                <button className="flex space-x-2 items-center px-3 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
-                                        onClick={() => handleConnectWalletClick()}>
-                                    <AlgorandIcon/>
-                                    <span className="text-current font-bold">Algorand Connect</span>
-                                </button>
-                            </div>
-                            <hr className="h-px my-0 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                            <Button color="primary" variant="light" onPress={()=>{setShowMore(!showMore) }}>
-                                {showMore?'Show less':'Show more'}
-                            </Button> 
-                            { showMore &&
-                                <div className="grid grid-rows-4 grid-flow-col gap-2">
-                                    {listSuiWallet}
-                                </div>
-                            }
-                            
-                        </ModalBody>
-                        <ModalFooter>
-                        </ModalFooter>
-                    </>
-                )}
-                </ModalContent>
-            </Modal>}
-            </Fragment>
+              <div className="flex items-center gap-x-[10px] rounded-lg bg-blue-600 px-6 py-4 text-white">
+                  <span>
+                      <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                      >
+                          <path
+                              d="M3.125 5V15C3.125 15.3315 3.2567 15.6495 3.49112 15.8839C3.72554 16.1183 4.04348 16.25 4.375 16.25H16.875C17.0408 16.25 17.1997 16.1842 17.3169 16.0669C17.4342 15.9497 17.5 15.7908 17.5 15.625V6.875C17.5 6.70924 17.4342 6.55027 17.3169 6.43306C17.1997 6.31585 17.0408 6.25 16.875 6.25H4.375C4.04348 6.25 3.72554 6.1183 3.49112 5.88388C3.2567 5.64946 3.125 5.33152 3.125 5ZM3.125 5C3.125 4.66848 3.2567 4.35054 3.49112 4.11612C3.72554 3.8817 4.04348 3.75 4.375 3.75H15"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                          />
+                          <path
+                              d="M14.0625 12.0312C14.494 12.0312 14.8438 11.6815 14.8438 11.25C14.8438 10.8185 14.494 10.4688 14.0625 10.4688C13.631 10.4688 13.2812 10.8185 13.2812 11.25C13.2812 11.6815 13.631 12.0312 14.0625 12.0312Z"
+                              fill="white"
+                          />
+                      </svg>
+                  </span>
+                  <div>
+                      {/* {wallet.connected || EVMWallet != undefined || isConnectedToPeraWallet ? (
+                          <div>
+                              <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
+                              <b className="ml-2">|</b>
+                              <Link className="ml-2" href={"/profile"}>Profile</Link>
+                          </div>
+                      ):(<div></div>)} */}
+                      <div className="grid grid-cols-2 gap-1">
+                          {/* {wallet.connected ? <ConnectButton>Connect Wallet</ConnectButton> : 
+                              EVMWallet != undefined? <w3m-button />:
+                              isConnectedToPeraWallet? <Button onPress={() => handleDisconnectWalletClick()}>{peraWallet.platform}{algoAccountAddress.substring(0,12)}...</Button>:
+                              <button className="bg-white text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
+                                  Connect Wallet
+                              </button>
+                          } */}
+                          { zkLoginUserAddress == ""?
+                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                  onClick={async() => beginZkLogin()}>
+                              <GoogleIcon/>
+                              <span className="text-blue-600 font-bold">LOGIN</span>
+                            </button>: 
+                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                  onClick={async() => logOutWallet()}>
+                              <GoogleIcon/>
+                              <span className="text-blue-600 font-bold">{zkLoginUserAddress.substring(0,10)}...</span>
+                            </button>
+                          }
+                          <div className='ml-1'>
+                              <Dropdown>
+                                  <DropdownTrigger>
+                                      <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
+                                          {selectedKeys}
+                                      </div>
+                                      {/* <Button 
+                                          variant="bordered" 
+                                          className="capitalize"
+                                          >
+                                      {selectedValue}
+                                      </Button> */}
+                                  </DropdownTrigger>
+                                  <DropdownMenu 
+                                      aria-label="Single selection example"
+                                      variant="flat"
+                                      disallowEmptySelection
+                                      selectionMode="single"
+                                  >
+                                      <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui<Down/></>)}>
+                                          Sui
+                                      </DropdownItem>
+                                      {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                          Sui testnet
+                                      </DropdownItem>
+                                      <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
+                                          Sui mainnet
+                                      </DropdownItem> */}
+                                      <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn<Down/></>)} >
+                                          Klaytn
+                                      </DropdownItem>
+                                      {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
+                                          Klaytn mainnet
+                                      </DropdownItem> */}
+                                      <DropdownItem key="aptos"  startContent={<AptosIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Aptos<Down/></>)}>
+                                      Aptos
+                                      </DropdownItem>
+                                      {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
+                                          Arbitrum mainnet
+                                      </DropdownItem> */}
+                                      <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand<Down/></>)}>
+                                          Algorand
+                                      </DropdownItem>
+                                      {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
+                                          Algorand mainnet
+                                      </DropdownItem> */}
+                                  </DropdownMenu>
+                              </Dropdown>
+                          </div>           
+                      </div>
+                  </div> 
+              </div>
+          </div>
+      </header>
+    </Fragment>
   );
 }

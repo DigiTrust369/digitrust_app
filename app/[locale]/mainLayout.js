@@ -12,7 +12,6 @@ const HomeHeader = dynamic(() => import('@/components/HomePage/Layout/HomeHeader
 
 const MainLayout = () => {
     const pathname = usePathname().replace('/','');
-    console.log(pathname);
   return (
     <>
     {
