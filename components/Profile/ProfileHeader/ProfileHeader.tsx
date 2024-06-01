@@ -95,7 +95,7 @@ export default function ProfileHeader() {
                                     ):(<div></div>)}
                                     <div className="grid grid-cols-2 gap-1">
                                         {
-                                            <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center" onClick={onOpen} >
+                                            <button className="text-blue-700 hover:text-blue-900 focus:outline-none font-medium rounded-lg px-2.5 py-0.5 text-center">
                                                 Connect Wallet
                                             </button>
                                         }

@@ -25,22 +25,12 @@ import {
   jwtToAddress,
 } from "@mysten/zklogin";
 
-import {
-  KEY_PAIR_SESSION_STORAGE_KEY,
-  FULLNODE_URL,MAX_EPOCH_LOCAL_STORAGE_KEY,
-  CLIENT_ID,
-  REDIRECT_URI,
-  RANDOMNESS_SESSION_STORAGE_KEY,
-  USER_SALT_LOCAL_STORAGE_KEY,
-  SUI_DEVNET_FAUCET
-  } from '@/constants/zkLogin'
-
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { fromB64 } from "@mysten/bcs";
 import axios from "axios";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
-const suiClient = new SuiClient({ url: FULLNODE_URL });
+const suiClient = new SuiClient({ url: process.env.NEXT_PUBLIC_FULLNODE_URL as string });
 
 const navLinks = [
   {
@@ -113,7 +103,7 @@ export default function Header() {
     var myToast = toast.loading("Getting key pair...")
     const ephemeralKeyPair = Ed25519Keypair.generate();
     window.sessionStorage.setItem(
-      KEY_PAIR_SESSION_STORAGE_KEY,
+      process.env.NEXT_PUBLIC_KEY_PAIR_SESSION_STORAGE_KEY as string,
       ephemeralKeyPair.export().privateKey
     );
     setEphemeralKeyPair(ephemeralKeyPair);
@@ -124,7 +114,7 @@ export default function Header() {
 
     setCurrentEpoch(epoch);
     window.localStorage.setItem(
-      MAX_EPOCH_LOCAL_STORAGE_KEY,
+      process.env.NEXT_PUBLIC_MAX_EPOCH_LOCAL_STORAGE_KEY as string,
       String(Number(epoch) + 10)
     );
     console.log(currentEpoch);
@@ -143,9 +133,10 @@ export default function Header() {
     );
     setNonce(newNonce);
     console.log(nonce);
+
     const params = new URLSearchParams({
-      client_id: CLIENT_ID,
-      redirect_uri: REDIRECT_URI,
+      client_id: process.env.NEXT_PUBLIC_CLIENT_ID as string,
+      redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI as string,
       response_type: "id_token",
       scope: "openid",
       nonce: newNonce,
@@ -176,7 +167,7 @@ export default function Header() {
           
           const jw = oauthParams?.id_token as string;
           window.localStorage.setItem(
-            USER_SALT_LOCAL_STORAGE_KEY,
+            process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
             salt as string
           );
 
@@ -199,26 +190,11 @@ export default function Header() {
   useEffect(() => {
     const getFaucet = async () => {
       console.log("Your address is:",zkLoginUserAddress)
-      // if (!zkLoginUserAddress) {
-      //   return;
-      // }
-      // else
-      // {
-      //   console.log("Your address is:",zkLoginUserAddress)
-      // }
-      // const myToast = toast.loading("Get your first point");
-      // try {
-      //   await axios.post(SUI_DEVNET_FAUCET, {
-      //     FixedAmountRequest: {
-      //       recipient: zkLoginUserAddress,
-      //     },
-      //   });
-      //   toast.dismiss(myToast);
-      // } catch (error) {
-      //   toast.dismiss(myToast);
-      // } finally {
-      //   toast.dismiss(myToast);
-      // }
+      if(window.localStorage.getItem(zkLoginUserAddress) != "1")
+        {
+          startOnborda();
+          window.localStorage.setItem(zkLoginUserAddress,"1");
+        }
     }
     getFaucet();
   }, [zkLoginUserAddress]);
