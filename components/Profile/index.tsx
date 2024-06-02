@@ -1,12 +1,9 @@
 "use client";
 import { formatNumberByCurrency } from "@/utils";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BlockBalance from "./BlockBalance";
 import GeneralInfo from "./GeneralInfo";
-import TabInfoProfile from "./Tab";
-import { useWallet } from "@suiet/wallet-kit";
 import SkeletonProfile from "./SkeletonProfile/SkeletonProfile";
-import { useWalletInfo } from "@web3modal/wagmi/react";
 import Strategy from "@/components/HistoryPage/Strategy";
 
 type TVault = {
@@ -44,18 +41,9 @@ const ProfileContainer = (props: TProfileContainerProps) => {
     dgtAmount,
   } = props;
 
-  const suiwallet = useWallet();
-  const EVMWallet = useWalletInfo().walletInfo;
-
-  useEffect(() => {
-    console.log("wallet status", suiwallet.status);
-    console.log("connected wallet name", suiwallet.name);
-    console.log("connected account info", suiwallet.account);
-  }, [suiwallet.connected]);
-
   return (
     <div>
-      {(suiwallet.connected || EVMWallet != undefined) && (
+      {window.localStorage.getItem('userAddress') as string != "" && window.localStorage.getItem('userAddress') != undefined?
         <div>
           <GeneralInfo
             name={name}
@@ -79,13 +67,11 @@ const ProfileContainer = (props: TProfileContainerProps) => {
           </div>
           {/* <TabInfoProfile /> */}
           <Strategy />;
-        </div>
-      )}
-      {suiwallet.status == "disconnected" && EVMWallet == undefined && (
+        </div> :
         <div>
           <SkeletonProfile />
         </div>
-      )}
+    } 
     </div>
   );
 };

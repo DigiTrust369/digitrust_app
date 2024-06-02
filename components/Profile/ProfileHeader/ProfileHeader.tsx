@@ -7,7 +7,7 @@ import KlayIcon from "@/icons/KlayIcon";
 import AlgorandIcon from "@/icons/AlgorandIcon";
 import ArbitrumIcon from "@/icons/ArbitrumIcon";
 import Down from "@/icons/Down";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection,Button, Select,SelectItem} from "@nextui-org/react";
 import SUIWallet from "@/icons/SUIWalletIcon";
 import GoogleIcon from "@/icons/GoogleIcon";
 import queryString from "query-string";
@@ -27,6 +27,9 @@ import axios from "axios";
 import { SuiClient } from "@mysten/sui.js/client";
 import digitrustLogo from "@/assets/images/digitrust_white.png";
 import Image from "next/image";
+import MenuIcon from "@/icons/MenuIcon";
+import ExitIcon from "@/icons/ExitIcon";
+import AptosIcon from "@/icons/AptosIcon";
 
 const suiClient = new SuiClient({ url: process.env.NEXT_PUBLIC_FULLNODE_URL as string });
 
@@ -44,7 +47,8 @@ export default function ProfileHeader() {
     const [email, setEmail] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui<Down/></>);
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
-
+    const [point, setPoint] = useState(0);
+    
     useEffect(() => {
         const getOauthParams = async () => {
           const location =  window.location.hash;
@@ -208,9 +212,135 @@ export default function ProfileHeader() {
                                 ))}
                             </ul>
                         </nav>
+                        <Dropdown
+        showArrow
+        radius="sm"
+        classNames={{
+          base: "before:bg-default-200", // change arrow background
+          content: "p-0 border-small border-divider bg-background",
+        }}
+      >
+      <DropdownTrigger>
+        <Button isIconOnly variant="ghost" disableRipple> 
+          <MenuIcon />
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Custom item styles"
+        className="p-3"
+        itemClasses={{
+          base: [
+            "rounded-md",
+            "text-default-500",
+            "transition-opacity",
+            "data-[hover=true]:text-foreground",
+            "data-[hover=true]:bg-default-100",
+            "dark:data-[hover=true]:bg-default-50",
+            "data-[selectable=true]:focus:bg-default-50",
+            "data-[pressed=true]:opacity-70",
+            "data-[focus-visible=true]:ring-default-500",
+          ],
+        }}
+      >
+        
+        <DropdownSection hidden={zkLoginUserAddress != ""}>
+          <DropdownItem
+            isReadOnly
+            key="login"
+            className="gap-2 opacity-100  bg-white hover:bg-gray-100"
+          >
+            <button className="grid grid-row-auto grid-flow-col mb-2" onClick={async() => beginZkLogin()}>
+              <GoogleIcon/>
+              <span className="text-blue-600 font-bold mx-2">Google login</span>
+            </button>
+          </DropdownItem>
+        </DropdownSection>
 
-                        {/* Button */}
-                        <div className="flex flex-1 ml-5 justify-end">
+        <DropdownSection className="py-1" showDivider hidden={zkLoginUserAddress == ""}>
+          <DropdownItem
+            isReadOnly
+            key="info"
+            className="h-14 gap-2 opacity-100  bg-white hover:bg-gray-100 py-2"
+          >
+            <div className="text-center">
+              <span className="font-bold text-3xl">
+                {point}
+              </span>
+              <span className="font-bold text-sm">
+                DGT
+              </span>
+            </div>
+            <div className="grid grid-row-auto grid-flow-col">
+                <GoogleIcon/>
+                <span className="text-blue-600 font-bold px-1">
+                    <div className="px-1">
+                      {email}
+                    </div>
+                    <div className="bg-gray-500 text-white px-1">
+                      {zkLoginUserAddress.substring(0,16)}....
+                    </div>
+                </span>
+            </div>
+          </DropdownItem>
+        </DropdownSection>
+        
+        <DropdownSection className="py-2" showDivider hidden={zkLoginUserAddress == ""}>
+          <DropdownItem key="profile">
+            <Link href={"/profile"} className="hover:text-blue-400">Profile</Link>
+          </DropdownItem>
+          <DropdownItem key="history">
+            <Link href={"/history"}  className="hover:text-blue-400">History</Link>
+          </DropdownItem>
+          <DropdownItem
+            isReadOnly
+            key="chain"
+            className="cursor-default"
+            endContent={
+                <Dropdown>
+                  <DropdownTrigger>
+                      <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
+                          {selectedKeys}
+                      </div>
+                  </DropdownTrigger>
+                  <DropdownMenu 
+                      aria-label="Single selection example"
+                      variant="flat"
+                      disallowEmptySelection
+                      selectionMode="single"
+                  >
+                      <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui<Down/></>)}>
+                          Sui
+                      </DropdownItem>
+                      <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn<Down/></>)} >
+                          Klaytn
+                      </DropdownItem>
+                      <DropdownItem key="aptos"  startContent={<AptosIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Aptos<Down/></>)}>
+                      Aptos
+                      </DropdownItem>
+                      <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand<Down/></>)}>
+                          Algorand
+                      </DropdownItem>
+                  </DropdownMenu>
+              </Dropdown>
+                }
+            >
+                Chain
+            </DropdownItem>
+            </DropdownSection>  
+
+            <DropdownSection showDivider hidden={zkLoginUserAddress == ""}>
+            <DropdownItem  key="logout">
+                <button className="grid grid-row-auto grid-flow-col" onClick={async() => logOutWallet()}>
+                <ExitIcon/>
+                <span className="text-blue-600 font-bold px-2">Log Out</span>
+                </button>
+            </DropdownItem>
+            </DropdownSection> 
+        </DropdownMenu>
+        </Dropdown>
+
+                  
+                        {/* <div className="flex flex-1 ml-5 justify-end">
                             <div className="flex items-center gap-x-[10px] rounded-lg bg-white px-6 py-4 text-blue-600">
                                 <span>
                                     <svg
@@ -234,32 +364,33 @@ export default function ProfileHeader() {
                                     </svg>
                                 </span>
                                 <div>
-                                    {zkLoginUserAddress != ''  ? (
-                                        <div>
-                                            <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
-                                            <b className="ml-2">|</b>
-                                            <Link className="ml-2" href={"/profile"}>Profile</Link>
-                                        </div>
-                                    ):(<div></div>)}
-                                    <div className="grid grid-cols-2 gap-1">
+                                    <div className="grid grid-cols-2 gap-1 text-xs">
                                      { zkLoginUserAddress == ""?
-                                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                            <button className="flex items-center px-0.5 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
                                                 onClick={async() => beginZkLogin()}>
                                             <GoogleIcon/>
                                             <span className="text-blue-600 font-bold">LOGIN</span>
                                             </button>: 
-                                            <button className="flex space-x-5 items-center px-3.5 py-2 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
-                                                onClick={async() => logOutWallet()}>
-                                            <GoogleIcon/>
-                                            <span className="text-blue-600 font-bold">
-                                                <div>
-                                                {email}
+                                            <>
+                                             <div>
+                                                    <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
+                                                    <b className="ml-2">|</b>
+                                                    <Link className="ml-2" href={"/profile"}>Profile</Link>
                                                 </div>
-                                                <div className="bg-gray-500 text-white">
-                                                {zkLoginUserAddress.substring(0,16)}...
+                                                <button className="flex bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
+                                                    onClick={async() => logOutWallet()}>
+                                                <GoogleIcon/>
+                                                <div className="text-blue-600 font-bold px-1.5">
+                                                    <div className="px-1">
+                                                        {email}
+                                                    </div>
+                                                    <div className="bg-gray-500 text-white px-1">
+                                                        100 DGT
+                                                    </div>
                                                 </div>
-                                            </span>
-                                            </button>
+                                                </button>
+                                            </>
+                                           
                                         }
                                         <div className='ml-1'>
                                             <Dropdown>
@@ -267,12 +398,7 @@ export default function ProfileHeader() {
                                                     <div className="flex items-center gap-x-[2px] rounded-lg bg-white px-0 py-0 text-blue-600">
                                                         {selectedKeys}
                                                     </div>
-                                                    {/* <Button 
-                                                        variant="bordered" 
-                                                        className="capitalize"
-                                                        >
-                                                    {selectedValue}
-                                                    </Button> */}
+                  
                                                 </DropdownTrigger>
                                                 <DropdownMenu 
                                                     aria-label="Single selection example"
@@ -283,37 +409,26 @@ export default function ProfileHeader() {
                                                     <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui devnet<Down/></>)}>
                                                         Sui
                                                     </DropdownItem>
-                                                    {/* <DropdownItem key="suitestnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                        Sui testnet
-                                                    </DropdownItem>
-                                                    <DropdownItem key="suimainnet"  startContent={<SUIWallet className={iconClasses} />}>
-                                                        Sui mainnet
-                                                    </DropdownItem> */}
+                         
                                                     <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn testnet<Down/></>)} >
                                                         Klaytn
                                                     </DropdownItem>
-                                                    {/* <DropdownItem key="klaytnmainnet"  startContent={<KlayIcon className={iconClasses} />}>
-                                                        Klaytn mainnet
-                                                    </DropdownItem> */}
+                               
                                                     <DropdownItem key="arbitrumtestnet"  startContent={<ArbitrumIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Arbitrum testnet<Down/></>)}>
                                                         Arbitrum
                                                     </DropdownItem>
-                                                    {/* <DropdownItem key="arbitrummainnet"  startContent={<ArbitrumIcon className={iconClasses} />}>
-                                                        Arbitrum mainnet
-                                                    </DropdownItem> */}
+                           
                                                     <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand testnet<Down/></>)}>
                                                         Algorand
                                                     </DropdownItem>
-                                                    {/* <DropdownItem key="algorandmainnet"  startContent={<AlgorandIcon className={iconClasses} />}>
-                                                        Algorand mainnet
-                                                    </DropdownItem> */}
+                                 
                                                 </DropdownMenu>
                                             </Dropdown>
                                         </div>           
                                     </div>
                                 </div> 
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </header>
