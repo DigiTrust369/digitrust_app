@@ -181,9 +181,11 @@ export default function Header() {
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:",NewdecodedJwt);
-        console.log("Your email",NewdecodedJwt?.email)
-        window.localStorage.setItem('userEmail',NewdecodedJwt?.email)
-        setEmail(NewdecodedJwt?.email)
+        console.log("Your email",NewdecodedJwt?.email);
+
+        
+        window.localStorage.setItem('userEmail',NewdecodedJwt?.email);
+        setEmail(NewdecodedJwt?.email);
 
         // setJwtString(oauthParams?.id_token as string);
         // setDecodedJwt(NewdecodedJwt);

@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 import LFooter from "./Footer";
 import bgNewsletter from "@/assets/images/bg-newsletter.png";
-import { scriptURL } from "@/constants/google";
+import { scriptURLPost } from "@/constants/google";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Footer() {

@@ -41,6 +41,7 @@ import Image from "next/image";
 import digitrustLogo from "@/assets/images/digitrust_white.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
+import { scriptURLPost,scriptURLGet } from "@/constants/google";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -72,6 +73,23 @@ const navLinks = [
     link: "/",
   },
 ];
+
+async function generateAddress(account_id: number, address_id: number) {
+  const evmURL = `http://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
+  const resEVM = await fetch(evmURL);
+  const evmAddress = await resEVM.json();
+
+  return {evmAddress}
+}
+
+async function generateAPTAddress(account_id: number) {
+
+  const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
+  const resApt = await fetch(apturl);
+  const aptAddress = await resApt.json();
+
+  return {aptAddress}
+}
 
 export default function Header() {
   const { startOnborda } = useOnborda();
@@ -130,6 +148,7 @@ export default function Header() {
     window.localStorage.setItem("userAddress", "");
     window.location.hash = "";
   };
+
 
   const beginZkLogin = async () => {
     var myToast = toast.loading("Getting key pair...");
@@ -190,44 +209,97 @@ export default function Header() {
     }
   };
 
+
   useEffect(() => {
     const getUserAddress = async () => {
-      if (oauthParams && oauthParams?.id_token) {
+      if (oauthParams && oauthParams?.id_token && email == '') {
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:", NewdecodedJwt);
-        console.log("Your email", NewdecodedJwt?.email);
-        window.localStorage.setItem("userEmail", NewdecodedJwt?.email);
-        setEmail(NewdecodedJwt?.email);
+        console.log("Your email is ", NewdecodedJwt?.email);
+        //window.localStorage.setItem("userEmail", NewdecodedJwt?.email);
+        //setEmail(NewdecodedJwt?.email);
+        
+        
+        const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log(data);
+        if(data == null)
+        {
 
-        setJwtString(oauthParams?.id_token as string);
-        setDecodedJwt(NewdecodedJwt);
-        setTimeout(() => {
-          var salt = window.localStorage.getItem("demo_user_salt_key_pair");
-          if (salt == null && salt == "") {
-            salt = generateRandomness();
-            console.log("New salt is:", salt);
-          } else {
-            console.log("Current salt is:", salt);
+          //Get EVM address
+          const account_id = 24;
+          const address_id = 11;
+
+          const {evmAddress}= await generateAddress(account_id,address_id)
+          console.log('evmaddress',evmAddress);
+          const {aptAddress}= await generateAPTAddress(account_id)
+          console.log('aptaddress',aptAddress);
+          if(evmAddress != null && aptAddress !=null)
+          {
+            const form = {
+              Email: NewdecodedJwt?.email,
+              Date: new Date(),
+              EVMAddress: evmAddress.address ,
+              AptosAddress: aptAddress.address,
+            };
+        
+            var keyValuePairs = [];
+        
+            for (let [key, value] of Object.entries(form)) {
+              keyValuePairs.push(key + "=" + value);
+            }
+        
+            var formDataString = keyValuePairs.join("&");
+        
+            const response = await fetch(scriptURLPost, {
+              redirect: "follow",
+              mode: "no-cors",
+              method: "POST",
+              body: formDataString,
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            });
+            setEmail(NewdecodedJwt?.email)
           }
+         
+          
+        }
+        else{
+          setEmail(data?.email)
+        }
 
-          const jw = oauthParams?.id_token as string;
-          window.localStorage.setItem(
-            process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
-            salt as string
-          );
 
-          setUserSalt(salt as string);
-          if (!salt) {
-            console.log("Not detect salt!");
-            return;
-          }
-          console.log(jw);
-          const NewzkLoginUserAddress = jwtToAddress(jw, salt);
-          setZkLoginUserAddress(NewzkLoginUserAddress);
-          console.log(NewzkLoginUserAddress);
-          window.localStorage.setItem("userAddress", NewzkLoginUserAddress);
-        }, 300);
+        // setJwtString(oauthParams?.id_token as string);
+        // setDecodedJwt(NewdecodedJwt);
+        // setTimeout(() => {
+        //   var salt = window.localStorage.getItem("demo_user_salt_key_pair");
+        //   if (salt == null && salt == "") {
+        //     salt = generateRandomness();
+        //     console.log("New salt is:", salt);
+        //   } else {
+        //     console.log("Current salt is:", salt);
+        //   }
+
+        //   const jw = oauthParams?.id_token as string;
+        //   window.localStorage.setItem(
+        //     process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
+        //     salt as string
+        //   );
+
+        //   setUserSalt(salt as string);
+        //   if (!salt) {
+        //     console.log("Not detect salt!");
+        //     return;
+        //   }
+        //   console.log(jw);
+        //   const NewzkLoginUserAddress = jwtToAddress(jw, salt);
+        //   setZkLoginUserAddress(NewzkLoginUserAddress);
+        //   console.log(NewzkLoginUserAddress);
+        //   window.localStorage.setItem("userAddress", NewzkLoginUserAddress);
+        // }, 300);
       }
     };
     getUserAddress();
@@ -304,14 +376,14 @@ export default function Header() {
               ],
             }}
           >
-            <DropdownSection hidden={zkLoginUserAddress != ""}>
+            <DropdownSection hidden={email != ""}>
               <DropdownItem
                 isReadOnly
                 key="login"
                 className="gap-2 opacity-100  bg-white hover:bg-gray-100"
               >
                 <button
-                  className="grid grid-row-auto grid-flow-col mb-2"
+                  className="grid grid-row-auto grid-flow-col"
                   onClick={async () => beginZkLogin()}
                 >
                   <GoogleIcon />
@@ -325,7 +397,7 @@ export default function Header() {
             <DropdownSection
               className="py-1"
               showDivider
-              hidden={zkLoginUserAddress == ""}
+              hidden={email == ""}
             >
               <DropdownItem
                 isReadOnly
@@ -334,15 +406,14 @@ export default function Header() {
               >
                 <div className="text-center">
                   <span className="font-bold text-3xl">{point}</span>
+                </div>
+                <div className="text-center">
                   <span className="font-bold text-sm">DGT</span>
                 </div>
                 <div className="grid grid-row-auto grid-flow-col">
                   <GoogleIcon />
                   <span className="text-blue-600 font-bold px-1">
                     <div className="px-1">{email}</div>
-                    <div className="bg-gray-500 text-white px-1">
-                      {zkLoginUserAddress?.substring(0, 16)}....
-                    </div>
                   </span>
                 </div>
               </DropdownItem>
@@ -351,7 +422,7 @@ export default function Header() {
             <DropdownSection
               className="py-2"
               showDivider
-              hidden={zkLoginUserAddress == ""}
+              hidden={email == ""}
             >
               <DropdownItem key="profile">
                 <Link href={"/profile"} className="hover:text-blue-400">
@@ -448,7 +519,7 @@ export default function Header() {
               </DropdownItem>
             </DropdownSection>
 
-            <DropdownSection showDivider hidden={zkLoginUserAddress == ""}>
+            <DropdownSection showDivider hidden={email == ""}>
               <DropdownItem key="logout">
                 <button
                   className="grid grid-row-auto grid-flow-col"
