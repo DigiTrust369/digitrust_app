@@ -66,6 +66,14 @@ export default function Overview() {
     <div className="mt-11 ">
       <div>
         <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+          Deposit/ Withdraw
+        </h1>
+        <div className="sm:hidden py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
+          <DepositWithdraw />
+        </div>
+      </div>
+      <div>
+        <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           Overview
         </h1>
       </div>
@@ -227,7 +235,7 @@ export default function Overview() {
             </table>
           </div>
         </div>
-        <div className="py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
+        <div className="hidden sm:block py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
           <DepositWithdraw />
         </div>
       </div>

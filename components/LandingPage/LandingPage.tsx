@@ -739,7 +739,7 @@ export default function HomePage() {
 
       {/* Investment in easy mode */}
       <section>
-        <div className="relative space-y-20 px-[60px] py-10 md:py-[200px] xl:px-[120px]">
+        <div className="hidden sm:block relative space-y-20 px-[60px] py-10 md:py-[200px] xl:px-[120px]">
           <Image
             className="absolute hidden md:block left-[45%] top-1/2 w-[100%] -translate-x-1/2 -translate-y-[30%] object-cover px-[60px] xl:px-[120px]"
             src={line}
