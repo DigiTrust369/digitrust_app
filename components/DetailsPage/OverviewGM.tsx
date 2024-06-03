@@ -65,12 +65,12 @@ export default function Overview() {
   return (
     <div className="mt-11 ">
       <div>
-        <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+        <h1 className="sm:hidden pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           Deposit/ Withdraw
         </h1>
-        <div className="sm:hidden py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
-          <DepositWithdraw />
-        </div>
+      </div>
+      <div className="sm:hidden w-full mb-10 py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
+        <DepositWithdraw />
       </div>
       <div>
         <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
@@ -78,7 +78,7 @@ export default function Overview() {
         </h1>
       </div>
       <div className="flex flex-wrap sm:flex-nowrap justify-between">
-        <div className="sm:w-[67%] h-full ">
+        <div className="w-full sm:w-[67%] h-full ">
           {/* Balance */}
           <div className="sm:grid sm:grid-cols-4 sm:gap-x-4">
             <div className="sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">

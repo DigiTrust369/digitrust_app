@@ -38,7 +38,7 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import { fromB64 } from "@mysten/bcs";
 import axios from "axios";
 import Image from "next/image";
-import digitrustLogo from "@/assets/images/digitrust.png";
+import digitrustLogo from "@/assets/images/digitrust_white.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
 
@@ -249,7 +249,7 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-white">
+      <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-blue-600 text-white">
         {/* Logo */}
         <div>
           <Link href="/">
@@ -461,72 +461,6 @@ export default function Header() {
             </DropdownSection>
           </DropdownMenu>
         </Dropdown>
-
-        {/* <div className="flex justify-end px-1">
-              <div className="flex items-center rounded-lg bg-blue-600 px-1 py-1 text-white">
-                  <div>
-                      <div className="grid grid-cols-1 gap-1 text-xs">
-                          { zkLoginUserAddress == ""?
-                            <button className="flex items-center px-0.5 bg-white hover:bg-gray-100 rounded-md drop-shadow-md"
-                                  onClick={async() => beginZkLogin()}>
-                              <GoogleIcon/>
-                              <span className="text-blue-600 font-bold">LOGIN</span>
-                            </button>: 
-                            <>
-                               {zkLoginUserAddress != ''  ? (
-                                <div>
-                                    <Link href={"/history"}  className="mr-2 hover:text-blue-400">History</Link>
-                                    <b className="ml-2">|</b>
-                                    <Link className="ml-2" href={"/profile"}>Profile</Link>
-                                </div>
-                                ):(<div></div>)}
-                                <button className="flex bg-white hover:bg-gray-100 rounded-md"
-                                  onClick={async() => logOutWallet()}>
-                                  <GoogleIcon/>
-                                  <div className="text-blue-600 font-bold px-1.5">
-                                    <div className="px-1">
-                                      {email.split('@')[0]}
-                                    </div>
-                                    <div className="bg-gray-500 text-white px-1">
-                                      100 DGT
-                                    </div>
-                                  </div>
-                                </button>
-                            </>
-                            
-                          }
-                          <div>
-                              <Dropdown>
-                                  <DropdownTrigger>
-                                      <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
-                                          {selectedKeys}
-                                      </div>
-                                  </DropdownTrigger>
-                                  <DropdownMenu 
-                                      aria-label="Single selection example"
-                                      variant="flat"
-                                      disallowEmptySelection
-                                      selectionMode="single"
-                                  >
-                                      <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui<Down/></>)}>
-                                          Sui
-                                      </DropdownItem>
-                                      <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn<Down/></>)} >
-                                          Klaytn
-                                      </DropdownItem>
-                                      <DropdownItem key="aptos"  startContent={<AptosIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Aptos<Down/></>)}>
-                                      Aptos
-                                      </DropdownItem>
-                                      <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand<Down/></>)}>
-                                          Algorand
-                                      </DropdownItem>
-                                  </DropdownMenu>
-                              </Dropdown>
-                          </div>           
-                      </div>
-                  </div> 
-              </div>
-          </div> */}
       </header>
     </Fragment>
   );
