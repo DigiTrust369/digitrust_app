@@ -56,12 +56,18 @@ export default function ProfileHeader() {
           {
             const res = queryString.parse(location);
             console.log(res)
-            setOauthParams(res);
+            setTimeout(() => {
+              setOauthParams(res);
+            }, 300);
           }
-          else{
-            setEmail(window.localStorage.getItem('userEmail') as string);
-            setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
-          }
+          else if(window.localStorage.getItem('userEmail') as string != '')
+            {
+              setEmail(window.localStorage.getItem('userEmail') as string);
+              setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
+            }
+          else
+            return;
+          
        }
        getOauthParams();
       }, []);
@@ -277,7 +283,7 @@ export default function ProfileHeader() {
                       {email}
                     </div>
                     <div className="bg-gray-500 text-white px-1">
-                      {zkLoginUserAddress.substring(0,16)}....
+                      {zkLoginUserAddress?.substring(0,16)}....
                     </div>
                 </span>
             </div>

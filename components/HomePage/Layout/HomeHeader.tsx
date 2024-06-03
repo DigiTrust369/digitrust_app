@@ -97,11 +97,15 @@ export default function Header() {
           setOauthParams(res);
         }, 300);
       }
-      else{
-        setEmail(window.localStorage.getItem('userEmail') as string);
-        setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
-      }
+      else if(window.localStorage.getItem('userEmail') as string != '')
+        {
+          setEmail(window.localStorage.getItem('userEmail') as string);
+          setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
+        }
+      else
+        return;
    }
+  
    getOauthParams();
   }, []);
 
@@ -181,53 +185,68 @@ export default function Header() {
         window.localStorage.setItem('userEmail',NewdecodedJwt?.email)
         setEmail(NewdecodedJwt?.email)
 
-        setJwtString(oauthParams?.id_token as string);
-        setDecodedJwt(NewdecodedJwt);
-        setTimeout(() => {
-          var salt = window.localStorage.getItem('demo_user_salt_key_pair');
-          if(salt == null && salt == ''){
-            salt = generateRandomness();
-            console.log('New salt is:',salt);
-          }
-          else
-          {
-            console.log('Current salt is:',salt);
-          }
+        // setJwtString(oauthParams?.id_token as string);
+        // setDecodedJwt(NewdecodedJwt);
+        // setTimeout(() => {
+        //   var salt = window.localStorage.getItem('demo_user_salt_key_pair');
+        //   if(salt == null && salt == ''){
+        //     salt = generateRandomness();
+        //     console.log('New salt is:',salt);
+        //   }
+        //   else
+        //   {
+        //     console.log('Current salt is:',salt);
+        //   }
           
-          const jw = oauthParams?.id_token as string;
-          window.localStorage.setItem(
-            process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
-            salt as string
-          );
+        //   const jw = oauthParams?.id_token as string;
+        //   window.localStorage.setItem(
+        //     process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
+        //     salt as string
+        //   );
 
-          setUserSalt(salt as string);
-          if (!salt) {
-            console.log('Not detect salt!');
-            return;
-          }
-          console.log(jw);
-          const NewzkLoginUserAddress = jwtToAddress(jw, salt);
-          setZkLoginUserAddress(NewzkLoginUserAddress);
-          console.log(NewzkLoginUserAddress);
-          window.localStorage.setItem("userAddress",NewzkLoginUserAddress);
-        }, 300);
+        //   setUserSalt(salt as string);
+        //   if (!salt) {
+        //     console.log('Not detect salt!');
+        //     return;
+        //   }
+
+        //   if (!jw) {
+        //     console.log('Not detect jw!');
+        //     return;
+        //   }
+        //   const NewzkLoginUserAddress = jwtToAddress(jw, salt);
+        //   setZkLoginUserAddress(NewzkLoginUserAddress);
+        //   console.log(NewzkLoginUserAddress);
+        //   window.localStorage.setItem("userAddress",NewzkLoginUserAddress);
+        // }, 300);
       }
     }
     getUserAddress();
   }, [oauthParams]);
 
   
+  // useEffect(() => {
+  //   const getFaucet = async () => {
+  //     console.log("Your address is:",zkLoginUserAddress)
+  //     if(window.localStorage.getItem(zkLoginUserAddress) != "1" && window.localStorage.getItem('userAddress') != null)
+  //       {
+  //         startOnborda();
+  //         window.localStorage.setItem(zkLoginUserAddress,"1");
+  //       }
+  //   }
+  //   getFaucet();
+  // }, [zkLoginUserAddress]);
+
   useEffect(() => {
     const getFaucet = async () => {
-      console.log("Your address is:",zkLoginUserAddress)
-      if(window.localStorage.getItem(zkLoginUserAddress) != "1")
-        {
-          startOnborda();
-          window.localStorage.setItem(zkLoginUserAddress,"1");
-        }
+      // console.log("Your address is:",email)
+      // if(email != null)
+      //   {
+      //     startOnborda();
+      //   }
     }
     getFaucet();
-  }, [zkLoginUserAddress]);
+  }, [email]);
 
   
   return (
@@ -288,20 +307,20 @@ export default function Header() {
         }}
       >
         
-        <DropdownSection hidden={zkLoginUserAddress != ""}>
+        <DropdownSection hidden={email != ""}>
           <DropdownItem
             isReadOnly
             key="login"
             className="gap-2 opacity-100  bg-white hover:bg-gray-100"
           >
-            <button className="grid grid-row-auto grid-flow-col mb-2" onClick={async() => beginZkLogin()}>
+            <button className="grid grid-row-auto grid-flow-col" onClick={async() => beginZkLogin()}>
               <GoogleIcon/>
               <span className="text-blue-600 font-bold mx-2">Google login</span>
             </button>
           </DropdownItem>
         </DropdownSection>
 
-        <DropdownSection className="py-1" showDivider hidden={zkLoginUserAddress == ""}>
+        <DropdownSection className="py-1" showDivider hidden={email == ""}>
           <DropdownItem
             isReadOnly
             key="info"
@@ -321,15 +340,15 @@ export default function Header() {
                     <div className="px-1">
                       {email}
                     </div>
-                    <div className="bg-gray-500 text-white px-1">
-                      {zkLoginUserAddress.substring(0,16)}....
-                    </div>
+                    {/* <div className="bg-gray-500 text-white px-1">
+                      {zkLoginUserAddress?.substring(0,16)}....
+                    </div> */}
                 </span>
             </div>
           </DropdownItem>
         </DropdownSection>
         
-        <DropdownSection className="py-2" showDivider hidden={zkLoginUserAddress == ""}>
+        <DropdownSection className="py-2" showDivider hidden={email == ""}>
           <DropdownItem key="profile">
             <Link href={"/profile"} className="hover:text-blue-400">Profile</Link>
           </DropdownItem>
@@ -373,7 +392,7 @@ export default function Header() {
           </DropdownItem>
         </DropdownSection>  
 
-        <DropdownSection showDivider hidden={zkLoginUserAddress == ""}>
+        <DropdownSection showDivider hidden={email == ""}>
           <DropdownItem  key="logout">
             <button className="grid grid-row-auto grid-flow-col" onClick={async() => logOutWallet()}>
               <ExitIcon/>
