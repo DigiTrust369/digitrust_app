@@ -317,15 +317,19 @@ export default function VaultsList() {
           </button>
         </div> */}
       </div>
-      <div className="overflow-x-auto">
-        <table className="table-auto mt-[30px] w-max sm:w-full text-xs sm:text-base text-left text-[#1F2937] border border-[#C3D4E9] rounded-lg">
+      {/* <div className="align-middle inline-block min-w-full shadow overflow-x-auto bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg"> */}
+      <div>
+        <table className="min-w-full">
+          {" "}
           <thead>
-            <tr className="border-b border-[#C3D4E9]">
-              <th className="w-[20%] pl-2 sm:pl-6 py-6 whitespace-nowrap">
+            <tr>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">
                 Vault Name
               </th>
-              <th className="w-[14%] px-2 py-6 whitespace-nowrap">Price</th>
-              <th className="w-[13%] px-2 flex items-center gap-1 py-6 whitespace-nowrap">
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                Price
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
                 TVL
                 {/* <Image
                   className="w-[16px] h-[16px]"
@@ -334,16 +338,22 @@ export default function VaultsList() {
                 /> */}
               </th>
 
-              <th className="w-[14%] px-2 py-6 whitespace-nowrap">Asset</th>
-              <th className="w-[13%] px-2 py-6 whitespace-nowrap">7 Days</th>
-              <th className="w-[12%] px-2 py-6 whitespace-nowrap">Return</th>
-              <th className="pr-2 sm:pr-6 py-6 whitespace-nowrap"></th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                Asset
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                7 Days
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">
+                Return
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300"></th>
             </tr>
           </thead>
           <tbody>
             {mergedData.map((vault) => (
               <tr className="border-b border-[#C3D4E9]">
-                <td className="w-[20%] pl-2 sm:pl-6 py-6 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   <div className="flex items-center gap-1 sm:gap-4">
                     <Image
                       className="h-[32px] w-[32px]"
@@ -356,13 +366,13 @@ export default function VaultsList() {
                     <span className="text-[#90A3BF]">{vault.symbol}</span>
                   </div>
                 </td>
-                <td className="w-[14%] px-2 py-6 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   {vault.price}
                 </td>
-                <td className="w-[13%] px-2 py-6 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   {vault.tvl}
                 </td>
-                <td className="w-[14%] px-2 py-6 whitespace-nowrap overflow-hidden">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   <div className="w-full flex items-center">
                     {vault.assets.map((asset) => (
                       <Image
@@ -375,13 +385,13 @@ export default function VaultsList() {
                     ))}
                   </div>
                 </td>
-                <td className="w-[13%] px-2 py-6 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   <Image src={vault.apy} alt="chart" />
                 </td>
-                <td className="w-[12%] px-2 py-6 text-[#10B981] whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   {vault.monthly_return}
                 </td>
-                <td className="pr-2 sm:pr-6 py-6 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   <button
                     className="border rounded-[10px] border-[#2563EB]"
                     id="onborda-step1"

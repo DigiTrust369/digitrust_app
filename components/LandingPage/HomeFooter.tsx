@@ -40,6 +40,10 @@ export default function Footer() {
     toast.success("Thank you for subscribing!");
 
     setEmail("");
+    const url = `https://script.google.com/macros/s/AKfycbwpKywlfgvuc_P_6ZYtAArtiKW9pgEmGuuKpmWOsqcAqQbG2C1My2kaV3eQkUdMicTK/exec?email=${email}`;
+    const res = await fetch(url);
+    const da = await res.json();
+    console.log(da);
   }
 
   return (

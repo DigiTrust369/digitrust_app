@@ -98,7 +98,7 @@ export default function Info() {
               $aHYPE
             </div>
           </div>
-          <div className="flex items-center gap-x-3">
+          {/* <div className="flex items-center gap-x-3">
             {dataDetails.map((data) => (
               <div
                 key={data.vault_id}
@@ -107,17 +107,17 @@ export default function Info() {
                 <span>{data.currency}</span>
                 aHYPE
               </div>
-            ))}
-            {/* <div className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency">
+            ))} */}
+          {/* <div className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency">
               {dataDetails && (
                   <span>{dataDetails.currency}</span>
               )}
               aHYPE
           </div> */}
-            <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
+          {/* <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
               Live on Avalanche
             </div>
-          </div>
+          </div> */}
 
           {dataDetails.map((data) => (
             <p
@@ -169,7 +169,7 @@ export default function Info() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-wrap sm:flex-nowrap gap-y-3 gap-x-3">
+            {/* <div className="flex flex-wrap sm:flex-nowrap gap-y-3 gap-x-3">
               <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
                 <div className="flex gap-x-4 text-base font-semibold leading-4">
                   <p className="uppercase text-blue-600">STAKED</p>
@@ -210,7 +210,7 @@ export default function Info() {
                   </svg>
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex items-center gap-x-[14px]">
