@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { useOnborda } from "onborda";
 import { Fragment, useEffect, useState, useMemo } from "react";
@@ -8,7 +8,16 @@ import KlayIcon from "@/icons/KlayIcon";
 import AlgorandIcon from "@/icons/AlgorandIcon";
 import ArbitrumIcon from "@/icons/ArbitrumIcon";
 import Down from "@/icons/Down";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,DropdownSection,Button, Select,SelectItem} from "@nextui-org/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  DropdownSection,
+  Button,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import SUIWallet from "@/icons/SUIWalletIcon";
 import AptosIcon from "@/icons/AptosIcon";
 import GoogleIcon from "@/icons/GoogleIcon";
@@ -34,7 +43,9 @@ import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
-const suiClient = new SuiClient({ url: process.env.NEXT_PUBLIC_FULLNODE_URL as string });
+const suiClient = new SuiClient({
+  url: process.env.NEXT_PUBLIC_FULLNODE_URL as string,
+});
 
 const navLinks = [
   {
@@ -68,9 +79,15 @@ export default function Header() {
     startOnborda();
   };
 
-  const [selectedKeys, setSelectedKeys] = useState(<><SUIWalletIcon/>Sui<Down/></>);
-  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
-
+  const [selectedKeys, setSelectedKeys] = useState(
+    <>
+      <SUIWalletIcon />
+      Sui
+      <Down />
+    </>
+  );
+  const iconClasses =
+    "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
   //zkLogin
   const [ephemeralKeyPair, setEphemeralKeyPair] = useState<Ed25519Keypair>();
@@ -82,40 +99,40 @@ export default function Header() {
   const [randomness, setRandomness] = useState("");
   const [userSalt, setUserSalt] = useState<string>();
   const [zkLoginUserAddress, setZkLoginUserAddress] = useState("");
-  const [oauthParams, setOauthParams] =useState<queryString.ParsedQuery<string>>();
+  const [oauthParams, setOauthParams] =
+    useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
     const getOauthParams = async () => {
-      const location =  window.location.hash;
-      if(location!=null && location!='')
-      {
+      const location = window.location.hash;
+      if (location != null && location != "") {
         const res = queryString.parse(location);
-        console.log(res)
+        console.log(res);
         setTimeout(() => {
           setOauthParams(res);
         }, 300);
+      } else {
+        setEmail(window.localStorage.getItem("userEmail") as string);
+        setZkLoginUserAddress(
+          window.localStorage.getItem("userAddress") as string
+        );
       }
-      else{
-        setEmail(window.localStorage.getItem('userEmail') as string);
-        setZkLoginUserAddress(window.localStorage.getItem('userAddress') as string);
-      }
-   }
-   getOauthParams();
+    };
+    getOauthParams();
   }, []);
 
-  const logOutWallet = ()=>{
+  const logOutWallet = () => {
     setZkLoginUserAddress("");
     setEmail("");
-    window.localStorage.setItem('userEmail','');
-    window.localStorage.setItem('userAddress','');
+    window.localStorage.setItem("userEmail", "");
+    window.localStorage.setItem("userAddress", "");
     window.location.hash = "";
-  }
+  };
 
-  const beginZkLogin = async() =>
-  {
-    var myToast = toast.loading("Getting key pair...")
+  const beginZkLogin = async () => {
+    var myToast = toast.loading("Getting key pair...");
     const ephemeralKeyPair = Ed25519Keypair.generate();
     window.sessionStorage.setItem(
       process.env.NEXT_PUBLIC_KEY_PAIR_SESSION_STORAGE_KEY as string,
@@ -134,11 +151,11 @@ export default function Header() {
     );
     console.log(currentEpoch);
     setMaxEpoch(Number(epoch) + 10);
-    console.log('currentEpoch',currentEpoch);
+    console.log("currentEpoch", currentEpoch);
 
     //Get randomness
     const randomness = generateRandomness();
-    console.log('randomness:',randomness)
+    console.log("randomness:", randomness);
 
     //Set Nonce
     const newNonce = generateNonce(
@@ -161,39 +178,39 @@ export default function Header() {
     // toast.dismiss(myToast);
 
     try {
-      const { data } = await axios.get(process.env.NEXT_PUBLIC_OPENID_PROVIDER_URL as string);
+      const { data } = await axios.get(
+        process.env.NEXT_PUBLIC_OPENID_PROVIDER_URL as string
+      );
       const authUrl = `${data.authorization_endpoint}?${params}`;
       window.location.href = authUrl;
       toast.dismiss(myToast);
     } catch (error) {
-        console.error('Error initiating Google login:', error);
-        toast.dismiss(myToast);
+      console.error("Error initiating Google login:", error);
+      toast.dismiss(myToast);
     }
-  }
+  };
 
   useEffect(() => {
     const getUserAddress = async () => {
       if (oauthParams && oauthParams?.id_token) {
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
-        console.log("Decode token:",NewdecodedJwt);
-        console.log("Your email",NewdecodedJwt?.email)
-        window.localStorage.setItem('userEmail',NewdecodedJwt?.email)
-        setEmail(NewdecodedJwt?.email)
+        console.log("Decode token:", NewdecodedJwt);
+        console.log("Your email", NewdecodedJwt?.email);
+        window.localStorage.setItem("userEmail", NewdecodedJwt?.email);
+        setEmail(NewdecodedJwt?.email);
 
         setJwtString(oauthParams?.id_token as string);
         setDecodedJwt(NewdecodedJwt);
         setTimeout(() => {
-          var salt = window.localStorage.getItem('demo_user_salt_key_pair');
-          if(salt == null && salt == ''){
+          var salt = window.localStorage.getItem("demo_user_salt_key_pair");
+          if (salt == null && salt == "") {
             salt = generateRandomness();
-            console.log('New salt is:',salt);
+            console.log("New salt is:", salt);
+          } else {
+            console.log("Current salt is:", salt);
           }
-          else
-          {
-            console.log('Current salt is:',salt);
-          }
-          
+
           const jw = oauthParams?.id_token as string;
           window.localStorage.setItem(
             process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
@@ -202,190 +219,247 @@ export default function Header() {
 
           setUserSalt(salt as string);
           if (!salt) {
-            console.log('Not detect salt!');
+            console.log("Not detect salt!");
             return;
           }
           console.log(jw);
           const NewzkLoginUserAddress = jwtToAddress(jw, salt);
           setZkLoginUserAddress(NewzkLoginUserAddress);
           console.log(NewzkLoginUserAddress);
-          window.localStorage.setItem("userAddress",NewzkLoginUserAddress);
+          window.localStorage.setItem("userAddress", NewzkLoginUserAddress);
         }, 300);
       }
-    }
+    };
     getUserAddress();
   }, [oauthParams]);
 
-  
   useEffect(() => {
     const getFaucet = async () => {
-      console.log("Your address is:",zkLoginUserAddress)
-      if(window.localStorage.getItem(zkLoginUserAddress) != "1")
-        {
-          startOnborda();
-          window.localStorage.setItem(zkLoginUserAddress,"1");
-        }
-    }
+      console.log("Your address is:", zkLoginUserAddress);
+      if (window.localStorage.getItem(zkLoginUserAddress) != "1") {
+        startOnborda();
+        window.localStorage.setItem(zkLoginUserAddress, "1");
+      }
+    };
     getFaucet();
   }, [zkLoginUserAddress]);
 
-  
   return (
     <Fragment>
-    <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-white">
-      {/* Logo */}
-      <div>
+      <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-white">
+        {/* Logo */}
+        <div>
           <Link href="/">
-          <Image src={digitrustLogo} alt="digitrust logo" height={50} />
-        </Link>
-      </div>
+            <Image src={digitrustLogo} alt="digitrust logo" height={50} />
+          </Link>
+        </div>
 
-      {/* Navigations */}
-      <nav className="hidden lg:block ml-20">
-        <ul className="flex justify-cente gap-x-10">
-          {navLinks.map((item) => (
-            <li>
-              <Link
-                className="capitalize duration-300 hover:text-blue-600"
-                href={item.link}
-                key={item.id}
+        {/* Navigations */}
+        <nav className="hidden lg:block ml-20">
+          <ul className="flex justify-cente gap-x-10">
+            {navLinks.map((item) => (
+              <li>
+                <Link
+                  className="capitalize duration-300 hover:text-blue-600"
+                  href={item.link}
+                  key={item.id}
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <Dropdown
+          showArrow
+          radius="sm"
+          classNames={{
+            base: "before:bg-default-200", // change arrow background
+            content: "p-0 border-small border-divider bg-background",
+          }}
+        >
+          <DropdownTrigger>
+            <Button isIconOnly variant="ghost" disableRipple>
+              <MenuIcon />
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="Custom item styles"
+            className="p-3"
+            itemClasses={{
+              base: [
+                "rounded-md",
+                "text-default-500",
+                "transition-opacity",
+                "data-[hover=true]:text-foreground",
+                "data-[hover=true]:bg-default-100",
+                "dark:data-[hover=true]:bg-default-50",
+                "data-[selectable=true]:focus:bg-default-50",
+                "data-[pressed=true]:opacity-70",
+                "data-[focus-visible=true]:ring-default-500",
+              ],
+            }}
+          >
+            <DropdownSection hidden={zkLoginUserAddress != ""}>
+              <DropdownItem
+                isReadOnly
+                key="login"
+                className="gap-2 opacity-100  bg-white hover:bg-gray-100"
               >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+                <button
+                  className="grid grid-row-auto grid-flow-col mb-2"
+                  onClick={async () => beginZkLogin()}
+                >
+                  <GoogleIcon />
+                  <span className="text-blue-600 font-bold mx-2">
+                    Google login
+                  </span>
+                </button>
+              </DropdownItem>
+            </DropdownSection>
 
-      <Dropdown
-        showArrow
-        radius="sm"
-        classNames={{
-          base: "before:bg-default-200", // change arrow background
-          content: "p-0 border-small border-divider bg-background",
-        }}
-      >
-      <DropdownTrigger>
-        <Button isIconOnly variant="ghost" disableRipple> 
-          <MenuIcon />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Custom item styles"
-        className="p-3"
-        itemClasses={{
-          base: [
-            "rounded-md",
-            "text-default-500",
-            "transition-opacity",
-            "data-[hover=true]:text-foreground",
-            "data-[hover=true]:bg-default-100",
-            "dark:data-[hover=true]:bg-default-50",
-            "data-[selectable=true]:focus:bg-default-50",
-            "data-[pressed=true]:opacity-70",
-            "data-[focus-visible=true]:ring-default-500",
-          ],
-        }}
-      >
-        
-        <DropdownSection hidden={zkLoginUserAddress != ""}>
-          <DropdownItem
-            isReadOnly
-            key="login"
-            className="gap-2 opacity-100  bg-white hover:bg-gray-100"
-          >
-            <button className="grid grid-row-auto grid-flow-col mb-2" onClick={async() => beginZkLogin()}>
-              <GoogleIcon/>
-              <span className="text-blue-600 font-bold mx-2">Google login</span>
-            </button>
-          </DropdownItem>
-        </DropdownSection>
-
-        <DropdownSection className="py-1" showDivider hidden={zkLoginUserAddress == ""}>
-          <DropdownItem
-            isReadOnly
-            key="info"
-            className="h-14 gap-2 opacity-100  bg-white hover:bg-gray-100 py-2"
-          >
-            <div className="text-center">
-              <span className="font-bold text-3xl">
-                {point}
-              </span>
-              <span className="font-bold text-sm">
-                DGT
-              </span>
-            </div>
-            <div className="grid grid-row-auto grid-flow-col">
-                <GoogleIcon/>
-                <span className="text-blue-600 font-bold px-1">
-                    <div className="px-1">
-                      {email}
-                    </div>
+            <DropdownSection
+              className="py-1"
+              showDivider
+              hidden={zkLoginUserAddress == ""}
+            >
+              <DropdownItem
+                isReadOnly
+                key="info"
+                className="h-14 gap-2 opacity-100  bg-white hover:bg-gray-100 py-2"
+              >
+                <div className="text-center">
+                  <span className="font-bold text-3xl">{point}</span>
+                  <span className="font-bold text-sm">DGT</span>
+                </div>
+                <div className="grid grid-row-auto grid-flow-col">
+                  <GoogleIcon />
+                  <span className="text-blue-600 font-bold px-1">
+                    <div className="px-1">{email}</div>
                     <div className="bg-gray-500 text-white px-1">
-                      {zkLoginUserAddress.substring(0,16)}....
+                      {zkLoginUserAddress?.substring(0, 16)}....
                     </div>
-                </span>
-            </div>
-          </DropdownItem>
-        </DropdownSection>
-        
-        <DropdownSection className="py-2" showDivider hidden={zkLoginUserAddress == ""}>
-          <DropdownItem key="profile">
-            <Link href={"/profile"} className="hover:text-blue-400">Profile</Link>
-          </DropdownItem>
-          <DropdownItem key="history">
-            <Link href={"/history"}  className="hover:text-blue-400">History</Link>
-          </DropdownItem>
-          <DropdownItem
-            isReadOnly
-            key="chain"
-            className="cursor-default"
-            endContent={
-                <Dropdown>
-                  <DropdownTrigger>
+                  </span>
+                </div>
+              </DropdownItem>
+            </DropdownSection>
+
+            <DropdownSection
+              className="py-2"
+              showDivider
+              hidden={zkLoginUserAddress == ""}
+            >
+              <DropdownItem key="profile">
+                <Link href={"/profile"} className="hover:text-blue-400">
+                  Profile
+                </Link>
+              </DropdownItem>
+              <DropdownItem key="history">
+                <Link href={"/history"} className="hover:text-blue-400">
+                  History
+                </Link>
+              </DropdownItem>
+              <DropdownItem
+                isReadOnly
+                key="chain"
+                className="cursor-default"
+                endContent={
+                  <Dropdown>
+                    <DropdownTrigger>
                       <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
-                          {selectedKeys}
+                        {selectedKeys}
                       </div>
-                  </DropdownTrigger>
-                  <DropdownMenu 
+                    </DropdownTrigger>
+                    <DropdownMenu
                       aria-label="Single selection example"
                       variant="flat"
                       disallowEmptySelection
                       selectionMode="single"
-                  >
-                      <DropdownItem key="suidevnet"  startContent={<SUIWallet className={iconClasses} />} onClick={()=>setSelectedKeys(<><SUIWallet className={iconClasses}/>Sui<Down/></>)}>
-                          Sui
+                    >
+                      <DropdownItem
+                        key="suidevnet"
+                        startContent={<SUIWallet className={iconClasses} />}
+                        onClick={() =>
+                          setSelectedKeys(
+                            <>
+                              <SUIWallet className={iconClasses} />
+                              Sui
+                              <Down />
+                            </>
+                          )
+                        }
+                      >
+                        Sui
                       </DropdownItem>
-                      <DropdownItem key="klaytntestnet"  startContent={<KlayIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><KlayIcon className={iconClasses}/>Klaytn<Down/></>)} >
-                          Klaytn
+                      <DropdownItem
+                        key="klaytntestnet"
+                        startContent={<KlayIcon className={iconClasses} />}
+                        onClick={() =>
+                          setSelectedKeys(
+                            <>
+                              <KlayIcon className={iconClasses} />
+                              Klaytn
+                              <Down />
+                            </>
+                          )
+                        }
+                      >
+                        Klaytn
                       </DropdownItem>
-                      <DropdownItem key="aptos"  startContent={<AptosIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><ArbitrumIcon className={iconClasses}/>Aptos<Down/></>)}>
-                      Aptos
+                      <DropdownItem
+                        key="aptos"
+                        startContent={<AptosIcon className={iconClasses} />}
+                        onClick={() =>
+                          setSelectedKeys(
+                            <>
+                              <ArbitrumIcon className={iconClasses} />
+                              Aptos
+                              <Down />
+                            </>
+                          )
+                        }
+                      >
+                        Aptos
                       </DropdownItem>
-                      <DropdownItem key="algorandtestnet"  startContent={<AlgorandIcon className={iconClasses} />} onClick={()=>setSelectedKeys(<><AlgorandIcon className={iconClasses}/>Algorand<Down/></>)}>
-                          Algorand
+                      <DropdownItem
+                        key="algorandtestnet"
+                        startContent={<AlgorandIcon className={iconClasses} />}
+                        onClick={() =>
+                          setSelectedKeys(
+                            <>
+                              <AlgorandIcon className={iconClasses} />
+                              Algorand
+                              <Down />
+                            </>
+                          )
+                        }
+                      >
+                        Algorand
                       </DropdownItem>
-                  </DropdownMenu>
-              </Dropdown>
-            }
-          >
-            Chain
-          </DropdownItem>
-        </DropdownSection>  
+                    </DropdownMenu>
+                  </Dropdown>
+                }
+              >
+                Chain
+              </DropdownItem>
+            </DropdownSection>
 
-        <DropdownSection showDivider hidden={zkLoginUserAddress == ""}>
-          <DropdownItem  key="logout">
-            <button className="grid grid-row-auto grid-flow-col" onClick={async() => logOutWallet()}>
-              <ExitIcon/>
-              <span className="text-blue-600 font-bold px-2">Log Out</span>
-            </button>
-          </DropdownItem>
-        </DropdownSection> 
-      </DropdownMenu>
-    </Dropdown>
+            <DropdownSection showDivider hidden={zkLoginUserAddress == ""}>
+              <DropdownItem key="logout">
+                <button
+                  className="grid grid-row-auto grid-flow-col"
+                  onClick={async () => logOutWallet()}
+                >
+                  <ExitIcon />
+                  <span className="text-blue-600 font-bold px-2">Log Out</span>
+                </button>
+              </DropdownItem>
+            </DropdownSection>
+          </DropdownMenu>
+        </Dropdown>
 
-
-      {/* <div className="flex justify-end px-1">
+        {/* <div className="flex justify-end px-1">
               <div className="flex items-center rounded-lg bg-blue-600 px-1 py-1 text-white">
                   <div>
                       <div className="grid grid-cols-1 gap-1 text-xs">
