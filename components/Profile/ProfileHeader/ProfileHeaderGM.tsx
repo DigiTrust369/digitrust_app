@@ -42,6 +42,9 @@ import digitrustLogo from "@/assets/images/digitrust_white.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
 import { scriptURLPost,scriptURLGet } from "@/constants/google";
+import { setBalance } from "viem/actions";
+import ProfileIcon from "@/icons/ProfileIcon";
+import HistoryIcon from "@/icons/HistoryIcon";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -89,6 +92,15 @@ async function generateAPTAddress(account_id: number) {
   const aptAddress = await resApt.json();
 
   return {aptAddress}
+}
+
+async function getBalance(email: string) {
+
+  const url = `https://dgt-dev.vercel.app/v1/user_balance?email=${email}`;
+  const resApt = await fetch(url);
+  const balance = await resApt.json();
+
+  return {balance}
 }
 
 export default function Header() {
@@ -178,7 +190,7 @@ export default function Header() {
 
     //Set Nonce
     const newNonce = generateNonce(
-      ephemeralKeyPair.getPublicKey(),
+      ephemeralKeyPair?.getPublicKey(),
       maxEpoch,
       randomness
     );
@@ -213,6 +225,7 @@ export default function Header() {
   useEffect(() => {
     const getUserAddress = async () => {
       if (oauthParams && oauthParams?.id_token && email == '') {
+        const myToast = toast.loading("Loading your account...");
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:", NewdecodedJwt);
@@ -264,13 +277,15 @@ export default function Header() {
             });
             setEmail(NewdecodedJwt?.email)
           }
-         
-          
         }
         else{
           setEmail(data?.email)
         }
 
+        const {balance}= await getBalance(email);
+        setPoint(balance?.amount);
+        window.localStorage.setItem("userEmail", email);
+        toast.dismiss(myToast);
 
         // setJwtString(oauthParams?.id_token as string);
         // setDecodedJwt(NewdecodedJwt);
@@ -347,11 +362,9 @@ export default function Header() {
         </nav>
 
         <Dropdown
-          showArrow
           radius="sm"
           classNames={{
-            base: "before:bg-default-200", // change arrow background
-            content: "p-0 border-small border-divider bg-background",
+            content: "border-small border-divider bg-background py-0",
           }}
         >
           <DropdownTrigger>
@@ -367,9 +380,6 @@ export default function Header() {
                 "rounded-md",
                 "text-default-500",
                 "transition-opacity",
-                "data-[hover=true]:text-foreground",
-                "data-[hover=true]:bg-default-100",
-                "dark:data-[hover=true]:bg-default-50",
                 "data-[selectable=true]:focus:bg-default-50",
                 "data-[pressed=true]:opacity-70",
                 "data-[focus-visible=true]:ring-default-500",
@@ -380,7 +390,7 @@ export default function Header() {
               <DropdownItem
                 isReadOnly
                 key="login"
-                className="gap-2 opacity-100  bg-white hover:bg-gray-100"
+                className="gap-2 opacity-100  bg-white"
               >
                 <button
                   className="grid grid-row-auto grid-flow-col"
@@ -402,14 +412,13 @@ export default function Header() {
               <DropdownItem
                 isReadOnly
                 key="info"
-                className="h-14 gap-2 opacity-100  bg-white hover:bg-gray-100 py-2"
+                className="h-14 gap-2 opacity-100  bg-white py-2"
               >
-                <div className="text-center">
+                <div className="flex justify-center items-center">
                   <span className="font-bold text-3xl">{point}</span>
+                  <span className="font-bold text-sm place-items-center">DGT</span>
                 </div>
-                <div className="text-center">
-                  <span className="font-bold text-sm">DGT</span>
-                </div>
+
                 <div className="grid grid-row-auto grid-flow-col">
                   <GoogleIcon />
                   <span className="text-blue-600 font-bold px-1">
@@ -424,17 +433,36 @@ export default function Header() {
               showDivider
               hidden={email == ""}
             >
-              <DropdownItem key="profile">
-                <Link href={"/profile"} className="hover:text-blue-400">
-                  Profile
-                </Link>
+              <DropdownItem key="MyMenu"  >
+                <div className="grid grid-rows-3 grid-flow-col gap-3 place-items-center">
+                  <div className="row-span-3">
+                    <Link href={"/profile"} >
+                      <button>
+                      <p className="ml-2"><ProfileIcon/></p>
+                        <p className="text-blue-600 font-bold">Profile</p>
+                      </button>
+                    </Link>
+                  </div>
+                  <div className="row-span-3">
+                    <Link href={"/history"} >
+                      <button>
+                        <p className="ml-2"><HistoryIcon/></p>
+                        <p className="text-blue-600 font-bold">History</p>
+                      </button>
+                    </Link>
+                  </div>
+                  <div className="row-span-3 place-items-center">
+                    <button  onClick={async () => logOutWallet()}>
+                      <p className="ml-3"><ExitIcon/></p>
+                      <p className="text-blue-600 font-bold">Log Out</p>
+                    </button>
+                  </div>
+                </div>
               </DropdownItem>
-              <DropdownItem key="history">
-                <Link href={"/history"} className="hover:text-blue-400">
-                  History
-                </Link>
-              </DropdownItem>
-              <DropdownItem
+            </DropdownSection>
+
+            <DropdownSection showDivider hidden={email == ""}>
+            <DropdownItem
                 isReadOnly
                 key="chain"
                 className="cursor-default"
@@ -516,18 +544,6 @@ export default function Header() {
                 }
               >
                 Chain
-              </DropdownItem>
-            </DropdownSection>
-
-            <DropdownSection showDivider hidden={email == ""}>
-              <DropdownItem key="logout">
-                <button
-                  className="grid grid-row-auto grid-flow-col"
-                  onClick={async () => logOutWallet()}
-                >
-                  <ExitIcon />
-                  <span className="text-blue-600 font-bold px-2">Log Out</span>
-                </button>
               </DropdownItem>
             </DropdownSection>
           </DropdownMenu>
