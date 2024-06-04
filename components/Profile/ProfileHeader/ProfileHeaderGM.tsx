@@ -78,7 +78,7 @@ const navLinks = [
   },
 ];
 
-async function generateAddress(account_id: number, address_id: number) {
+async function generateAddress(account_id: string, address_id: string) {
   const evmURL = `http://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
   const resEVM = await fetch(evmURL);
   const evmAddress = await resEVM.json();
@@ -86,7 +86,7 @@ async function generateAddress(account_id: number, address_id: number) {
   return {evmAddress}
 }
 
-async function generateAPTAddress(account_id: number) {
+async function generateAPTAddress(account_id: string) {
 
   const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
   const resApt = await fetch(apturl);
@@ -104,8 +104,25 @@ async function getBalance(email: string) {
   return {balance}
 }
 
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 export default function Header(props:any) {
-  toast.success(props?.type);
   const { startOnborda } = useOnborda();
   const handleStartOnborda = () => {
     startOnborda();
@@ -139,28 +156,29 @@ export default function Header(props:any) {
 
   useEffect(() => {
     const getOauthParams = async () => {
+      let curEmail = window.localStorage.getItem("userEmail");
+      console.log(curEmail);
       const location = window.location.hash;
-      if (location != null && location != "") {
+      if (location != null && location != "" && (curEmail == '' || curEmail == null)) {
         const res = queryString.parse(location);
-        console.log(res);
-        setTimeout(() => {
-          setOauthParams(res);
-        }, 300);
-      } else {
-        setEmail(window.localStorage.getItem("userEmail") as string);
-        setZkLoginUserAddress(
-          window.localStorage.getItem("userAddress") as string
-        );
+        setOauthParams(res);
+      } 
+      else if (curEmail != '' && curEmail != null) 
+      {
+        let myToast = toast.loading("Loading...");
+        setEmail(curEmail!= null? curEmail:'');
+        const {balance}= await getBalance(email);
+        setPoint(balance?.amount);
+        toast.dismiss(myToast);
       }
+      else
+        return;
     };
     getOauthParams();
   }, []);
 
   const logOutWallet = () => {
-    setZkLoginUserAddress("");
     setEmail("");
-    window.localStorage.setItem("userEmail", "");
-    window.localStorage.setItem("userAddress", "");
     window.location.hash = "";
   };
 
@@ -227,14 +245,13 @@ export default function Header(props:any) {
 
   useEffect(() => {
     const getUserAddress = async () => {
-      if (oauthParams && oauthParams?.id_token && email == '') {
+      let curEmail = window.localStorage.getItem("userEmail") as string;
+      if (oauthParams && oauthParams?.id_token && (curEmail == '' || curEmail == null)) {
         const myToast = toast.loading("Loading your account...");
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:", NewdecodedJwt);
         console.log("Your email is ", NewdecodedJwt?.email);
-        //window.localStorage.setItem("userEmail", NewdecodedJwt?.email);
-        //setEmail(NewdecodedJwt?.email);
         
         
         const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
@@ -243,10 +260,9 @@ export default function Header(props:any) {
         console.log(data);
         if(data == null)
         {
-
           //Get EVM address
-          const account_id = 24;
-          const address_id = 11;
+          const account_id = generateRandomness().substring(0,4);
+          const address_id = generateRandomness().substring(0,3);
 
           const {evmAddress}= await generateAddress(account_id,address_id)
           console.log('evmaddress',evmAddress);
@@ -278,64 +294,44 @@ export default function Header(props:any) {
                 "Content-Type": "text/plain;charset=utf-8",
               },
             });
-            setEmail(NewdecodedJwt?.email)
+            setEmail(NewdecodedJwt?.email);
+            await  postData("https://dgt-dev.vercel.app/v1/claim_token",  
+            {
+              "receiver": NewdecodedJwt?.email,
+              "amount": 24,
+              "created_at":new Date(),
+              "email": NewdecodedJwt?.email
+            }
+          ).then((data) => {
+                console.log(data); // JSON data parsed by `data.json()` call
+                toast.success(
+                "Claim your first token success!\n Your balance is " + data?.amount+"\n Let's try it!",
+                  {
+                    style: {
+                      maxWidth: "900px",
+                    },
+                    duration: 5000,
+                  }
+                );
+                startOnborda();
+          });
+            
           }
         }
         else{
-          setEmail(data?.email)
+          setEmail(data?.email);
         }
-
         const {balance}= await getBalance(email);
         setPoint(balance?.amount);
-        window.localStorage.setItem("userEmail", email);
         toast.dismiss(myToast);
-
-        // setJwtString(oauthParams?.id_token as string);
-        // setDecodedJwt(NewdecodedJwt);
-        // setTimeout(() => {
-        //   var salt = window.localStorage.getItem("demo_user_salt_key_pair");
-        //   if (salt == null && salt == "") {
-        //     salt = generateRandomness();
-        //     console.log("New salt is:", salt);
-        //   } else {
-        //     console.log("Current salt is:", salt);
-        //   }
-
-        //   const jw = oauthParams?.id_token as string;
-        //   window.localStorage.setItem(
-        //     process.env.NEXT_PUBLIC_USER_SALT_LOCAL_STORAGE_KEY as string,
-        //     salt as string
-        //   );
-
-        //   setUserSalt(salt as string);
-        //   if (!salt) {
-        //     console.log("Not detect salt!");
-        //     return;
-        //   }
-        //   console.log(jw);
-        //   const NewzkLoginUserAddress = jwtToAddress(jw, salt);
-        //   setZkLoginUserAddress(NewzkLoginUserAddress);
-        //   console.log(NewzkLoginUserAddress);
-        //   window.localStorage.setItem("userAddress", NewzkLoginUserAddress);
-        // }, 300);
       }
     };
     getUserAddress();
   }, [oauthParams]);
 
   useEffect(() => {
-    const getFaucet = async () => {
-      console.log("Your address is:", zkLoginUserAddress);
-      if (
-        window.localStorage.getItem(zkLoginUserAddress) != "1" &&
-        window.localStorage.getItem("userAddress") != null
-      ) {
-        startOnborda();
-        window.localStorage.setItem(zkLoginUserAddress, "1");
-      }
-    };
-    getFaucet();
-  }, [zkLoginUserAddress]);
+    window.localStorage.setItem("userEmail",email);
+  },[email])
 
   return (
     <Fragment>
@@ -353,7 +349,7 @@ export default function Header(props:any) {
             {navLinks.map((item) => (
               <li>
                 <Link
-                  className="capitalize duration-300 hover:text-blue-600"
+                  className={props.type == 0? "capitalize duration-300 hover:text-blue-600":"capitalize duration-300 hover:text-white"}
                   href={item.link}
                   key={item.id}
                 >
@@ -383,7 +379,7 @@ export default function Header(props:any) {
         >
           <DropdownTrigger>
             <Button isIconOnly variant="ghost" disableRipple>
-              <MenuIcon />
+              <MenuIcon type={props.type} />
             </Button>
           </DropdownTrigger>
           <DropdownMenu

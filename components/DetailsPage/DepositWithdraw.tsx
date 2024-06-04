@@ -20,12 +20,31 @@ const options = [
   { label: "USDT", image: usdt },
 ];
 
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 export default function DepositWithdraw() {
   const [depositAmount, setDepositAmount] = useState("1206.73");
   const [withdrawAmount, setWithdrawAmount] = useState("1206.73");
   const wallet = useWallet();
   const [orderID, setOrderID] = useState(0);
   const { isOnbordaVisible } = useOnborda();
+  const [email, setEmail] = useState("");
 
   const [isDropdownDepositOpen, setIsDropdownDepositOpen] = useState(false);
   const [selectedDepositOption, setSelectedDepositOption] = useState<{
@@ -63,51 +82,83 @@ export default function DepositWithdraw() {
     }
   };
 
+  useEffect(() => {
+    let curEmail = window.localStorage.getItem("userEmail")!= null? window.localStorage.getItem("userEmail") as string:'';
+    setEmail(curEmail);
+  },[])
+
   const goToMakeBaseDeposit = async (work: number) => {
     if (isOnbordaVisible) return;
-    if (work == 1) {
-      const res = await makeBaseDeposit(wallet);
-      if (res != "fall" && res != null)
-        toast.success(
-          "Transaction Success!\n Hash transaction block is " + res,
-          {
-            style: {
-              maxWidth: "800px",
-            },
-            duration: 5000,
-          }
-        );
-      if (res == "fall") {
-        const loadingToast = toast.loading("Loading...");
-        setTimeout(() => {
-          toast.dismiss(loadingToast);
-        }, 2000);
-      }
+    if (work == 1 && email != '') {
+      let myToast = toast.loading("Loading...");
+      // const res = await makeBaseDeposit(wallet);
+      // if (res != "fall" && res != null)
+      //   toast.success(
+      //     "Transaction Success!\n Hash transaction block is " + res,
+      //     {
+      //       style: {
+      //         maxWidth: "800px",
+      //       },
+      //       duration: 5000,
+      //     }
+      //   );
+      // if (res == "fall") {
+      //   const loadingToast = toast.loading("Loading...");
+      //   setTimeout(() => {
+      //     toast.dismiss(loadingToast);
+      //   }, 2000);
+      await  postData("https://dgt-dev.vercel.app/deposit",  
+                {
+                  "sender": email,
+                  "amount": 1000,
+                  "package": "0",
+                  "token": "DGT",
+                  "manager": "DigiTrust"
+                }
+              ).then((data) => {
+              toast.dismiss(myToast);
+              console.log(data); // JSON data parsed by `data.json()` call
+              toast.success(
+              "Transaction Success!\n Hash transaction block is " + data?.blockHash,
+              {
+                style: {
+                  maxWidth: "900px",
+                },
+                duration: 5000,
+              }
+            );
+        });
     }
   };
 
   const goToWithdrawBase = async (work: number) => {
     if (isOnbordaVisible) return;
-    if (work == 2) {
-      setOrderID(Math.floor(Math.random() * 999));
-      console.log(orderID);
-      const res = await withdrawBase(wallet, orderID);
-      if (res != "fall" && res != null)
-        toast.success(
-          "Transaction Success!\n Hash transaction block is " + res,
-          {
-            style: {
-              maxWidth: "800px",
-            },
-            duration: 5000,
-          }
-        );
-      if (res == "fall") {
-        const loadingToast = toast.loading("Loading...");
-        setTimeout(() => {
-          toast.dismiss(loadingToast);
-        }, 2000);
-      }
+    if (work == 2 && email != '') {
+      // setOrderID(Math.floor(Math.random() * 999));
+      // console.log(orderID);
+      // const res = await withdrawBase(wallet, orderID);
+      // if (res != "fall" && res != null)
+      //   toast.success(
+      //     "Transaction Success!\n Hash transaction block is " + res,
+      //     {
+      //       style: {
+      //         maxWidth: "800px",
+      //       },
+      //       duration: 5000,
+      //     }
+      //   );
+      // if (res == "fall") {
+      //   const loadingToast = toast.loading("Loading...");
+      //   setTimeout(() => {
+      //     toast.dismiss(loadingToast);
+      //   }, 2000);
+      // }
+      toast.error("You may withdraw your assets after September 2024.", {
+        style: {
+          maxWidth: "300px",
+        },
+        duration: 5000,
+      })
     }
   };
 
