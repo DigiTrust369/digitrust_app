@@ -38,10 +38,13 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import { fromB64 } from "@mysten/bcs";
 import axios from "axios";
 import Image from "next/image";
-import digitrustLogo from "@/assets/images/digitrust_white.png";
+import digitrustWhiteLogo from "@/assets/images/digitrust_white.png";
+import digitrustNoTextWhiteLogo from "@/assets/images/digitrust_white_notext.png";
+import digitrustLogo from "@/assets/images/digitrust.png";
+import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
-import { scriptURLPost,scriptURLGet } from "@/constants/google";
+import { scriptURLPost, scriptURLGet } from "@/constants/google";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -79,19 +82,18 @@ async function generateAddress(account_id: number, address_id: number) {
   const resEVM = await fetch(evmURL);
   const evmAddress = await resEVM.json();
 
-  return {evmAddress}
+  return { evmAddress };
 }
 
 async function generateAPTAddress(account_id: number) {
-
   const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
   const resApt = await fetch(apturl);
   const aptAddress = await resApt.json();
 
-  return {aptAddress}
+  return { aptAddress };
 }
 
-export default function Header() {
+export default function Header(props: { isHome: boolean }) {
   const { startOnborda } = useOnborda();
   const handleStartOnborda = () => {
     startOnborda();
@@ -148,7 +150,6 @@ export default function Header() {
     window.localStorage.setItem("userAddress", "");
     window.location.hash = "";
   };
-
 
   const beginZkLogin = async () => {
     var myToast = toast.loading("Getting key pair...");
@@ -209,50 +210,45 @@ export default function Header() {
     }
   };
 
-
   useEffect(() => {
     const getUserAddress = async () => {
-      if (oauthParams && oauthParams?.id_token && email == '') {
+      if (oauthParams && oauthParams?.id_token && email == "") {
         console.log("login google");
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
         console.log("Decode token:", NewdecodedJwt);
         console.log("Your email is ", NewdecodedJwt?.email);
         //window.localStorage.setItem("userEmail", NewdecodedJwt?.email);
         //setEmail(NewdecodedJwt?.email);
-        
-        
+
         const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
         const res = await fetch(url);
         const data = await res.json();
         console.log(data);
-        if(data == null)
-        {
-
+        if (data == null) {
           //Get EVM address
           const account_id = 24;
           const address_id = 11;
 
-          const {evmAddress}= await generateAddress(account_id,address_id)
-          console.log('evmaddress',evmAddress);
-          const {aptAddress}= await generateAPTAddress(account_id)
-          console.log('aptaddress',aptAddress);
-          if(evmAddress != null && aptAddress !=null)
-          {
+          const { evmAddress } = await generateAddress(account_id, address_id);
+          console.log("evmaddress", evmAddress);
+          const { aptAddress } = await generateAPTAddress(account_id);
+          console.log("aptaddress", aptAddress);
+          if (evmAddress != null && aptAddress != null) {
             const form = {
               Email: NewdecodedJwt?.email,
               Date: new Date(),
-              EVMAddress: evmAddress.address ,
+              EVMAddress: evmAddress.address,
               AptosAddress: aptAddress.address,
             };
-        
+
             var keyValuePairs = [];
-        
+
             for (let [key, value] of Object.entries(form)) {
               keyValuePairs.push(key + "=" + value);
             }
-        
+
             var formDataString = keyValuePairs.join("&");
-        
+
             const response = await fetch(scriptURLPost, {
               redirect: "follow",
               mode: "no-cors",
@@ -262,15 +258,11 @@ export default function Header() {
                 "Content-Type": "text/plain;charset=utf-8",
               },
             });
-            setEmail(NewdecodedJwt?.email)
+            setEmail(NewdecodedJwt?.email);
           }
-         
-          
+        } else {
+          setEmail(data?.email);
         }
-        else{
-          setEmail(data?.email)
-        }
-
 
         // setJwtString(oauthParams?.id_token as string);
         // setDecodedJwt(NewdecodedJwt);
@@ -319,14 +311,53 @@ export default function Header() {
     getFaucet();
   }, [zkLoginUserAddress]);
 
+  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
+    props.isHome ? "bg-white" : "bg-blue-600 text-white"
+  }`;
+
   return (
     <Fragment>
-      <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-blue-600 text-white">
+      <header className={classes}>
         {/* Logo */}
         <div>
-          <Link href="/">
-            <Image src={digitrustLogo} alt="digitrust logo" height={50} />
-          </Link>
+          {props.isHome ? (
+            <Link href="/">
+              <Image
+                src={digitrustLogo}
+                alt="digitrust logo"
+                height={50}
+                className="hidden sm:block"
+              />
+            </Link>
+          ) : (
+            <Link href="/">
+              <Image
+                src={digitrustWhiteLogo}
+                alt="digitrust logo"
+                height={50}
+                className="hidden sm:block"
+              />
+            </Link>
+          )}
+          {props.isHome ? (
+            <Link href="/">
+              <Image
+                src={digitrustNoTextLogo}
+                alt="digitrust logo"
+                className="sm:hidden object-fit"
+                width={60}
+              />
+            </Link>
+          ) : (
+            <Link href="/">
+              <Image
+                src={digitrustNoTextWhiteLogo}
+                alt="digitrust logo"
+                className="sm:hidden object-fit"
+                width={60}
+              />
+            </Link>
+          )}
         </div>
 
         {/* Navigations */}
@@ -356,7 +387,10 @@ export default function Header() {
         >
           <DropdownTrigger>
             <Button isIconOnly variant="ghost" disableRipple>
-              <MenuIcon />
+              <MenuIcon
+                bgColor={`${props.isHome ? "black" : "white"}`}
+                iconColor={`${props.isHome ? "black" : "white"}`}
+              />
             </Button>
           </DropdownTrigger>
           <DropdownMenu
@@ -394,11 +428,7 @@ export default function Header() {
               </DropdownItem>
             </DropdownSection>
 
-            <DropdownSection
-              className="py-1"
-              showDivider
-              hidden={email == ""}
-            >
+            <DropdownSection className="py-1" showDivider hidden={email == ""}>
               <DropdownItem
                 isReadOnly
                 key="info"
@@ -419,11 +449,7 @@ export default function Header() {
               </DropdownItem>
             </DropdownSection>
 
-            <DropdownSection
-              className="py-2"
-              showDivider
-              hidden={email == ""}
-            >
+            <DropdownSection className="py-2" showDivider hidden={email == ""}>
               <DropdownItem key="profile">
                 <Link href={"/profile"} className="hover:text-blue-400">
                   Profile
@@ -523,7 +549,7 @@ export default function Header() {
               <DropdownItem key="logout">
                 <button
                   className="grid grid-row-auto grid-flow-col"
-                  onClick={async () => logOutWallet()}
+                  onClick={() => logOutWallet()}
                 >
                   <ExitIcon />
                   <span className="text-blue-600 font-bold px-2">Log Out</span>
