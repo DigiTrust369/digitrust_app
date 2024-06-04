@@ -80,7 +80,7 @@ const navLinks = [
   },
 ];
 
-async function generateAddress(account_id: number, address_id: number) {
+async function generateAddress(account_id: string, address_id: string) {
   const evmURL = `http://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
   const resEVM = await fetch(evmURL);
   const evmAddress = await resEVM.json();
@@ -88,7 +88,7 @@ async function generateAddress(account_id: number, address_id: number) {
   return { evmAddress };
 }
 
-async function generateAPTAddress(account_id: number) {
+async function generateAPTAddress(account_id: string) {
   const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
   const resApt = await fetch(apturl);
   const aptAddress = await resApt.json();
@@ -102,6 +102,24 @@ async function getBalance(email: string) {
   const balance = await resApt.json();
 
   return { balance };
+}
+
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
 }
 
 export default function Header(props: { isHome: boolean }) {
@@ -137,28 +155,29 @@ export default function Header(props: { isHome: boolean }) {
 
   useEffect(() => {
     const getOauthParams = async () => {
+      let curEmail = window.localStorage.getItem("userEmail");
+      console.log(curEmail);
       const location = window.location.hash;
-      if (location != null && location != "") {
+      if (location != null && location != "" && (curEmail == '' || curEmail == null)) {
         const res = queryString.parse(location);
-        console.log(res);
-        setTimeout(() => {
-          setOauthParams(res);
-        }, 300);
-      } else {
-        setEmail(window.localStorage.getItem("userEmail") as string);
-        setZkLoginUserAddress(
-          window.localStorage.getItem("userAddress") as string
-        );
+        setOauthParams(res);
+      } 
+      else if (curEmail != '' && curEmail != null) 
+      {
+        let myToast = toast.loading("Loading...");
+        setEmail(curEmail!= null? curEmail:'');
+        const {balance}= await getBalance(curEmail);
+        setPoint(balance?.amount);
+        toast.dismiss(myToast);
       }
+      else
+        return;
     };
     getOauthParams();
   }, []);
 
   const logOutWallet = () => {
-    setZkLoginUserAddress("");
     setEmail("");
-    window.localStorage.setItem("userEmail", "");
-    window.localStorage.setItem("userAddress", "");
     window.location.hash = "";
   };
 
@@ -170,7 +189,6 @@ export default function Header(props: { isHome: boolean }) {
       ephemeralKeyPair.export().privateKey
     );
     setEphemeralKeyPair(ephemeralKeyPair);
-    console.log(ephemeralKeyPair);
 
     //Get epoch
     const { epoch } = await suiClient.getLatestSuiSystemState();
@@ -182,11 +200,9 @@ export default function Header(props: { isHome: boolean }) {
     );
     console.log(currentEpoch);
     setMaxEpoch(Number(epoch) + 10);
-    console.log("currentEpoch", currentEpoch);
 
     //Get randomness
     const randomness = generateRandomness();
-    console.log("randomness:", randomness);
 
     //Set Nonce
     const newNonce = generateNonce(
@@ -195,7 +211,6 @@ export default function Header(props: { isHome: boolean }) {
       randomness
     );
     setNonce(newNonce);
-    console.log(nonce);
 
     const params = new URLSearchParams({
       client_id: process.env.NEXT_PUBLIC_CLIENT_ID as string,
@@ -234,8 +249,8 @@ export default function Header(props: { isHome: boolean }) {
 
         if (data == null) {
           //Get EVM address
-          const account_id = 24;
-          const address_id = 11;
+          const account_id = generateRandomness().substring(0,4);
+          const address_id = generateRandomness().substring(0,3);
 
           const { evmAddress } = await generateAddress(account_id, address_id);
 
@@ -267,6 +282,26 @@ export default function Header(props: { isHome: boolean }) {
               },
             });
             setEmail(NewdecodedJwt?.email);
+            await  postData("https://dgt-dev.vercel.app/v1/claim_token",  
+              {
+                "receiver": NewdecodedJwt?.email,
+                "amount": 1024,
+                "created_at":new Date(),
+                "email": NewdecodedJwt?.email
+              }
+              ).then((data) => {
+                    console.log(data); // JSON data parsed by `data.json()` call
+                    toast.success(
+                    "Claim your first token success!\n Let's try Digitrust!",
+                      {
+                        style: {
+                          maxWidth: "900px",
+                        },
+                        duration: 5000,
+                      }
+                    );
+                    startOnborda();
+              });
           }
         } else {
           setEmail(data?.email);
@@ -274,7 +309,6 @@ export default function Header(props: { isHome: boolean }) {
 
         const { balance } = await getBalance(email);
         setPoint(balance?.amount);
-        window.localStorage.setItem("userEmail", email);
         toast.dismiss(myToast);
       }
     };
@@ -282,18 +316,8 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    const getFaucet = async () => {
-      console.log("Your address is:", zkLoginUserAddress);
-      if (
-        window.localStorage.getItem(zkLoginUserAddress) != "1" &&
-        window.localStorage.getItem("userAddress") != null
-      ) {
-        startOnborda();
-        window.localStorage.setItem(zkLoginUserAddress, "1");
-      }
-    };
-    getFaucet();
-  }, [zkLoginUserAddress]);
+    window.localStorage.setItem("userEmail",email);
+  },[email])
 
   const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
     props.isHome ? "bg-white" : "bg-blue-600 text-white"
