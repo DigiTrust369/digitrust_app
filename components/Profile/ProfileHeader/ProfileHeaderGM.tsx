@@ -38,7 +38,8 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import { fromB64 } from "@mysten/bcs";
 import axios from "axios";
 import Image from "next/image";
-import digitrustLogo from "@/assets/images/digitrust_white.png";
+import digitrustLogo2 from "@/assets/images/digitrust_white.png";
+import digitrustLogo from "@/assets/images/digitrust.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
 import { scriptURLPost,scriptURLGet } from "@/constants/google";
@@ -103,11 +104,13 @@ async function getBalance(email: string) {
   return {balance}
 }
 
-export default function Header() {
+export default function Header(props:any) {
+  toast.success(props?.type);
   const { startOnborda } = useOnborda();
   const handleStartOnborda = () => {
     startOnborda();
   };
+
 
   const [selectedKeys, setSelectedKeys] = useState(
     <>
@@ -336,11 +339,11 @@ export default function Header() {
 
   return (
     <Fragment>
-      <header className="flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-blue-600 text-white">
+      <header className={props?.type != "0"?"flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-blue-600 text-white":"flex items-center justify-between px-[20px] py-[18px] text-sm xl:px-[120px] xl:text-base bg-white text-blue-600"}>
         {/* Logo */}
         <div>
           <Link href="/">
-            <Image src={digitrustLogo} alt="digitrust logo" height={50} />
+            <Image src={props?.type != "0"? digitrustLogo2:digitrustLogo} alt="digitrust logo" height={50} />
           </Link>
         </div>
 
@@ -361,6 +364,17 @@ export default function Header() {
           </ul>
         </nav>
 
+        {email == ''?<button
+                    className=" bg-white border-solid border-1 rounded-md"
+                    onClick={async () => beginZkLogin()}
+                  >
+                    <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
+                      <GoogleIcon />
+                      <span className="text-blue-600 font-bold mx-2">
+                        Google login
+                      </span>
+                    </div>
+                  </button>:
         <Dropdown
           radius="sm"
           classNames={{
@@ -446,14 +460,14 @@ export default function Header() {
                   <div className="row-span-3">
                     <Link href={"/history"} >
                       <button>
-                        <p className="ml-2"><HistoryIcon/></p>
+                        <p className="ml-2.5"><HistoryIcon/></p>
                         <p className="text-blue-600 font-bold">History</p>
                       </button>
                     </Link>
                   </div>
                   <div className="row-span-3 place-items-center">
                     <button  onClick={async () => logOutWallet()}>
-                      <p className="ml-3"><ExitIcon/></p>
+                      <p className="ml-3.5"><ExitIcon/></p>
                       <p className="text-blue-600 font-bold">Log Out</p>
                     </button>
                   </div>
@@ -465,7 +479,7 @@ export default function Header() {
             <DropdownItem
                 isReadOnly
                 key="chain"
-                className="cursor-default"
+                className="cursor-default text-blue-600 font-bold"
                 endContent={
                   <Dropdown>
                     <DropdownTrigger>
@@ -547,7 +561,7 @@ export default function Header() {
               </DropdownItem>
             </DropdownSection>
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown>}
       </header>
     </Fragment>
   );
