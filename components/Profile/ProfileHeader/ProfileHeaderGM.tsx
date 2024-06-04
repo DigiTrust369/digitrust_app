@@ -167,7 +167,7 @@ export default function Header(props:any) {
       {
         let myToast = toast.loading("Loading...");
         setEmail(curEmail!= null? curEmail:'');
-        const {balance}= await getBalance(email);
+        const {balance}= await getBalance(curEmail);
         setPoint(balance?.amount);
         toast.dismiss(myToast);
       }
@@ -426,7 +426,7 @@ export default function Header(props:any) {
               >
                 <div className="flex justify-center items-center">
                   <span className="font-bold text-3xl">{point}</span>
-                  <span className="font-bold text-sm place-items-center">DGT</span>
+                  <span className="font-bold text-sm place-items-center ml-1">DGT</span>
                 </div>
 
                 <div className="grid grid-row-auto grid-flow-col">
