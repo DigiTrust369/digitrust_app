@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import bitcoin from "@/assets/images/crypto/bitcoin.svg";
 import ethereum from "@/assets/images/crypto/ethereum.svg";
@@ -35,6 +35,7 @@ import filterIc from "@/assets/images/icons/filter-icon.svg";
 import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
+import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 
 interface Vault {
   url: string;
@@ -369,7 +370,7 @@ export default function VaultsList() {
                     <div className="flex items-center gap-2 sm:gap-4">
                       <Image
                         className="h-[32px] w-[32px]"
-                        src={vault.url}
+                        src={digitrustNoTextLogo}
                         alt={vault.vault_name}
                         width={32}
                         height={32}
