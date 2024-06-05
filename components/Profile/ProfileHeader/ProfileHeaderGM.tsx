@@ -158,20 +158,20 @@ export default function Header(props: { isHome: boolean }) {
       let curEmail = window.localStorage.getItem("userEmail");
       console.log(curEmail);
       const location = window.location.hash;
-      if (location != null && location != "" && (curEmail == '' || curEmail == null)) {
+      if (
+        location != null &&
+        location != "" &&
+        (curEmail == "" || curEmail == null)
+      ) {
         const res = queryString.parse(location);
         setOauthParams(res);
-      } 
-      else if (curEmail != '' && curEmail != null) 
-      {
+      } else if (curEmail != "" && curEmail != null) {
         let myToast = toast.loading("Loading...");
-        setEmail(curEmail!= null? curEmail:'');
-        const {balance}= await getBalance(curEmail);
+        setEmail(curEmail != null ? curEmail : "");
+        const { balance } = await getBalance(curEmail);
         setPoint(balance?.amount);
         toast.dismiss(myToast);
-      }
-      else
-        return;
+      } else return;
     };
     getOauthParams();
   }, []);
@@ -249,8 +249,8 @@ export default function Header(props: { isHome: boolean }) {
 
         if (data == null) {
           //Get EVM address
-          const account_id = generateRandomness().substring(0,4);
-          const address_id = generateRandomness().substring(0,3);
+          const account_id = generateRandomness().substring(0, 4);
+          const address_id = generateRandomness().substring(0, 3);
 
           const { evmAddress } = await generateAddress(account_id, address_id);
 
@@ -282,26 +282,24 @@ export default function Header(props: { isHome: boolean }) {
               },
             });
             setEmail(NewdecodedJwt?.email);
-            await  postData("https://dgt-dev.vercel.app/v1/claim_token",  
-              {
-                "receiver": NewdecodedJwt?.email,
-                "amount": 1024,
-                "created_at":new Date(),
-                "email": NewdecodedJwt?.email
-              }
-              ).then((data) => {
-                    console.log(data); // JSON data parsed by `data.json()` call
-                    toast.success(
-                    "Claim your first token success!\n Let's try Digitrust!",
-                      {
-                        style: {
-                          maxWidth: "900px",
-                        },
-                        duration: 5000,
-                      }
-                    );
-                    startOnborda();
-              });
+            await postData("https://dgt-dev.vercel.app/v1/claim_token", {
+              receiver: NewdecodedJwt?.email,
+              amount: 1024,
+              created_at: new Date(),
+              email: NewdecodedJwt?.email,
+            }).then((data) => {
+              console.log(data); // JSON data parsed by `data.json()` call
+              toast.success(
+                "Claim your first token success!\n Let's try Digitrust!",
+                {
+                  style: {
+                    maxWidth: "900px",
+                  },
+                  duration: 5000,
+                }
+              );
+              startOnborda();
+            });
           }
         } else {
           setEmail(data?.email);
@@ -316,8 +314,8 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    window.localStorage.setItem("userEmail",email);
-  },[email])
+    window.localStorage.setItem("userEmail", email);
+  }, [email]);
 
   const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
     props.isHome ? "bg-white" : "bg-blue-600 text-white"
@@ -369,7 +367,7 @@ export default function Header(props: { isHome: boolean }) {
         </div>
 
         {/* Navigations */}
-        <nav className="hidden lg:block ml-20">
+        {/*<nav className="hidden lg:block ml-20">
           <ul className="flex justify-cente gap-x-10">
             {navLinks.map((item) => (
               <li>
@@ -383,7 +381,7 @@ export default function Header(props: { isHome: boolean }) {
               </li>
             ))}
           </ul>
-        </nav>
+        </nav>*/}
 
         {email == "" ? (
           <button

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { useFormatter } from "next-intl";
 import bitcoin from "@/assets/images/crypto/bitcoin.svg";
 import ethereum from "@/assets/images/crypto/ethereum.svg";
 import bnb from "@/assets/images/crypto/bnb.svg";
@@ -238,6 +239,7 @@ const vaults = [
 ];
 
 export default function VaultsList() {
+  const format = useFormatter();
   const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -267,13 +269,13 @@ export default function VaultsList() {
   console.log(mergedData);
 
   return (
-    <div className="sm:pt-[80px]">
+    <div>
       <div className="flex flex-wrap sm:flex-nowrap items-start justify-between">
         <div>
           <h1 className="font-semibold text-[#2563EB] text-3xl sm:text-[36px] sm:leading-[54px]">
             All Vaults
           </h1>
-          <p className="pt-1 text-[#90A3BF] leading-6">Overview</p>
+          <p className="py-2 text-[#90A3BF] leading-6">Overview</p>
         </div>
         {/* <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
           <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
@@ -380,10 +382,10 @@ export default function VaultsList() {
                     </div>
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
-                    {vault.price}
+                    ${format.number(+vault.price.slice(0, -1))}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
-                    {vault.tvl}
+                    ${format.number(+vault.tvl)}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9] overflow-hidden">
                     <div className="w-full flex items-center">
@@ -409,16 +411,16 @@ export default function VaultsList() {
                       className="border rounded-[10px] border-[#2563EB]"
                       id="onborda-step1"
                     >
-                      <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">
-                        <Image
-                          className="hidden sm:block w-[18px] h-[18px]"
-                          src={depositIc}
-                          alt="deposit-icon"
-                        />
-                        <span className="font-normal">
-                          <Link href="/detail">Deposit</Link>
-                        </span>
-                      </div>
+                      <Link href="/detail">
+                        <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">
+                          <Image
+                            className="hidden sm:block w-[18px] h-[18px]"
+                            src={depositIc}
+                            alt="deposit-icon"
+                          />
+                          <span className="font-normal">Deposit</span>
+                        </div>
+                      </Link>
                     </button>
                   </td>
                 </tr>

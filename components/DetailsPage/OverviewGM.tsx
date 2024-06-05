@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useFormatter } from "next-intl";
 import dynamic from "next/dynamic";
 import detailBg from "@/assets/images/bg-detail.svg";
 import useTab from "@/components/Tabbar/useTab";
@@ -10,6 +11,7 @@ import DepositWithdraw from "./DepositWithdraw";
 import PieChart from "@/components/Chart/PieChart/PieChart";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import btc from "@/assets/images/crypto/bitcoin.svg";
+import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 
 interface Asset {
   asset: string;
@@ -24,10 +26,11 @@ interface Asset {
   };
   dgt_score: number;
   status: boolean;
+  logo_url: string;
 }
 
 export default function Overview() {
-  // const { currentAccount } = useWalletKit();
+  const format = useFormatter();
   let assets: Asset[];
 
   // Call Api
@@ -69,7 +72,6 @@ export default function Overview() {
       };
     }
   );
-  console.log(chartData);
 
   return (
     <div className="mt-11 ">
@@ -100,7 +102,7 @@ export default function Overview() {
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
                   <span>{data.currency}</span>
-                  <p>{data.price}</p>
+                  <p>{format.number(data.price)}</p>
                 </div>
               ))}
             </div>
@@ -115,7 +117,7 @@ export default function Overview() {
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
                   <span>{data.currency}</span>
-                  <p>{data.tvl}</p>
+                  <p>{format.number(data.tvl)}</p>
                 </div>
               ))}
             </div>
@@ -228,19 +230,25 @@ export default function Overview() {
                   <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
                     <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
                       <div className="flex items-center ">
-                        <Image className="w-8 h-8" src={btc} alt="bitcoin" />
+                        <Image
+                          src={asset.logo_url}
+                          alt="bitcoin"
+                          width={32}
+                          height={32}
+                        />
                         <span className="ml-2 sm:ml-4">{asset.symbol}</span>
                       </div>
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
-                      {true ? asset.weight : "--"}
+                      {asset.weight}
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
-                      {true ? asset.holding : "--"}
+                      ${format.number(+asset.holding.slice(0, -1))}
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap border-b border-b-[#C3D4E9]">
-                      <div>$ 6.35</div>
-                      <div className="text-green-500">5.50%</div>
+                      <div className="text-green-500">
+                        {format.number(+asset.price_change["24h"])}%
+                      </div>
                     </td>
                   </tr>
                 ))}

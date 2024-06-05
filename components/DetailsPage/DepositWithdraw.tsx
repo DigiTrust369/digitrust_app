@@ -21,8 +21,8 @@ const options = [
 ];
 
 export default function DepositWithdraw() {
-  const [depositAmount, setDepositAmount] = useState("1206.73");
-  const [withdrawAmount, setWithdrawAmount] = useState("1206.73");
+  const [depositAmount, setDepositAmount] = useState("1");
+  const [withdrawAmount, setWithdrawAmount] = useState("1");
   const wallet = useWallet();
   const [orderID, setOrderID] = useState(0);
   const { isOnbordaVisible } = useOnborda();
@@ -90,7 +90,6 @@ export default function DepositWithdraw() {
     if (isOnbordaVisible) return;
     if (work == 2) {
       setOrderID(Math.floor(Math.random() * 999));
-      console.log(orderID);
       const res = await withdrawBase(wallet, orderID);
       if (res != "fall" && res != null)
         toast.success(
@@ -497,9 +496,7 @@ export default function DepositWithdraw() {
                           <input
                             type="number"
                             className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
-                            value={
-                              depositAmount === "" ? "0.0000" : depositAmount
-                            }
+                            value={depositAmount}
                             onChange={(event) =>
                               setDepositAmount(event.target.value)
                             }
@@ -665,9 +662,7 @@ export default function DepositWithdraw() {
                           <input
                             type="number"
                             className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
-                            value={
-                              withdrawAmount === "" ? "0.0000" : withdrawAmount
-                            }
+                            value={withdrawAmount}
                             onChange={(event) =>
                               setWithdrawAmount(event.target.value)
                             }
