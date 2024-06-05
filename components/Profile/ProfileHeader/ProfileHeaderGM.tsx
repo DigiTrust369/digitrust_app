@@ -168,8 +168,6 @@ export default function Header(props: { isHome: boolean }) {
       } else if (curEmail != "" && curEmail != null) {
         let myToast = toast.loading("Loading...");
         setEmail(curEmail != null ? curEmail : "");
-        const { balance } = await getBalance(curEmail);
-        setPoint(balance?.amount);
         toast.dismiss(myToast);
       } else return;
     };
@@ -179,6 +177,7 @@ export default function Header(props: { isHome: boolean }) {
   const logOutWallet = () => {
     setEmail("");
     window.location.hash = "";
+    window.location.href = window.location.origin+"/home";
   };
 
   const beginZkLogin = async () => {
@@ -304,9 +303,7 @@ export default function Header(props: { isHome: boolean }) {
         } else {
           setEmail(data?.email);
         }
-
-        const { balance } = await getBalance(email);
-        setPoint(balance?.amount);
+        window.location.hash = "";
         toast.dismiss(myToast);
       }
     };
@@ -315,6 +312,13 @@ export default function Header(props: { isHome: boolean }) {
 
   useEffect(() => {
     window.localStorage.setItem("userEmail", email);
+    async function updateBalance() {
+      const { balance } = await getBalance(email);
+      setPoint(balance?.amount);
+    }
+    if(email!=''){
+      updateBalance();
+    }
   }, [email]);
 
   const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
@@ -385,23 +389,23 @@ export default function Header(props: { isHome: boolean }) {
 
         {email == "" ? (
           <button
-            className=" bg-white border-solid border-1 rounded-md"
+            className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"
             onClick={async () => beginZkLogin()}
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
               <GoogleIcon />
-              <span className="text-blue-600 font-bold mx-2">Google login</span>
+              <span className="text-blue-400 mx-2">Google login</span>
             </div>
           </button>
         ) : (
           <Dropdown
             radius="sm"
             classNames={{
-              content: "border-small border-divider bg-background py-0",
+              content: "border-small border-divider bg-white py-0",
             }}
           >
             <DropdownTrigger>
-              <Button isIconOnly variant="ghost" disableRipple>
+              <Button isIconOnly variant="bordered" className="capitalize" disableRipple>
                 <MenuIcon
                   bgColor={`${props.isHome ? "black" : "white"}`}
                   iconColor={`${props.isHome ? "black" : "white"}`}
@@ -411,6 +415,7 @@ export default function Header(props: { isHome: boolean }) {
             <DropdownMenu
               aria-label="Custom item styles"
               className="p-3"
+              variant="light"
               itemClasses={{
                 base: [
                   "rounded-md",
@@ -429,11 +434,11 @@ export default function Header(props: { isHome: boolean }) {
                   className="gap-2 opacity-100  bg-white"
                 >
                   <button
-                    className="grid grid-row-auto grid-flow-col"
+                    className="grid grid-row-auto grid-flow-col hover:bg-gray-100"
                     onClick={async () => beginZkLogin()}
                   >
                     <GoogleIcon />
-                    <span className="text-blue-600 font-bold mx-2">
+                    <span className="text-blue-200 font-bold mx-2">
                       Google login
                     </span>
                   </button>
@@ -450,7 +455,7 @@ export default function Header(props: { isHome: boolean }) {
                   key="info"
                   className="h-14 gap-2 opacity-100  bg-white py-2"
                 >
-                  <div className="flex justify-center items-center">
+                  <div className="flex justify-center items-center gap-1">
                     <span className="font-bold text-3xl">{point}</span>
                     <span className="font-bold text-sm place-items-center">
                       DGT
@@ -470,34 +475,34 @@ export default function Header(props: { isHome: boolean }) {
                 showDivider
                 hidden={email == ""}
               >
-                <DropdownItem key="MyMenu">
-                  <div className="grid grid-rows-3 grid-flow-col gap-3 place-items-center">
-                    <div className="row-span-3">
+                <DropdownItem key="MyMenu" className="hover:bg-white"> 
+                  <div className="grid grid-rows-2 grid-flow-col gap-2 place-items-center">
+                    <div className="row-span-3 hover:text-gray-100">
                       <Link href={"/profile"}>
                         <button>
                           <p className="ml-2">
                             <ProfileIcon />
                           </p>
-                          <p className="text-blue-600 font-bold">Profile</p>
+                          <p className="text-blue-600">Profile</p>
                         </button>
                       </Link>
                     </div>
-                    <div className="row-span-3">
+                    {/* <div className="row-span-3">
                       <Link href={"/history"}>
                         <button>
                           <p className="ml-2.5">
                             <HistoryIcon />
                           </p>
-                          <p className="text-blue-600 font-bold">History</p>
+                          <p className="text-blue-600">History</p>
                         </button>
                       </Link>
-                    </div>
-                    <div className="row-span-3 place-items-center">
+                    </div> */}
+                    <div className="row-span-3 place-items-center hover:text-gray-100">
                       <button onClick={async () => logOutWallet()}>
                         <p className="ml-3.5">
                           <ExitIcon />
                         </p>
-                        <p className="text-blue-600 font-bold">Log Out</p>
+                        <p className="text-blue-600">Log Out</p>
                       </button>
                     </div>
                   </div>
