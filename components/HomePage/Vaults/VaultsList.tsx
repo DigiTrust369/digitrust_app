@@ -242,6 +242,7 @@ export default function VaultsList() {
   const format = useFormatter();
   const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
+  const [vaultId, setVaultId] = useState<any>();
 
   let vaultsList: Vault[];
 
@@ -266,7 +267,10 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
-  console.log(mergedData);
+
+  const clickDepositHandler = (value: string) => {
+    setVaultId(value);
+  };
 
   return (
     <div>
@@ -410,6 +414,7 @@ export default function VaultsList() {
                     <button
                       className="border rounded-[10px] border-[#2563EB]"
                       id="onborda-step1"
+                      onClick={() => clickDepositHandler(vault.vault_id)}
                     >
                       <Link href="/detail">
                         <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">

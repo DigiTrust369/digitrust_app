@@ -91,7 +91,7 @@ export default function Overview() {
       <div className="flex flex-wrap sm:flex-nowrap justify-between">
         <div className="w-full sm:w-[67%] h-full ">
           {/* Balance */}
-          <div className="sm:grid sm:grid-cols-4 sm:gap-x-4">
+          <div className="sm:grid sm:grid-cols-3 sm:gap-x-4">
             <div className="sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
               <div className="text-base font-medium leading-7 text-gray-800">
                 Price
@@ -122,7 +122,7 @@ export default function Overview() {
               ))}
             </div>
 
-            <div className="my-2 sm:my-0 sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
+            {/* <div className="my-2 sm:my-0 sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
               <div className="text-base font-medium leading-7 text-gray-800">
                 Volume
               </div>
@@ -135,7 +135,7 @@ export default function Overview() {
                   <p>{data.volume}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <div className="my-2 sm:my-0 sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
               <div className="text-base font-medium leading-7 text-gray-800">
