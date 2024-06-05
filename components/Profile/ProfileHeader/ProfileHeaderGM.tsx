@@ -394,7 +394,7 @@ export default function Header(props: { isHome: boolean }) {
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
               <GoogleIcon />
-              <span className="text-blue-400 mx-2">Google login</span>
+              <span className="text-blue-500 mx-2">Google login</span>
             </div>
           </button>
         ) : (
@@ -457,7 +457,7 @@ export default function Header(props: { isHome: boolean }) {
                 >
                   <div className="flex justify-center items-center gap-1">
                     <span className="font-bold text-3xl">{point}</span>
-                    <span className="font-bold text-sm place-items-center">
+                    <span className="font-medium text-sm place-items-center">
                       DGT
                     </span>
                   </div>
