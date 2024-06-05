@@ -48,6 +48,7 @@ import { scriptURLPost, scriptURLGet } from "@/constants/google";
 import { setBalance } from "viem/actions";
 import ProfileIcon from "@/icons/ProfileIcon";
 import HistoryIcon from "@/icons/HistoryIcon";
+import Hot from "@/assets/images/Hot.png";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -329,8 +330,20 @@ export default function Header(props: { isHome: boolean }) {
 
   return (
     <Fragment>
-      {email=='' && <div className="bg-green-600 text-white text-center animate-pulse">
-        Unlock your exclusive reward! Login now and get a valuable gift worth 100 DGT, just for being a part of our community
+      {email=='' && <div className="bg-blue-400 text-white flex items-center justify-center py-2">
+            <Image
+                src={Hot}
+                alt="hot logo"
+                height={30}
+                className="animate-pulse"
+              />
+              <p>Login now and get a valuable gift worth 100 DGT!</p>
+              <Image
+                src={Hot}
+                alt="hot logo"
+                height={30}
+                className="animate-pulse"
+              />
         </div>
       }
       <header className={classes}>
