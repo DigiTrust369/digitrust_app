@@ -268,8 +268,11 @@ export default function VaultsList() {
     return { ...obj1, ...vaultsList[index] };
   });
 
-  const clickDepositHandler = (value: string) => {
+  const clickDepositHandler = async (value: string) => {
     setVaultId(value);
+    const url = `https://dgt-dev.vercel.app/v1/vault_detail?vault_id=${value}`;
+    const response = await fetch(url);
+    const data = await response.json();
   };
 
   return (
