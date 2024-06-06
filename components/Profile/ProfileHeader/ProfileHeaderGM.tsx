@@ -421,7 +421,7 @@ export default function Header(props: { isHome: boolean }) {
             <div className="hidden sm:block">
                 <div className="flex flex-1 ml-5 justify-end">
                     <div className={props.isHome ?"flex items-center gap-x-[10px] rounded-lg bg-blue-600 px-6 py-4 text-white": "flex items-center gap-x-[10px] rounded-lg bg-white px-6 py-4 text-blue-600"}>
-                        <span>
+                        {/* <span>
                             <svg
                                 width="20"
                                 height="20"
@@ -441,7 +441,7 @@ export default function Header(props: { isHome: boolean }) {
                                     fill={props.isHome?"white": "#2563EB"}
                                 />
                             </svg>
-                        </span>
+                        </span> */}
 
                         {
                           <button
