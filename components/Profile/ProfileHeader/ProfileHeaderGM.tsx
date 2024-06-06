@@ -82,7 +82,7 @@ const navLinks = [
 ];
 
 async function generateAddress(account_id: string, address_id: string) {
-  const evmURL = `http://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
+  const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
   const resEVM = await fetch(evmURL);
   const evmAddress = await resEVM.json();
 
@@ -298,7 +298,7 @@ export default function Header(props: { isHome: boolean }) {
                   duration: 5000,
                 }
               );
-              startOnborda();
+              //startOnborda();
             });
           }
         } else {
@@ -458,7 +458,7 @@ export default function Header(props: { isHome: boolean }) {
                                 <div>
                                   {email}
                                 </div>
-                                <div className="bg-gray-400 text-white">
+                                <div className="text-gray-400">
                                   {point} DGT
                                 </div>
                               </span>

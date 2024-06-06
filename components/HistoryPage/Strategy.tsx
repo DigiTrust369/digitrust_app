@@ -172,8 +172,8 @@ const Strategy = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={9} className="text-center py-5">
-                  No history
+                <td colSpan={9} className="text-center py-5 animate-pulse">
+                  Loading...
                 </td>
               </tr>
             )}
