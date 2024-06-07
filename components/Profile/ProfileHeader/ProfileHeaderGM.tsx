@@ -462,7 +462,7 @@ export default function Header(props: { isHome: boolean }) {
                           <GoogleIcon />
                           <span className="text-blue-600 font-bold mx-2">
                             <div>
-                              {email}
+                              {email.replace("@gmail.com","")}
                             </div>
 
                           </span>
@@ -623,7 +623,7 @@ export default function Header(props: { isHome: boolean }) {
                       <div className="grid grid-row-auto grid-flow-col">
                         <GoogleIcon />
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{email}</div>
+                          <div className="px-1">{email.replace("@gmail.com","")}</div>
                         </span>
                       </div>
                     </DropdownItem>
