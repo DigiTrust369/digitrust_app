@@ -43,8 +43,8 @@ async function postData(url = "", data = {}) {
 }
 
 export default function DepositWithdraw() {
-  const [depositAmount, setDepositAmount] = useState("1");
-  const [withdrawAmount, setWithdrawAmount] = useState("1");
+  const [depositAmount, setDepositAmount] = useState(1);
+  const [withdrawAmount, setWithdrawAmount] = useState(1);
   const wallet = useWallet();
   const [orderID, setOrderID] = useState(0);
   const { isOnbordaVisible } = useOnborda();
@@ -98,7 +98,7 @@ export default function DepositWithdraw() {
       await postData("https://dgt-dev.vercel.app/deposit",
         {
           "sender": email,
-          "amount": 1000,
+          "amount": depositAmount,
           "package": "0",
           "token": "DGT",
           "manager": "DigiTrust"
@@ -122,12 +122,36 @@ export default function DepositWithdraw() {
   const goToWithdrawBase = async (work: number) => {
     if (isOnbordaVisible) return;
     if (work == 2 && email != '') {
-      toast.error("You may withdraw your assets after September 2024.", {
-        style: {
-          maxWidth: "300px",
+      // toast.error("You may withdraw your assets after September 2024.", {
+      //   style: {
+      //     maxWidth: "300px",
+      //   },
+      //   duration: 5000,
+      // })
+
+      let myToast = toast.loading("Withdrawal is in progress...");
+      await postData("https://dgt-dev.vercel.app/withdraw",
+        {
+          "receiver": email,
+          "amount": withdrawAmount,
+          "package": "0",
+          "token": "DGT",
+          "manager": "DigiTrust"
         },
-        duration: 5000,
-      })
+      ).then((data) => {
+        toast.dismiss(myToast);
+        console.log(data); // JSON data parsed by `data.json()` call
+        toast.success(
+          "Transaction Success!\n Hash transaction block is " + data?.blockHash,
+          {
+            style: {
+              maxWidth: "850px",
+            },
+            duration: 5000,
+          }
+        );
+      });
+
     }
   };
 
@@ -519,7 +543,7 @@ export default function DepositWithdraw() {
                             className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
                             value={depositAmount}
                             onChange={(event) =>
-                              setDepositAmount(event.target.value)
+                              setDepositAmount(+event.target.value)
                             }
                           />
                           {/* <div className="text-xs font-semibold leading-4 text-gray-500">
@@ -685,7 +709,7 @@ export default function DepositWithdraw() {
                             className="w-full px-2 text-2xl font-semibold leading-10 -tracking-[0.26px] rounded-lg focus:outline-none"
                             value={withdrawAmount}
                             onChange={(event) =>
-                              setWithdrawAmount(event.target.value)
+                              setWithdrawAmount(+event.target.value)
                             }
                           />
                           {/* <div className="text-xs font-semibold leading-4 text-gray-500">

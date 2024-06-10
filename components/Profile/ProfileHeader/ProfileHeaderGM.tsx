@@ -44,6 +44,7 @@ import digitrustLogo from "@/assets/images/digitrust.png";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 import MenuIcon from "@/icons/MenuIcon";
 import ExitIcon from "@/icons/ExitIcon";
+import WalletIcon from "@/icons/WalletIcon";
 import { scriptURLPost, scriptURLGet } from "@/constants/google";
 import { setBalance } from "viem/actions";
 import ProfileIcon from "@/icons/ProfileIcon";
@@ -132,8 +133,8 @@ export default function Header(props: { isHome: boolean }) {
 
   const [selectedKeys, setSelectedKeys] = useState(
     <>
-      <SUIWalletIcon />
-      Sui
+      <AlgorandIcon />
+      Algorand
       <Down />
     </>
   );
@@ -423,58 +424,31 @@ export default function Header(props: { isHome: boolean }) {
           </button>
         ) : (
           <>
+            {/* Desktop */}
             <div className="hidden sm:block">
-              <div className="flex flex-1 ml-5 justify-end">
-                <div className={props.isHome ? "flex items-center rounded-lg border border-blue-600 px-6 py-1 text-white" : "flex items-center rounded-lg bg-white px-6 py-1 text-blue-600"}>
-                  {/* <span>
-                            <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M3.125 5V15C3.125 15.3315 3.2567 15.6495 3.49112 15.8839C3.72554 16.1183 4.04348 16.25 4.375 16.25H16.875C17.0408 16.25 17.1997 16.1842 17.3169 16.0669C17.4342 15.9497 17.5 15.7908 17.5 15.625V6.875C17.5 6.70924 17.4342 6.55027 17.3169 6.43306C17.1997 6.31585 17.0408 6.25 16.875 6.25H4.375C4.04348 6.25 3.72554 6.1183 3.49112 5.88388C3.2567 5.64946 3.125 5.33152 3.125 5ZM3.125 5C3.125 4.66848 3.2567 4.35054 3.49112 4.11612C3.72554 3.8817 4.04348 3.75 4.375 3.75H15"
-                                    stroke={props.isHome?"white": "#2563EB"}
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                                <path
-                                    d="M14.0625 12.0312C14.494 12.0312 14.8438 11.6815 14.8438 11.25C14.8438 10.8185 14.494 10.4688 14.0625 10.4688C13.631 10.4688 13.2812 10.8185 13.2812 11.25C13.2812 11.6815 13.631 12.0312 14.0625 12.0312Z"
-                                    fill={props.isHome?"white": "#2563EB"}
-                                />
-                            </svg>
-                        </span> */}
+              {/* <div className="flex flex-1 ml-5 justify-end">
+                <div className={`flex items-center rounded-lg px-6 py-1 gap-x-2 ${props.isHome ? "border border-blue-600 text-white" : "bg-white text-blue-600"}`}>
 
-                  {
-                    <div className="flex items-center gap-x-2">
-                      <button
-                        className=" bg-white rounded-md"
-                      >
-                        {/* <div className={props.isHome ? "bg-blue-600 text-white" : "bg-white text-blue-600"}>
-                        <Link className="ml-2" href={"/profile"}>Profile</Link>
-                        <b className="ml-2">|</b>
-                        <button className="astext ml-2" onClick={logOutWallet}>Log out</button>
-                      </div> */}
-                        <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
-                          <GoogleIcon />
-                          <span className="text-blue-600 font-bold mx-2">
-                            <div>
-                              {email.replace("@gmail.com","")}
-                            </div>
-
-                          </span>
-                        </div>
-                      </button>
-                      <div className="text-gray-400 font-bold">
-                        {format.number(point)} DGT
+                  <div className="flex items-center gap-x-2">
+                    <button
+                      className=" bg-white rounded-md"
+                    >
+                      <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
+                        <GoogleIcon />
+                        <span className="text-blue-600 font-bold mx-2">
+                          <div>
+                            {email.replace("@gmail.com", "")}
+                          </div>
+                        </span>
                       </div>
+                    </button>
+                    <div className="text-gray-400 font-bold">
+                      {format.number(point)} DGT
                     </div>
-                  }
+                  </div>
+
                   <div>
-                    {/* <Dropdown>
+                    <Dropdown>
                       <DropdownTrigger>
                         <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
                           {selectedKeys}
@@ -549,12 +523,10 @@ export default function Header(props: { isHome: boolean }) {
                           Algorand
                         </DropdownItem>
                       </DropdownMenu>
-                    </Dropdown> */}
+                    </Dropdown>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="sm:hidden object-fit">
+              </div> */}
               <Dropdown
                 radius="sm"
                 classNames={{
@@ -563,11 +535,11 @@ export default function Header(props: { isHome: boolean }) {
 
               >
                 <DropdownTrigger>
-                  <Button isIconOnly variant="bordered" className="capitalize" disableRipple>
-                    <MenuIcon
-                      bgColor={`${props.isHome ? "black" : "white"}`}
-                      iconColor={`${props.isHome ? "black" : "white"}`}
-                    />
+                  <Button isIconOnly variant="bordered" className={`p-4 capitalize w-fit text-blue-600 ${props.isHome ? "" : "bg-white"}`} disableRipple>
+                    <WalletIcon></WalletIcon>
+                    <span className="font-bold pl-4">
+                      <div className="px-1">{"0x1234...6789"}</div>
+                    </span>
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu
@@ -611,59 +583,27 @@ export default function Header(props: { isHome: boolean }) {
                     <DropdownItem
                       isReadOnly
                       key="info"
-                      className="h-14 gap-2 opacity-100  bg-white py-2"
+                      className="h-14 gap-2 opacity-100 bg-white py-2"
                     >
+                      <div className="grid grid-row-auto grid-flow-col">
+                        <GoogleIcon />
+                        <span className="text-blue-600 font-bold px-1">
+                          <div className="px-1">{email.replace("@gmail.com", "")}</div>
+                        </span>
+                      </div>
                       <div className="flex justify-center items-center gap-1">
                         <span className="font-bold text-3xl">{format.number(point)}</span>
                         <span className="font-medium text-sm place-items-center">
                           DGT
                         </span>
                       </div>
-
-                      <div className="grid grid-row-auto grid-flow-col">
-                        <GoogleIcon />
-                        <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{email.replace("@gmail.com","")}</div>
-                        </span>
-                      </div>
                     </DropdownItem>
                   </DropdownSection>
                   <DropdownSection
-                    className="py-2"
                     showDivider
                     hidden={email == ""}
                   >
                     <DropdownItem key="MyMenu" className="hover:bg-white">
-                      {/* <div className="grid grid-rows-2 grid-flow-col gap-2 place-items-center">
-                        <div className="row-span-3 hover:text-gray-100">
-                          <Link href={"/profile"}>
-                            <button>
-                              <p>
-                                <ProfileIcon />
-                              </p>
-                              <p className="text-blue-600">Profile</p>
-                            </button>
-                          </Link>
-                        </div> */}
-                      {/* <div className="row-span-3">
-                        <Link href={"/history"}>
-                          <button>
-                            <p className="ml-2.5">
-                              <HistoryIcon />
-                            </p>
-                            <p className="text-blue-600">History</p>
-                          </button>
-                        </Link>
-                      </div> */}
-                      {/* <div className="row-span-3 place-items-center hover:text-gray-100">
-                          <button onClick={async () => logOutWallet()}>
-                            <p className="ml-3.5">
-                              <ExitIcon />
-                            </p>
-                            <p className="text-blue-600">Log Out</p>
-                          </button>
-                        </div>
-                      </div> */}
                       <div className="flex justify-center gap-x-10">
                         <Link href={"/profile"}>
                           <div className="flex-col">
@@ -683,7 +623,7 @@ export default function Header(props: { isHome: boolean }) {
                     </DropdownItem>
                   </DropdownSection>
 
-                  {/* <DropdownSection showDivider hidden={email == ""}>
+                  <DropdownSection showDivider hidden={email == ""}>
                     <DropdownItem
                       isReadOnly
                       key="chain"
@@ -769,7 +709,209 @@ export default function Header(props: { isHome: boolean }) {
                     >
                       Chain
                     </DropdownItem>
-                  </DropdownSection> */}
+                  </DropdownSection>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+
+            {/* Mobile */}
+            <div className="sm:hidden object-fit">
+              <Dropdown
+                radius="sm"
+                classNames={{
+                  content: "border-small border-divider bg-white py-0",
+                }}
+
+              >
+                <DropdownTrigger>
+                  <Button isIconOnly variant="bordered" className="capitalize" disableRipple>
+                    <MenuIcon
+                      bgColor={`${props.isHome ? "black" : "white"}`}
+                      iconColor={`${props.isHome ? "black" : "white"}`}
+                    />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Custom item styles"
+                  className="p-3"
+                  variant="light"
+                  itemClasses={{
+                    base: [
+                      "rounded-md",
+                      "text-default-500",
+                      "transition-opacity",
+                      "data-[selectable=true]:focus:bg-default-50",
+                      "data-[pressed=true]:opacity-70",
+                      "data-[focus-visible=true]:ring-default-500",
+                    ],
+                  }}
+                >
+                  <DropdownSection hidden={email != ""}>
+                    <DropdownItem
+                      isReadOnly
+                      key="login"
+                      className="gap-2 opacity-100  bg-white"
+                    >
+                      <button
+                        className="grid grid-row-auto grid-flow-col hover:bg-gray-100"
+                        onClick={async () => beginZkLogin()}
+                      >
+                        <GoogleIcon />
+                        <span className="text-blue-200 font-bold mx-2">
+                          Google login
+                        </span>
+                      </button>
+                    </DropdownItem>
+                  </DropdownSection>
+
+                  <DropdownSection
+                    className="py-1"
+                    showDivider
+                    hidden={email == ""}
+                  >
+                    <DropdownItem
+                      isReadOnly
+                      key="info"
+                      className="h-14 gap-2 opacity-100 bg-white"
+                    >
+                      <div className="grid grid-row-auto grid-flow-col">
+                        <span>Wallet</span>
+                        <span className="text-blue-600 font-bold px-1">
+                          <div className="px-1">{"0x1234...6789"}</div>
+                        </span>
+                      </div>
+
+                      <div className="grid grid-row-auto grid-flow-col mt-2">
+                        <GoogleIcon />
+                        <span className="text-blue-600 font-bold px-1">
+                          <div className="px-1">{email.replace("@gmail.com", "")}</div>
+                        </span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownItem
+                      isReadOnly
+                      key="balance"
+                      className="h-14 gap-2 opacity-100 bg-white py-2"
+                    >
+                      <div className="flex justify-center items-center gap-1">
+                        <span className="font-bold text-3xl">{format.number(point)}</span>
+                        <span className="font-medium text-sm place-items-center">
+                          DGT
+                        </span>
+                      </div>
+                    </DropdownItem>
+                  </DropdownSection>
+                  <DropdownSection
+                    showDivider
+                    hidden={email == ""}
+                  >
+                    <DropdownItem key="MyMenu" className="hover:bg-white">
+                      <div className="flex justify-center gap-x-10">
+                        <Link href={"/profile"}>
+                          <div className="flex-col">
+                            <ProfileIcon />
+                            <p className="text-blue-600">Profile</p>
+                          </div>
+                        </Link>
+                        <div>
+                          <button onClick={async () => logOutWallet()}>
+                            <p className="ml-3.5">
+                              <ExitIcon />
+                            </p>
+                            <p className="text-blue-600">Log Out</p>
+                          </button>
+                        </div>
+                      </div>
+                    </DropdownItem>
+                  </DropdownSection>
+
+                  <DropdownSection showDivider hidden={email == ""}>
+                    <DropdownItem
+                      isReadOnly
+                      key="chain"
+                      className="cursor-default text-blue-600 font-bold"
+                      endContent={
+                        <Dropdown>
+                          <DropdownTrigger>
+                            <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
+                              {selectedKeys}
+                            </div>
+                          </DropdownTrigger>
+                          <DropdownMenu
+                            aria-label="Single selection example"
+                            variant="flat"
+                            disallowEmptySelection
+                            selectionMode="single"
+                          >
+                            <DropdownItem
+                              key="suidevnet"
+                              startContent={<SUIWallet className={iconClasses} />}
+                              onClick={() =>
+                                setSelectedKeys(
+                                  <>
+                                    <SUIWallet className={iconClasses} />
+                                    Sui
+                                    <Down />
+                                  </>
+                                )
+                              }
+                            >
+                              Sui
+                            </DropdownItem>
+                            <DropdownItem
+                              key="klaytntestnet"
+                              startContent={<KlayIcon className={iconClasses} />}
+                              onClick={() =>
+                                setSelectedKeys(
+                                  <>
+                                    <KlayIcon className={iconClasses} />
+                                    Klaytn
+                                    <Down />
+                                  </>
+                                )
+                              }
+                            >
+                              Klaytn
+                            </DropdownItem>
+                            <DropdownItem
+                              key="aptos"
+                              startContent={<AptosIcon className={iconClasses} />}
+                              onClick={() =>
+                                setSelectedKeys(
+                                  <>
+                                    <ArbitrumIcon className={iconClasses} />
+                                    Aptos
+                                    <Down />
+                                  </>
+                                )
+                              }
+                            >
+                              Aptos
+                            </DropdownItem>
+                            <DropdownItem
+                              key="algorandtestnet"
+                              startContent={
+                                <AlgorandIcon className={iconClasses} />
+                              }
+                              onClick={() =>
+                                setSelectedKeys(
+                                  <>
+                                    <AlgorandIcon className={iconClasses} />
+                                    Algorand
+                                    <Down />
+                                  </>
+                                )
+                              }
+                            >
+                              Algorand
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      }
+                    >
+                      Chain
+                    </DropdownItem>
+                  </DropdownSection>
                 </DropdownMenu>
               </Dropdown>
             </div>
