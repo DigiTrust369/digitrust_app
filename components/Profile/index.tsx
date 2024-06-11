@@ -5,6 +5,7 @@ import BlockBalance from "./BlockBalance";
 import GeneralInfo from "./GeneralInfo";
 import SkeletonProfile from "./SkeletonProfile/SkeletonProfile";
 import Strategy from "@/components/HistoryPage/Strategy";
+import { useGlobalContext } from "@/Context/store";
 
 type TVault = {
   name: string;
@@ -41,9 +42,13 @@ const ProfileContainer = (props: TProfileContainerProps) => {
     dgtAmount,
   } = props;
 
+  const {userEmail} = useGlobalContext();
+
+
+
   return (
     <div>
-      {true ? (
+      {userEmail != "" ? (
         <div>
           <GeneralInfo
             name={name}

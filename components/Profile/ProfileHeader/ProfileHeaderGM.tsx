@@ -50,6 +50,7 @@ import { setBalance } from "viem/actions";
 import ProfileIcon from "@/icons/ProfileIcon";
 import HistoryIcon from "@/icons/HistoryIcon";
 import Hot from "@/assets/images/Hot.png";
+import { useGlobalContext } from "@/Context/store";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -127,6 +128,8 @@ async function postData(url = "", data = {}) {
 export default function Header(props: { isHome: boolean }) {
   const format = useFormatter();
   const { startOnborda } = useOnborda();
+  const {userEmail, setUserEmail} = useGlobalContext();
+
   const handleStartOnborda = () => {
     startOnborda();
   };
@@ -158,7 +161,8 @@ export default function Header(props: { isHome: boolean }) {
 
   useEffect(() => {
     const getOauthParams = async () => {
-      let curEmail = window.localStorage.getItem("userEmail");
+      // let curEmail = window.localStorage.getItem("userEmail");
+      let curEmail = userEmail;
       console.log(curEmail);
       const location = window.location.hash;
       if (
@@ -180,7 +184,7 @@ export default function Header(props: { isHome: boolean }) {
   const logOutWallet = () => {
     setEmail("");
     window.location.hash = "";
-    window.location.href = window.location.origin + "/home";
+    //window.location.href = window.location.origin + "/home";
   };
 
   const beginZkLogin = async () => {
@@ -314,7 +318,8 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    window.localStorage.setItem("userEmail", email);
+    // window.localStorage.setItem("userEmail", email);
+    setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);
       if (balance != null)
