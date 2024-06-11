@@ -5,6 +5,7 @@ import BlockBalance from "./BlockBalance";
 import GeneralInfo from "./GeneralInfo";
 import SkeletonProfile from "./SkeletonProfile/SkeletonProfile";
 import Strategy from "@/components/HistoryPage/Strategy";
+import { useGlobalContext } from "@/Context/store";
 
 type TVault = {
   name: string;
@@ -26,6 +27,7 @@ type TProfileContainerProps = {
   managedAmount: number;
   dgtAmount: number;
   logoUrl?: string;
+  adrUrl?: string;
   vaults: TVault[];
 };
 
@@ -37,33 +39,38 @@ const ProfileContainer = (props: TProfileContainerProps) => {
     vaults,
     description,
     logoUrl,
+    adrUrl,
     wallet,
     dgtAmount,
   } = props;
+  const { userEmail } = useGlobalContext();
 
   return (
     <div>
-      {true ? (
+      {userEmail != "" ? (
         <div>
           <GeneralInfo
             name={name}
             userAddress={wallet}
             description={description}
             avatar={logoUrl}
+            addressUrl={adrUrl}
           />
-          <div className="md:grid-cols-3 gap-3 grid mt-6">
+          <div className="md:grid-cols-2 gap-3 grid mt-6">
             <BlockBalance
               title="HOLDINGS"
-              value={formatNumberByCurrency(holdingAmount, "USD")}
+              // value={formatNumberByCurrency(holdingAmount, "USD")}
+              value={holdingAmount.toFixed(2)}
             />
             <BlockBalance
               title="TOTAL MANAGED"
-              value={formatNumberByCurrency(managedAmount, "USD")}
+              // value={formatNumberByCurrency(managedAmount, "USD")}
+              value={holdingAmount.toFixed(2)}
             />
-            <BlockBalance
+            {/* <BlockBalance
               title="VOTING POWER"
               value={formatNumberByCurrency(dgtAmount, "USD")}
-            />
+            /> */}
           </div>
           {/* <TabInfoProfile /> */}
           <Strategy />

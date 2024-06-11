@@ -5,6 +5,7 @@ import Telegram from "@/icons/Telegram";
 import TwitterWithoutTitle from "@/icons/TwitterWithoutTitle";
 import X from "@/icons/X";
 import { isImageUrl } from "@/utils";
+import Link from "next/link";
 import React from "react";
 
 type TGeneralInfoProps = {
@@ -12,10 +13,11 @@ type TGeneralInfoProps = {
   userAddress?: string;
   description?: string;
   avatar?: string;
+  addressUrl?: string;
 };
 
 const GeneralInfo = (props: TGeneralInfoProps) => {
-  const { name, userAddress, description, avatar = "" } = props;
+  const { name, userAddress, description, avatar = "", addressUrl } = props;
   return (
     <div className="px-6 py-8 border-[1px] border-solid border-[#C3D4E9] rounded-[12px] bg-[#fff] shadow-sm flex flex-col lg:flex-row">
       <div className="flex flex-col min-[425px]:flex-row">
@@ -35,7 +37,7 @@ const GeneralInfo = (props: TGeneralInfoProps) => {
                 <Copy />
               </div>
               <div className="cursor-pointer">
-                <ExternalLink />
+                <Link href={addressUrl || "https://app.dappflow.org/explorer"}><ExternalLink /></Link>
               </div>
             </div>
           </div>

@@ -50,6 +50,7 @@ import { setBalance } from "viem/actions";
 import ProfileIcon from "@/icons/ProfileIcon";
 import HistoryIcon from "@/icons/HistoryIcon";
 import Hot from "@/assets/images/Hot.png";
+import { useGlobalContext } from "@/Context/store";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -82,20 +83,28 @@ const navLinks = [
   },
 ];
 
-async function generateAddress(account_id: string, address_id: string) {
-  const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
-  const resEVM = await fetch(evmURL);
-  const evmAddress = await resEVM.json();
+// async function generateAddress(account_id: string, address_id: string) {
+//   const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
+//   const resEVM = await fetch(evmURL);
+//   const evmAddress = await resEVM.json();
 
-  return { evmAddress };
-}
+//   return { evmAddress };
+// }
 
-async function generateAPTAddress(account_id: string) {
-  const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
-  const resApt = await fetch(apturl);
-  const aptAddress = await resApt.json();
+// async function generateAPTAddress(account_id: string) {
+//   const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
+//   const resApt = await fetch(apturl);
+//   const aptAddress = await resApt.json();
 
-  return { aptAddress };
+//   return { aptAddress };
+// }
+
+async function generateAlgorandAddress(email: string) {
+  const url = `https://dgt-dev.vercel.app/v1/algo_Adr?email=${email}`;
+  const res = await fetch(url);
+  const algoAddress = await res.json();
+
+  return { algoAddress };
 }
 
 async function getBalance(_email: string) {
@@ -127,6 +136,7 @@ async function postData(url = "", data = {}) {
 export default function Header(props: { isHome: boolean }) {
   const format = useFormatter();
   const { startOnborda } = useOnborda();
+  const { userEmail, setUserEmail } = useGlobalContext();
   const handleStartOnborda = () => {
     startOnborda();
   };
@@ -154,12 +164,13 @@ export default function Header(props: { isHome: boolean }) {
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
     const getOauthParams = async () => {
-      let curEmail = window.localStorage.getItem("userEmail");
-      console.log(curEmail);
+      // let curEmail = window.localStorage.getItem("userEmail");
+      let curEmail = userEmail;
       const location = window.location.hash;
       if (
         location != null &&
@@ -180,7 +191,7 @@ export default function Header(props: { isHome: boolean }) {
   const logOutWallet = () => {
     setEmail("");
     window.location.hash = "";
-    window.location.href = window.location.origin + "/home";
+    // window.location.href = window.location.origin + "/home";
   };
 
   const beginZkLogin = async () => {
@@ -251,19 +262,21 @@ export default function Header(props: { isHome: boolean }) {
 
         if (data == null) {
           //Get EVM address
-          const account_id = generateRandomness().substring(0, 4);
-          const address_id = generateRandomness().substring(0, 3);
+          // const account_id = generateRandomness().substring(0, 4);
+          // const address_id = generateRandomness().substring(0, 3);
 
-          const { evmAddress } = await generateAddress(account_id, address_id);
+          // const { evmAddress } = await generateAddress(account_id, address_id);
 
-          const { aptAddress } = await generateAPTAddress(account_id);
+          // const { aptAddress } = await generateAPTAddress(account_id);
 
-          if (evmAddress != null && aptAddress != null) {
+          //Get Algorand address
+          const { algoAddress } = await generateAlgorandAddress(NewdecodedJwt?.email);
+
+          if (algoAddress != null) {
             const form = {
               Email: NewdecodedJwt?.email,
+              AlgorandAddress: algoAddress.address,
               Date: new Date(),
-              EVMAddress: evmAddress.address,
-              AptosAddress: aptAddress.address,
             };
 
             var keyValuePairs = [];
@@ -314,7 +327,8 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    window.localStorage.setItem("userEmail", email);
+    // window.localStorage.setItem("userEmail", email);
+    setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);
       if (balance != null)
@@ -323,6 +337,20 @@ export default function Header(props: { isHome: boolean }) {
 
     if (email != '') {
       updateBalance();
+    }
+  }, [email]);
+
+  useEffect(() => {
+    const email = window.localStorage.getItem("userEmail");
+    async function getWalletAddress(email: string) {
+      const url = `${scriptURLGet}?email=${email}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      setWalletAddress(data.wallet)
+    }
+
+    if (email != '') {
+      getWalletAddress(email || "");
     }
   }, [email]);
 
@@ -426,8 +454,18 @@ export default function Header(props: { isHome: boolean }) {
           <>
             {/* Desktop */}
             <div className="hidden sm:block">
-              {/* <div className="flex flex-1 ml-5 justify-end">
-                <div className={`flex items-center rounded-lg px-6 py-1 gap-x-2 ${props.isHome ? "border border-blue-600 text-white" : "bg-white text-blue-600"}`}>
+              <div className="flex flex-1 justify-end gap-x-3 ">
+
+
+                <div className={`flex items-center pt-3 capitalize w-fit ${props.isHome ? "text-blue-600" : "text-white"}`}>
+                  <WalletIcon></WalletIcon>
+                  <span className="font-bold pl-2">
+                    <div className="px-1">{`${walletAddress.slice(0, 4)}...${walletAddress.slice(-5, -1)}`}</div>
+                  </span>
+                </div>
+
+                <div className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${props.isHome ? "border border-blue-600 text-white" : "bg-white text-blue-600"}`}>
+
 
                   <div className="flex items-center gap-x-2">
                     <button
@@ -445,9 +483,7 @@ export default function Header(props: { isHome: boolean }) {
                     <div className="text-gray-400 font-bold">
                       {format.number(point)} DGT
                     </div>
-                  </div>
 
-                  <div>
                     <Dropdown>
                       <DropdownTrigger>
                         <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
@@ -526,8 +562,8 @@ export default function Header(props: { isHome: boolean }) {
                     </Dropdown>
                   </div>
                 </div>
-              </div> */}
-              <Dropdown
+              </div>
+              {/* <Dropdown
                 radius="sm"
                 classNames={{
                   content: "border-small border-divider bg-white py-0",
@@ -711,7 +747,7 @@ export default function Header(props: { isHome: boolean }) {
                     </DropdownItem>
                   </DropdownSection>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
             </div>
 
             {/* Mobile */}
@@ -777,7 +813,7 @@ export default function Header(props: { isHome: boolean }) {
                       <div className="grid grid-row-auto grid-flow-col">
                         <span>Wallet</span>
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{"0x1234...6789"}</div>
+                          <div className="px-1">{`${walletAddress.slice(0, 4)}...${walletAddress.slice(-5, -1)}`}</div>
                         </span>
                       </div>
 

@@ -94,14 +94,14 @@ export default function DepositWithdraw() {
   const goToMakeBaseDeposit = async (work: number) => {
     if (isOnbordaVisible) return;
     if (work == 1 && email != '') {
-      let myToast = toast.loading("Loading...");
-      await postData("https://dgt-dev.vercel.app/deposit",
+      let myToast = toast.loading("Deposit is in progress...");
+      await postData("https://dgt-dev.vercel.app/v1/algo_deposit",
         {
-          "sender": email,
-          "amount": depositAmount,
-          "package": "0",
-          "token": "DGT",
-          "manager": "DigiTrust"
+          "sender": "GD64YIY3TWGDMCNPP553DZPPR6LDUSFQOIJVFDPPXWEG3FVOJCCDBBHU5A", // address
+          "amount": 10000000, // depositAmount
+          "expire_date": 1718073552,
+          "package_type": 1,
+          "chain": "algo"
         }
       ).then((data) => {
         toast.dismiss(myToast);
