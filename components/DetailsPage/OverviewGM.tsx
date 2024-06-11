@@ -12,6 +12,7 @@ import PieChart from "@/components/Chart/PieChart/ActivePieChart";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import btc from "@/assets/images/crypto/bitcoin.svg";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import Link from "next/link";
 
 interface Asset {
   asset: string;
@@ -27,6 +28,7 @@ interface Asset {
   dgt_score: number;
   status: boolean;
   logo_url: string;
+  asset_url: string;
 }
 
 export default function Overview() {
@@ -172,7 +174,7 @@ export default function Overview() {
                 {assets.map((asset) => (
                   <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                      <div className="flex items-center ">
+                      <Link href={asset.asset_url} className="flex items-center ">
                         <Image
                           src={asset.logo_url}
                           alt="bitcoin"
@@ -180,7 +182,7 @@ export default function Overview() {
                           height={32}
                         />
                         <span className="ml-2 sm:ml-4">{asset.symbol}</span>
-                      </div>
+                      </Link>
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                       {asset.weight}
