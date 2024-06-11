@@ -51,6 +51,7 @@ import ProfileIcon from "@/icons/ProfileIcon";
 import HistoryIcon from "@/icons/HistoryIcon";
 import Hot from "@/assets/images/Hot.png";
 import { useGlobalContext } from "@/Context/store";
+import { useGlobalContext } from "@/Context/store";
 
 // const [oauthParams, setOauthParams] = useState<queryString.ParsedQuery<string>>();
 const suiClient = new SuiClient({
@@ -327,6 +328,8 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
+    // window.localStorage.setItem("userEmail", email);
+    setUserEmail(email);
     // window.localStorage.setItem("userEmail", email);
     setUserEmail(email);
     async function updateBalance() {

@@ -5,6 +5,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import '@suiet/wallet-kit/style.css';
 import { OnbordaProvider } from "onborda";
 import { GlobalContextProvider } from "@/Context/store";
+import { GlobalContextProvider } from "@/Context/store";
 
 // eslint-disable-next-line react/function-component-definition
 export default async function LocaleProvider(props) {
