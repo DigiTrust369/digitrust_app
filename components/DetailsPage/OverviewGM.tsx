@@ -168,21 +168,24 @@ export default function Overview() {
                   <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                     Price 24h
                   </th>
+                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                    Explore
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {assets.map((asset) => (
                   <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                      <Link href={asset.asset_url} className="flex items-center ">
+                      <div className="flex items-center">
                         <Image
                           src={asset.logo_url}
-                          alt="bitcoin"
+                          alt="logo"
                           width={32}
                           height={32}
                         />
                         <span className="ml-2 sm:ml-4">{asset.symbol}</span>
-                      </Link>
+                      </div>
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                       {asset.weight}
@@ -194,6 +197,9 @@ export default function Overview() {
                       <div className="text-green-500">
                         {format.number(+asset.price_change["24h"])}%
                       </div>
+                    </td>
+                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                      <Link href={asset.asset_url}>LINK</Link>
                     </td>
                   </tr>
                 ))}
