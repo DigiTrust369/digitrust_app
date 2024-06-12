@@ -45,7 +45,6 @@ const ProfileContainer = (props: TProfileContainerProps) => {
   const {userEmail} = useGlobalContext();
 
 
-
   return (
     <div>
       {userEmail != "" ? (

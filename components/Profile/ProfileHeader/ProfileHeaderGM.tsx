@@ -161,9 +161,9 @@ export default function Header(props: { isHome: boolean }) {
 
   useEffect(() => {
     const getOauthParams = async () => {
-      // let curEmail = window.localStorage.getItem("userEmail");
-      let curEmail = userEmail;
-      console.log(curEmail);
+      let curEmail = window.localStorage.getItem("userEmail");
+      //let curEmail = userEmail;
+      //console.log(curEmail);
       const location = window.location.hash;
       if (
         location != null &&
@@ -318,7 +318,7 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    // window.localStorage.setItem("userEmail", email);
+    window.localStorage.setItem("userEmail", email);
     setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);
