@@ -270,7 +270,9 @@ export default function Header(props: { isHome: boolean }) {
           // const { aptAddress } = await generateAPTAddress(account_id);
 
           //Get Algorand address
-          const { algoAddress } = await generateAlgorandAddress(NewdecodedJwt?.email);
+          const { algoAddress } = await generateAlgorandAddress(
+            NewdecodedJwt?.email
+          );
 
           if (algoAddress != null) {
             const form = {
@@ -318,6 +320,7 @@ export default function Header(props: { isHome: boolean }) {
           }
         } else {
           setEmail(data?.email);
+          setWalletAddress(data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
@@ -333,50 +336,37 @@ export default function Header(props: { isHome: boolean }) {
     setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);
-      if (balance != null)
-        setPoint(balance?.amount);
+      if (balance != null) setPoint(balance?.amount);
     }
 
-    if (email != '') {
+    if (email != "") {
       updateBalance();
     }
   }, [email]);
 
-  useEffect(() => {
-    const email = window.localStorage.getItem("userEmail");
-    async function getWalletAddress(email: string) {
-      const url = `${scriptURLGet}?email=${email}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setWalletAddress(data.wallet)
-    }
-
-    if (email != '') {
-      getWalletAddress(email || "");
-    }
-  }, [email]);
-
-  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
-    }`;
+  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
+    props.isHome ? "bg-white" : "bg-blue-600 text-white"
+  }`;
 
   return (
     <Fragment>
-      {email == '' && <div className="bg-blue-400 text-white flex items-center justify-center py-2">
-        <Image
-          src={Hot}
-          alt="hot logo"
-          height={30}
-          className="animate-pulse"
-        />
-        <p>Login now and get a valuable gift worth 100 DGT!</p>
-        <Image
-          src={Hot}
-          alt="hot logo"
-          height={30}
-          className="animate-pulse"
-        />
-      </div>
-      }
+      {email == "" && (
+        <div className="bg-blue-400 text-white flex items-center justify-center py-2">
+          <Image
+            src={Hot}
+            alt="hot logo"
+            height={30}
+            className="animate-pulse"
+          />
+          <p>Login now and get a valuable gift worth 100 DGT!</p>
+          <Image
+            src={Hot}
+            alt="hot logo"
+            height={30}
+            className="animate-pulse"
+          />
+        </div>
+      )}
       <header className={classes}>
         {/* Logo */}
         <div>
@@ -436,12 +426,26 @@ export default function Header(props: { isHome: boolean }) {
             ))}
           </ul>
         </nav>*/}
-        {email != "" &&
-          <nav className={`hidden sm:block pt-3 ${props.isHome ? "" : "text-white"}`}>
-            <ul className="flex justify-center gap-x-10"><li key={'profile'}><Link className="ml-2" href={"/profile"}>Profile</Link></li>
-              <li key={'logout'}><button className="astext ml-2" onClick={logOutWallet}>Log out</button></li></ul>
+        {email != "" && (
+          <nav
+            className={`hidden sm:block pt-3 ${
+              props.isHome ? "" : "text-white"
+            }`}
+          >
+            <ul className="flex justify-center gap-x-10">
+              <li key={"profile"}>
+                <Link className="ml-2" href={"/profile"}>
+                  Profile
+                </Link>
+              </li>
+              <li key={"logout"}>
+                <button className="astext ml-2" onClick={logOutWallet}>
+                  Log out
+                </button>
+              </li>
+            </ul>
           </nav>
-        }
+        )}
         {email == "" ? (
           <button
             className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"
@@ -457,28 +461,33 @@ export default function Header(props: { isHome: boolean }) {
             {/* Desktop */}
             <div className="hidden sm:block">
               <div className="flex flex-1 justify-end gap-x-3 ">
-
-
-                <div className={`flex items-center pt-3 capitalize w-fit ${props.isHome ? "text-blue-600" : "text-white"}`}>
+                <div
+                  className={`flex items-center pt-3 capitalize w-fit ${
+                    props.isHome ? "text-blue-600" : "text-white"
+                  }`}
+                >
                   <WalletIcon></WalletIcon>
                   <span className="font-bold pl-2">
-                    <div className="px-1">{`${walletAddress.slice(0, 4)}...${walletAddress.slice(-5, -1)}`}</div>
+                    <div className="px-1">{`${walletAddress.slice(
+                      0,
+                      4
+                    )}...${walletAddress.slice(-5, -1)}`}</div>
                   </span>
                 </div>
 
-                <div className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${props.isHome ? "border border-blue-600 text-white" : "bg-white text-blue-600"}`}>
-
-
+                <div
+                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${
+                    props.isHome
+                      ? "border border-blue-600 text-white"
+                      : "bg-white text-blue-600"
+                  }`}
+                >
                   <div className="flex items-center gap-x-2">
-                    <button
-                      className=" bg-white rounded-md"
-                    >
+                    <button className=" bg-white rounded-md">
                       <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
                         <GoogleIcon />
                         <span className="text-blue-600 font-bold mx-2">
-                          <div>
-                            {email.replace("@gmail.com", "")}
-                          </div>
+                          <div>{email.replace("@gmail.com", "")}</div>
                         </span>
                       </div>
                     </button>
@@ -759,10 +768,14 @@ export default function Header(props: { isHome: boolean }) {
                 classNames={{
                   content: "border-small border-divider bg-white py-0",
                 }}
-
               >
                 <DropdownTrigger>
-                  <Button isIconOnly variant="bordered" className="capitalize" disableRipple>
+                  <Button
+                    isIconOnly
+                    variant="bordered"
+                    className="capitalize"
+                    disableRipple
+                  >
                     <MenuIcon
                       bgColor={`${props.isHome ? "black" : "white"}`}
                       iconColor={`${props.isHome ? "black" : "white"}`}
@@ -815,14 +828,19 @@ export default function Header(props: { isHome: boolean }) {
                       <div className="grid grid-row-auto grid-flow-col">
                         <span>Wallet</span>
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{`${walletAddress.slice(0, 4)}...${walletAddress.slice(-5, -1)}`}</div>
+                          <div className="px-1">{`${walletAddress.slice(
+                            0,
+                            4
+                          )}...${walletAddress.slice(-5, -1)}`}</div>
                         </span>
                       </div>
 
                       <div className="grid grid-row-auto grid-flow-col mt-2">
                         <GoogleIcon />
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{email.replace("@gmail.com", "")}</div>
+                          <div className="px-1">
+                            {email.replace("@gmail.com", "")}
+                          </div>
                         </span>
                       </div>
                     </DropdownItem>
@@ -832,17 +850,16 @@ export default function Header(props: { isHome: boolean }) {
                       className="h-14 gap-2 opacity-100 bg-white py-2"
                     >
                       <div className="flex justify-center items-center gap-1">
-                        <span className="font-bold text-3xl">{format.number(point)}</span>
+                        <span className="font-bold text-3xl">
+                          {format.number(point)}
+                        </span>
                         <span className="font-medium text-sm place-items-center">
                           DGT
                         </span>
                       </div>
                     </DropdownItem>
                   </DropdownSection>
-                  <DropdownSection
-                    showDivider
-                    hidden={email == ""}
-                  >
+                  <DropdownSection showDivider hidden={email == ""}>
                     <DropdownItem key="MyMenu" className="hover:bg-white">
                       <div className="flex justify-center gap-x-10">
                         <Link href={"/profile"}>
@@ -883,7 +900,9 @@ export default function Header(props: { isHome: boolean }) {
                           >
                             <DropdownItem
                               key="suidevnet"
-                              startContent={<SUIWallet className={iconClasses} />}
+                              startContent={
+                                <SUIWallet className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -898,7 +917,9 @@ export default function Header(props: { isHome: boolean }) {
                             </DropdownItem>
                             <DropdownItem
                               key="klaytntestnet"
-                              startContent={<KlayIcon className={iconClasses} />}
+                              startContent={
+                                <KlayIcon className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -913,7 +934,9 @@ export default function Header(props: { isHome: boolean }) {
                             </DropdownItem>
                             <DropdownItem
                               key="aptos"
-                              startContent={<AptosIcon className={iconClasses} />}
+                              startContent={
+                                <AptosIcon className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -954,7 +977,6 @@ export default function Header(props: { isHome: boolean }) {
               </Dropdown>
             </div>
           </>
-
         )}
       </header>
     </Fragment>
