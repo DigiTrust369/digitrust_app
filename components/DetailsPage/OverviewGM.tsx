@@ -98,8 +98,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{format.number(data.price)}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{format.number(data.price)} DGT</p>
                 </div>
               ))}
             </div>
@@ -113,8 +113,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{format.number(data.tvl)}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{format.number(data.tvl)} DGT</p>
                 </div>
               ))}
             </div>
@@ -143,8 +143,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{data.return}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{data.return} DGT</p>
                 </div>
               ))}
             </div>
@@ -191,7 +191,7 @@ export default function Overview() {
                       {asset.weight}
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                      ${format.number(+asset.holding.slice(0, -1))}
+                      {format.number(+asset.holding.slice(0, -1))} DGT
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                       <div className="text-green-500">

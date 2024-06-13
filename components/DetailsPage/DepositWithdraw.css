@@ -63,6 +63,7 @@
     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
     max-height: 200px;
     overflow-y: auto;
+    border-radius: 12px;
   }
 
   .dropdown-menu.open {

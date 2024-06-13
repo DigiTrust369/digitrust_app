@@ -16,9 +16,7 @@ import usdc from "@/assets/images/crypto/usdc.svg";
 import digitrustLogo from "@/assets/images/digitrust_notext.png";
 import "./DepositWithdraw.css";
 
-const optionsDeposit = [
-  { label: "DGT", image: digitrustLogo },
-];
+const optionsDeposit = [{ label: "DGT", image: digitrustLogo }];
 const optionsWithdraw = [
   { label: "USDT", image: usdt },
   { label: "USDC", image: usdc },
@@ -62,9 +60,12 @@ export default function DepositWithdraw() {
   }>();
 
   useEffect(() => {
-    let curEmail = window.localStorage.getItem("userEmail") != null ? window.localStorage.getItem("userEmail") as string : '';
+    let curEmail =
+      window.localStorage.getItem("userEmail") != null
+        ? (window.localStorage.getItem("userEmail") as string)
+        : "";
     setEmail(curEmail);
-  }, [])
+  }, []);
 
   const toggleDropdown = (status: string) => {
     if (status == "deposit") {
@@ -93,17 +94,15 @@ export default function DepositWithdraw() {
 
   const goToMakeBaseDeposit = async (work: number) => {
     if (isOnbordaVisible) return;
-    if (work == 1 && email != '') {
+    if (work == 1 && email != "") {
       let myToast = toast.loading("Deposit is in progress...");
-      await postData("https://dgt-dev.vercel.app/v1/algo_deposit",
-        {
-          "sender": "GD64YIY3TWGDMCNPP553DZPPR6LDUSFQOIJVFDPPXWEG3FVOJCCDBBHU5A", // address
-          "amount": 10000000, // depositAmount
-          "expire_date": 1718073552,
-          "package_type": 1,
-          "chain": "algo"
-        }
-      ).then((data) => {
+      await postData("https://dgt-dev.vercel.app/v1/algo_deposit", {
+        sender: "GD64YIY3TWGDMCNPP553DZPPR6LDUSFQOIJVFDPPXWEG3FVOJCCDBBHU5A", // address
+        amount: 10000000, // depositAmount
+        expire_date: 1718073552,
+        package_type: 1,
+        chain: "algo",
+      }).then((data) => {
         toast.dismiss(myToast);
         console.log(data); // JSON data parsed by `data.json()` call
         toast.success(
@@ -121,7 +120,7 @@ export default function DepositWithdraw() {
 
   const goToWithdrawBase = async (work: number) => {
     if (isOnbordaVisible) return;
-    if (work == 2 && email != '') {
+    if (work == 2 && email != "") {
       // toast.error("You may withdraw your assets after September 2024.", {
       //   style: {
       //     maxWidth: "300px",
@@ -130,15 +129,13 @@ export default function DepositWithdraw() {
       // })
 
       let myToast = toast.loading("Withdrawal is in progress...");
-      await postData("https://dgt-dev.vercel.app/withdraw",
-        {
-          "receiver": email,
-          "amount": withdrawAmount,
-          "package": "0",
-          "token": "DGT",
-          "manager": "DigiTrust"
-        },
-      ).then((data) => {
+      await postData("https://dgt-dev.vercel.app/withdraw", {
+        receiver: email,
+        amount: withdrawAmount,
+        package: "0",
+        token: "DGT",
+        manager: "DigiTrust",
+      }).then((data) => {
         toast.dismiss(myToast);
         console.log(data); // JSON data parsed by `data.json()` call
         toast.success(
@@ -151,7 +148,6 @@ export default function DepositWithdraw() {
           }
         );
       });
-
     }
   };
 
@@ -553,8 +549,21 @@ export default function DepositWithdraw() {
                         </div>
 
                         <div className="space-y-2 w-[48%]">
+                          <div className="w-full px-4 py-3 flex items-center border border-[#C3D4E9] rounded-[12px]">
+                            <Image
+                              src={digitrustLogo}
+                              alt="digitrust token"
+                              className="dropdown-option-image rounded-full mr-[10px]"
+                              width={24}
+                              height={24}
+                              objectFit="cover"
+                            />
+                            <span className="dropdown-option-label pt-1">
+                              DGT
+                            </span>
+                          </div>
                           {/* Dropdown with image */}
-                          <div className="dropdown">
+                          {/* <div className="dropdown">
                             <div
                               className="dropdown-toggle"
                               onClick={() => toggleDropdown("deposit")}
@@ -564,12 +573,12 @@ export default function DepositWithdraw() {
                                   src={selectedDepositOption.image}
                                   alt={selectedDepositOption.label}
                                   className="dropdown-option-image rounded-full"
-                                  width={24}
-                                  height={24}
+                                  width={20}
+                                  height={20}
                                   objectFit="cover"
                                 />
                               )}
-                              <span className="dropdown-option-label pt-2">
+                              <span className="dropdown-option-label">
                                 {selectedDepositOption
                                   ? selectedDepositOption.label
                                   : "Select"}
@@ -577,8 +586,9 @@ export default function DepositWithdraw() {
                               <span className="dropdown-caret"></span>
                             </div>
                             <ul
-                              className={`dropdown-menu ${isDropdownDepositOpen ? "open" : ""
-                                }`}
+                              className={`dropdown-menu ${
+                                isDropdownDepositOpen ? "open" : ""
+                              }`}
                             >
                               {optionsDeposit.map((option, index) => (
                                 <li
@@ -598,7 +608,7 @@ export default function DepositWithdraw() {
                                 </li>
                               ))}
                             </ul>
-                          </div>
+                          </div> */}
                           {/* <p className="text-right text-xs font-medium leading-4 text-gray-300">
                             Balance: 1509.00
                           </p> */}
@@ -742,8 +752,9 @@ export default function DepositWithdraw() {
                               <span className="dropdown-caret"></span>
                             </div>
                             <ul
-                              className={`dropdown-menu ${isDropdownWithdrawOpen ? "open" : ""
-                                }`}
+                              className={`dropdown-menu ${
+                                isDropdownWithdrawOpen ? "open" : ""
+                              }`}
                             >
                               {optionsWithdraw.map((option, index) => (
                                 <li

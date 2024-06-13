@@ -136,8 +136,7 @@ export default function Info() {
                 <p className="uppercase text-blue-600">MY BALANCE</p>
                 {dataDetails.map((data) => (
                   <div key={data.vault_id} className="flex text-gray-800">
-                    <span>{data.currency}</span>
-                    <p>{format.number(+data.price)}</p>
+                    <span>{format.number(+data.price)} DGT</span>
                   </div>
                 ))}
               </div>
@@ -218,13 +217,15 @@ export default function Info() {
           <div className="flex items-center gap-x-[14px]">
             <button
               onClick={clickHandler}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border ${isFollowing && !isUnFollowedDisplayed
+              className={`w-24 sm:w-36 py-3 rounded-[10px] border ${
+                isFollowing && !isUnFollowedDisplayed
                   ? "border-blue-600 text-blue-600"
                   : "bg-blue-600 text-white"
-                } ${isFollowing && isUnFollowedDisplayed
+              } ${
+                isFollowing && isUnFollowedDisplayed
                   ? "bg-red-300 text-white"
                   : ""
-                } text-base sm:text-xl leading-normal font-medium tracking-tight`}
+              } text-base sm:text-xl leading-normal font-medium tracking-tight`}
               onMouseEnter={() => setIsUnFollowedDisplayed(true)}
               onMouseLeave={() => setIsUnFollowedDisplayed(false)}
             >
