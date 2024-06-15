@@ -6,6 +6,6 @@ export const google = {
 };
 
 export const scriptURLPost =
-  "https://script.google.com/macros/s/AKfycbw3cfd-_uendwTLMebNOYeLVUorYLseFKDDRtueNUA6ff6qqXT3Ww2_q3NFEt6A4HXB/exec";
+  "https://script.google.com/macros/s/AKfycbwhEalx8jxGdDMWEjVJi9zuwbw163YKFpOehNlo9ALiXq31T6IG73-pLq14ZUfNaL4I/exec"; // Algorand
 
-export const scriptURLGet = "https://script.google.com/macros/s/AKfycbwpKywlfgvuc_P_6ZYtAArtiKW9pgEmGuuKpmWOsqcAqQbG2C1My2kaV3eQkUdMicTK/exec"
+export const scriptURLGet = "https://script.google.com/macros/s/AKfycbzItMT5wjG55ouEDdigj7kgfa7xUhtetiIUYw3VqmDDxD-eXFTEpvKKhkybFpe7wr0mkw/exec" // Algorand

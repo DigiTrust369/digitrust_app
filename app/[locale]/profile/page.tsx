@@ -31,8 +31,10 @@ export default async function profile() {
           description={profile.des}
           wallet={profile.wallet}
           logoUrl={profile.logo_url}
+          adrUrl={profile.adr_url}
           vaults={profile.vaults}
           dgtAmount={profile.dgt_amount}
+          
         ></ProfileChild>
       </div>
     </main>

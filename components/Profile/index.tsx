@@ -27,6 +27,7 @@ type TProfileContainerProps = {
   managedAmount: number;
   dgtAmount: number;
   logoUrl?: string;
+  adrUrl?: string;
   vaults: TVault[];
 };
 
@@ -38,12 +39,11 @@ const ProfileContainer = (props: TProfileContainerProps) => {
     vaults,
     description,
     logoUrl,
+    adrUrl,
     wallet,
     dgtAmount,
   } = props;
-
-  const {userEmail} = useGlobalContext();
-
+  const { userEmail } = useGlobalContext();
 
   return (
     <div>
@@ -54,20 +54,23 @@ const ProfileContainer = (props: TProfileContainerProps) => {
             userAddress={wallet}
             description={description}
             avatar={logoUrl}
+            addressUrl={adrUrl}
           />
-          <div className="md:grid-cols-3 gap-3 grid mt-6">
+          <div className="md:grid-cols-2 gap-3 grid mt-6">
             <BlockBalance
               title="HOLDINGS"
-              value={formatNumberByCurrency(holdingAmount, "USD")}
+              // value={formatNumberByCurrency(holdingAmount, "USD")}
+              value={holdingAmount.toFixed(2)}
             />
             <BlockBalance
               title="TOTAL MANAGED"
-              value={formatNumberByCurrency(managedAmount, "USD")}
+              // value={formatNumberByCurrency(managedAmount, "USD")}
+              value={holdingAmount.toFixed(2)}
             />
-            <BlockBalance
+            {/* <BlockBalance
               title="VOTING POWER"
               value={formatNumberByCurrency(dgtAmount, "USD")}
-            />
+            /> */}
           </div>
           {/* <TabInfoProfile /> */}
           <Strategy />

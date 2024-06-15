@@ -83,20 +83,28 @@ const navLinks = [
   },
 ];
 
-async function generateAddress(account_id: string, address_id: string) {
-  const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
-  const resEVM = await fetch(evmURL);
-  const evmAddress = await resEVM.json();
+// async function generateAddress(account_id: string, address_id: string) {
+//   const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
+//   const resEVM = await fetch(evmURL);
+//   const evmAddress = await resEVM.json();
 
-  return { evmAddress };
-}
+//   return { evmAddress };
+// }
 
-async function generateAPTAddress(account_id: string) {
-  const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
-  const resApt = await fetch(apturl);
-  const aptAddress = await resApt.json();
+// async function generateAPTAddress(account_id: string) {
+//   const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
+//   const resApt = await fetch(apturl);
+//   const aptAddress = await resApt.json();
 
-  return { aptAddress };
+//   return { aptAddress };
+// }
+
+async function generateAlgorandAddress(email: string) {
+  const url = `https://dgt-dev.vercel.app/v1/algo_Adr?email=${email}`;
+  const res = await fetch(url);
+  const algoAddress = await res.json();
+
+  return { algoAddress };
 }
 
 async function getBalance(_email: string) {
@@ -128,8 +136,7 @@ async function postData(url = "", data = {}) {
 export default function Header(props: { isHome: boolean }) {
   const format = useFormatter();
   const { startOnborda } = useOnborda();
-  const {userEmail, setUserEmail} = useGlobalContext();
-
+  const { userEmail, setUserEmail } = useGlobalContext();
   const handleStartOnborda = () => {
     startOnborda();
   };
@@ -157,13 +164,13 @@ export default function Header(props: { isHome: boolean }) {
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
     const getOauthParams = async () => {
-      let curEmail = window.localStorage.getItem("userEmail");
-      //let curEmail = userEmail;
-      //console.log(curEmail);
+      // let curEmail = window.localStorage.getItem("userEmail");
+      let curEmail = userEmail;
       const location = window.location.hash;
       if (
         location != null &&
@@ -184,7 +191,7 @@ export default function Header(props: { isHome: boolean }) {
   const logOutWallet = () => {
     setEmail("");
     window.location.hash = "";
-    //window.location.href = window.location.origin + "/home";
+    // window.location.href = window.location.origin + "/home";
   };
 
   const beginZkLogin = async () => {
@@ -255,19 +262,23 @@ export default function Header(props: { isHome: boolean }) {
 
         if (data == null) {
           //Get EVM address
-          const account_id = generateRandomness().substring(0, 4);
-          const address_id = generateRandomness().substring(0, 3);
+          // const account_id = generateRandomness().substring(0, 4);
+          // const address_id = generateRandomness().substring(0, 3);
 
-          const { evmAddress } = await generateAddress(account_id, address_id);
+          // const { evmAddress } = await generateAddress(account_id, address_id);
 
-          const { aptAddress } = await generateAPTAddress(account_id);
+          // const { aptAddress } = await generateAPTAddress(account_id);
 
-          if (evmAddress != null && aptAddress != null) {
+          //Get Algorand address
+          const { algoAddress } = await generateAlgorandAddress(
+            NewdecodedJwt?.email
+          );
+
+          if (algoAddress != null) {
             const form = {
               Email: NewdecodedJwt?.email,
+              AlgorandAddress: algoAddress.address,
               Date: new Date(),
-              EVMAddress: evmAddress.address,
-              AptosAddress: aptAddress.address,
             };
 
             var keyValuePairs = [];
@@ -309,6 +320,7 @@ export default function Header(props: { isHome: boolean }) {
           }
         } else {
           setEmail(data?.email);
+          setWalletAddress(data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
@@ -318,40 +330,43 @@ export default function Header(props: { isHome: boolean }) {
   }, [oauthParams]);
 
   useEffect(() => {
-    window.localStorage.setItem("userEmail", email);
+    // window.localStorage.setItem("userEmail", email);
+    setUserEmail(email);
+    // window.localStorage.setItem("userEmail", email);
     setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);
-      if (balance != null)
-        setPoint(balance?.amount);
+      if (balance != null) setPoint(balance?.amount);
     }
 
-    if (email != '') {
+    if (email != "") {
       updateBalance();
     }
   }, [email]);
 
-  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
-    }`;
+  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
+    props.isHome ? "bg-white" : "bg-blue-600 text-white"
+  }`;
 
   return (
     <Fragment>
-      {email == '' && <div className="bg-blue-400 text-white flex items-center justify-center py-2">
-        <Image
-          src={Hot}
-          alt="hot logo"
-          height={30}
-          className="animate-pulse"
-        />
-        <p>Login now and get a valuable gift worth 100 DGT!</p>
-        <Image
-          src={Hot}
-          alt="hot logo"
-          height={30}
-          className="animate-pulse"
-        />
-      </div>
-      }
+      {email == "" && (
+        <div className="bg-blue-400 text-white flex items-center justify-center py-2">
+          <Image
+            src={Hot}
+            alt="hot logo"
+            height={30}
+            className="animate-pulse"
+          />
+          <p>Login now and get a valuable gift worth 100 DGT!</p>
+          <Image
+            src={Hot}
+            alt="hot logo"
+            height={30}
+            className="animate-pulse"
+          />
+        </div>
+      )}
       <header className={classes}>
         {/* Logo */}
         <div>
@@ -411,12 +426,26 @@ export default function Header(props: { isHome: boolean }) {
             ))}
           </ul>
         </nav>*/}
-        {email != "" &&
-          <nav className={`hidden sm:block pt-3 ${props.isHome ? "" : "text-white"}`}>
-            <ul className="flex justify-center gap-x-10"><li key={'profile'}><Link className="ml-2" href={"/profile"}>Profile</Link></li>
-              <li key={'logout'}><button className="astext ml-2" onClick={logOutWallet}>Log out</button></li></ul>
+        {email != "" && (
+          <nav
+            className={`hidden sm:block pt-3 ${
+              props.isHome ? "" : "text-white"
+            }`}
+          >
+            <ul className="flex justify-center gap-x-10">
+              <li key={"profile"}>
+                <Link className="ml-2" href={"/profile"}>
+                  Profile
+                </Link>
+              </li>
+              <li key={"logout"}>
+                <button className="astext ml-2" onClick={logOutWallet}>
+                  Log out
+                </button>
+              </li>
+            </ul>
           </nav>
-        }
+        )}
         {email == "" ? (
           <button
             className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"
@@ -431,28 +460,41 @@ export default function Header(props: { isHome: boolean }) {
           <>
             {/* Desktop */}
             <div className="hidden sm:block">
-              {/* <div className="flex flex-1 ml-5 justify-end">
-                <div className={`flex items-center rounded-lg px-6 py-1 gap-x-2 ${props.isHome ? "border border-blue-600 text-white" : "bg-white text-blue-600"}`}>
+              <div className="flex flex-1 justify-end gap-x-3 ">
+                <div
+                  className={`flex items-center pt-3 capitalize w-fit ${
+                    props.isHome ? "text-blue-600" : "text-white"
+                  }`}
+                >
+                  <WalletIcon></WalletIcon>
+                  <span className="font-bold pl-2">
+                    <div className="px-1">{`${walletAddress.slice(
+                      0,
+                      4
+                    )}...${walletAddress.slice(-5, -1)}`}</div>
+                  </span>
+                </div>
 
+                <div
+                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${
+                    props.isHome
+                      ? "border border-blue-600 text-white"
+                      : "bg-white text-blue-600"
+                  }`}
+                >
                   <div className="flex items-center gap-x-2">
-                    <button
-                      className=" bg-white rounded-md"
-                    >
+                    <button className=" bg-white rounded-md">
                       <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
                         <GoogleIcon />
                         <span className="text-blue-600 font-bold mx-2">
-                          <div>
-                            {email.replace("@gmail.com", "")}
-                          </div>
+                          <div>{email.replace("@gmail.com", "")}</div>
                         </span>
                       </div>
                     </button>
                     <div className="text-gray-400 font-bold">
                       {format.number(point)} DGT
                     </div>
-                  </div>
 
-                  <div>
                     <Dropdown>
                       <DropdownTrigger>
                         <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
@@ -531,8 +573,8 @@ export default function Header(props: { isHome: boolean }) {
                     </Dropdown>
                   </div>
                 </div>
-              </div> */}
-              <Dropdown
+              </div>
+              {/* <Dropdown
                 radius="sm"
                 classNames={{
                   content: "border-small border-divider bg-white py-0",
@@ -716,7 +758,7 @@ export default function Header(props: { isHome: boolean }) {
                     </DropdownItem>
                   </DropdownSection>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
             </div>
 
             {/* Mobile */}
@@ -726,10 +768,14 @@ export default function Header(props: { isHome: boolean }) {
                 classNames={{
                   content: "border-small border-divider bg-white py-0",
                 }}
-
               >
                 <DropdownTrigger>
-                  <Button isIconOnly variant="bordered" className="capitalize" disableRipple>
+                  <Button
+                    isIconOnly
+                    variant="bordered"
+                    className="capitalize"
+                    disableRipple
+                  >
                     <MenuIcon
                       bgColor={`${props.isHome ? "black" : "white"}`}
                       iconColor={`${props.isHome ? "black" : "white"}`}
@@ -782,14 +828,19 @@ export default function Header(props: { isHome: boolean }) {
                       <div className="grid grid-row-auto grid-flow-col">
                         <span>Wallet</span>
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{"0x1234...6789"}</div>
+                          <div className="px-1">{`${walletAddress.slice(
+                            0,
+                            4
+                          )}...${walletAddress.slice(-5, -1)}`}</div>
                         </span>
                       </div>
 
                       <div className="grid grid-row-auto grid-flow-col mt-2">
                         <GoogleIcon />
                         <span className="text-blue-600 font-bold px-1">
-                          <div className="px-1">{email.replace("@gmail.com", "")}</div>
+                          <div className="px-1">
+                            {email.replace("@gmail.com", "")}
+                          </div>
                         </span>
                       </div>
                     </DropdownItem>
@@ -799,17 +850,16 @@ export default function Header(props: { isHome: boolean }) {
                       className="h-14 gap-2 opacity-100 bg-white py-2"
                     >
                       <div className="flex justify-center items-center gap-1">
-                        <span className="font-bold text-3xl">{format.number(point)}</span>
+                        <span className="font-bold text-3xl">
+                          {format.number(point)}
+                        </span>
                         <span className="font-medium text-sm place-items-center">
                           DGT
                         </span>
                       </div>
                     </DropdownItem>
                   </DropdownSection>
-                  <DropdownSection
-                    showDivider
-                    hidden={email == ""}
-                  >
+                  <DropdownSection showDivider hidden={email == ""}>
                     <DropdownItem key="MyMenu" className="hover:bg-white">
                       <div className="flex justify-center gap-x-10">
                         <Link href={"/profile"}>
@@ -850,7 +900,9 @@ export default function Header(props: { isHome: boolean }) {
                           >
                             <DropdownItem
                               key="suidevnet"
-                              startContent={<SUIWallet className={iconClasses} />}
+                              startContent={
+                                <SUIWallet className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -865,7 +917,9 @@ export default function Header(props: { isHome: boolean }) {
                             </DropdownItem>
                             <DropdownItem
                               key="klaytntestnet"
-                              startContent={<KlayIcon className={iconClasses} />}
+                              startContent={
+                                <KlayIcon className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -880,7 +934,9 @@ export default function Header(props: { isHome: boolean }) {
                             </DropdownItem>
                             <DropdownItem
                               key="aptos"
-                              startContent={<AptosIcon className={iconClasses} />}
+                              startContent={
+                                <AptosIcon className={iconClasses} />
+                              }
                               onClick={() =>
                                 setSelectedKeys(
                                   <>
@@ -921,7 +977,6 @@ export default function Header(props: { isHome: boolean }) {
               </Dropdown>
             </div>
           </>
-
         )}
       </header>
     </Fragment>

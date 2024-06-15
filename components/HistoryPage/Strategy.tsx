@@ -131,9 +131,9 @@ const Strategy = () => {
               <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                 Amount
               </th>
-              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+              {/* <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                 Price
-              </th>
+              </th> */}
               <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                 Expected Return
               </th>
@@ -156,14 +156,13 @@ const Strategy = () => {
                     {data.package_type}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    ${format.number(data.amount)}
+                    {format.number(data.amount)} DGT
                   </td>
+                  {/* <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {format.number(data.price)} DGT
+                  </td> */}
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    ${format.number(data.price)}
-                  </td>
-
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    ${format.number(data.expected_return)}
+                    {format.number(data.expected_return)} DGT
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                     {dateTimeFormatter.format(new Date(data.expire_date))}

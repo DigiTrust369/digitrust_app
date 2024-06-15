@@ -12,6 +12,7 @@ import PieChart from "@/components/Chart/PieChart/ActivePieChart";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import btc from "@/assets/images/crypto/bitcoin.svg";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import Link from "next/link";
 
 interface Asset {
   asset: string;
@@ -27,6 +28,7 @@ interface Asset {
   dgt_score: number;
   status: boolean;
   logo_url: string;
+  asset_url: string;
 }
 
 export default function Overview() {
@@ -96,8 +98,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{format.number(data.price)}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{format.number(data.price)} DGT</p>
                 </div>
               ))}
             </div>
@@ -111,8 +113,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{format.number(data.tvl)}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{format.number(data.tvl)} DGT</p>
                 </div>
               ))}
             </div>
@@ -141,8 +143,8 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  <span>{data.currency}</span>
-                  <p>{data.return}</p>
+                  {/* <span>{data.currency}</span> */}
+                  <p>{data.return} DGT</p>
                 </div>
               ))}
             </div>
@@ -166,16 +168,19 @@ export default function Overview() {
                   <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                     Price 24h
                   </th>
+                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                    Explore
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {assets.map((asset) => (
                   <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                      <div className="flex items-center ">
+                      <div className="flex items-center">
                         <Image
                           src={asset.logo_url}
-                          alt="bitcoin"
+                          alt="logo"
                           width={32}
                           height={32}
                         />
@@ -186,12 +191,15 @@ export default function Overview() {
                       {asset.weight}
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                      ${format.number(+asset.holding.slice(0, -1))}
+                      {format.number(+asset.holding.slice(0, -1))} DGT
                     </td>
                     <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                       <div className="text-green-500">
                         {format.number(+asset.price_change["24h"])}%
                       </div>
+                    </td>
+                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                      <Link href={asset.asset_url}>LINK</Link>
                     </td>
                   </tr>
                 ))}
