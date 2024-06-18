@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-
+import { useFormatter } from "next-intl";
 import MyInput from "../DigiTrust/DateInput";
 
 interface Data {
   date: string;
-  name: string;
-  symbol: string;
-  quantity: number;
-  purchase_price: string;
-  current_price: string;
-  total_loss: string;
+  manager: string;
+  package_type: string;
+  amount: number;
+  price: number;
+  expected_return: number;
   tx_hash: string;
-  exp_date: string;
+  expire_date: string;
 }
 
 const Strategy = () => {
+  const format = useFormatter();
+  const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "long",
+  });
   let datas: Data[];
 
   // Call Api
@@ -24,7 +27,7 @@ const Strategy = () => {
     const fetchDataDetails = async () => {
       // Api Default
       const response = await fetch(
-        "https://dgt-dev.vercel.app/v1/portfolio_tracker?user_adr=0x12d2"
+        "https://dgt-dev.vercel.app/v1/user_history?email=a@gmail.com"
       );
       const data = await response.json();
 
@@ -38,18 +41,18 @@ const Strategy = () => {
 
   return (
     <>
-      <div className="flex gap-[18px] py-6">
-        <span className="text-xl text-gray-800 font-semibold">
-          Strategy Management
+      <div className="flex gap-[18px] py-4 sm:py-6 sm:mt-8">
+        <span className="text-2xl sm:text-3xl text-gray-800 font-semibold">
+          History
         </span>
-        <span className="px-3 bg-blue-100 font-medium text-blue-600 text-base leading-7 rounded-[7px]">
+        {/* <span className="px-3 bg-blue-100 font-medium text-blue-600 text-base leading-7 rounded-[7px]">
           Current Strategy
         </span>
         <span className="px-3 bg-[#E0E9F4] font-medium text-[#90A3BF] text-base leading-7 rounded-[7px]">
           Historical Strategy
-        </span>
+        </span> */}
       </div>
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <div className="w-[18%]">
           <span className="font-normal text-sm text-gray-800 leading-normal">
             Strategy Status
@@ -111,70 +114,68 @@ const Strategy = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="py-8">
-        <table className="w-full px-1.5 bg-white text-left border border-[#C3D4E9]">
-          <thead className="text-base	font-medium	text-gray-800 tracking-tight">
+      </div> */}
+      <div className="sm:py-8 overflow-x-auto">
+        <table className="bg-white min-w-full border border-[#C3D4E9]">
+          <thead>
             <tr>
-              <th className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                 Date
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">Name</th>
-              <th className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
-                Symbol
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                Manager
               </th>
-              <th className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
-                Quantity
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                Package Type
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                Purchase Price
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                Amount
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                Current Price
+              {/* <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                Price
+              </th> */}
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                Expected Return
               </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                Total Loss
-              </th>
-              <th className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                Tx Hash
-              </th>
-              <th className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-right">
+              <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                 Expiration Date
               </th>
             </tr>
           </thead>
-          <tbody className="text-base	text-gray-800 tracking-tight">
-            {datas.map((data: any) => (
+          <tbody className="text-sm sm:text-base text-gray-800 tracking-tight">
+            {datas.length != 0 ? (
+              datas.map((data: any) => (
+                <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {dateTimeFormatter.format(new Date(data.date))}
+                  </td>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {data.manager}
+                  </td>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {data.package_type}
+                  </td>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {format.number(data.amount)} DGT
+                  </td>
+                  {/* <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {format.number(data.price)} DGT
+                  </td> */}
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {format.number(data.expected_return)} DGT
+                  </td>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    {dateTimeFormatter.format(new Date(data.expire_date))}
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td className="w-[9%] pl-1.5 py-6 border-b border-b-[#C3D4E9]">
-                  {data.date}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.name}
-                </td>
-                <td className="w-[9%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.symbol}
-                </td>
-                <td className="w-[11%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.quantity}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.purchase_price}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.current_price}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.total_loss}
-                </td>
-                <td className="w-[12%] py-6 border-b border-b-[#C3D4E9]">
-                  {data.tx_hash}
-                </td>
-                <td className="w-[11%] pr-1.5 py-6 border-b border-b-[#C3D4E9] text-center">
-                  {data.exp_date}
+                <td colSpan={9} className="text-center py-5 animate-pulse">
+                  Loading...
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

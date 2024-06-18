@@ -1,6 +1,10 @@
+'use client';
 import { NextIntlClientProvider } from "next-intl";
-
 import { getMessages, DEFAULT_LOCALE } from ".";
+import { NextUIProvider } from "@nextui-org/system";
+import '@suiet/wallet-kit/style.css';
+import { OnbordaProvider } from "onborda";
+import { GlobalContextProvider } from "@/Context/store";
 
 // eslint-disable-next-line react/function-component-definition
 export default async function LocaleProvider(props) {
@@ -10,7 +14,13 @@ export default async function LocaleProvider(props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
+      <GlobalContextProvider>
+        <NextUIProvider>
+          <OnbordaProvider>
+            {children}
+          </OnbordaProvider>
+        </NextUIProvider>
+      </GlobalContextProvider>
     </NextIntlClientProvider>
   );
 }

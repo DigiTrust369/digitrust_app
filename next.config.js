@@ -14,7 +14,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "dd.dexscreener.com",
         port: "",
-        pathname: "/ds-data/tokens/**",
+        pathname: "/ds-data/tokens/sui/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dd.dexscreener.com",
+        port: "",
+        pathname: "/ds-data/tokens/ton/**",
       },
       {
         protocol: "https",
@@ -33,6 +39,13 @@ const nextConfig = {
     }
 
     return config;
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 };
 

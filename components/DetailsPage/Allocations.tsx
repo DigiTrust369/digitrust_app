@@ -26,11 +26,13 @@ const Allocations = () => {
   // const { currentAccount } = useWalletKit();
   let assets: Asset[];
 
-  // Call Api
   const [dataDetails, setDataDetails] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Call Api
   useEffect(() => {
     const fetchDataDetails = async () => {
+      setIsLoading(true);
       // Api Default
       const response = await fetch(
         "https://dgt-dev.vercel.app/v1/vault_allocation?vault_id=dgt1"
@@ -38,6 +40,7 @@ const Allocations = () => {
       const data = await response.json();
 
       setDataDetails(data);
+      setIsLoading(false);
     };
 
     fetchDataDetails();
@@ -116,26 +119,34 @@ const Allocations = () => {
                 </tr>
               </thead>
               <tbody>
-                {assets.map((asset) => (
-                  <tr className="border-b border-b-[#C3D4E9] text-gray-800 font-medium leading-normal">
-                    <td className="w-[30%] h-12 pl-6 py-6">
-                      <div className="flex items-center ">
-                        <Image className="w-8	h-8" src={btc} alt="bitcoin" />
-                        <span className="ml-4">{asset.symbol}</span>
-                      </div>
-                    </td>
-                    <td className="w-[30%] h-12 py-6">
-                      {true ? asset.weight : "--"}
-                    </td>
-                    <td className="w-[30%] h-12 py-6">
-                      {true ? asset.holding : "--"}
-                    </td>
-                    <td className="w-[10%] h-12 pr-6 py-[18px]">
-                      <div>$ 6.35</div>
-                      <div className="text-green-500">5.50%</div>
+                {isLoading && (
+                  <tr className="text-center text-sm font-medium leading-4 text-gray-300">
+                    <td colSpan={4} className="p-4">
+                      Loading...
                     </td>
                   </tr>
-                ))}
+                )}
+                {!isLoading &&
+                  assets.map((asset) => (
+                    <tr className="border-b border-b-[#C3D4E9] text-gray-800 font-medium leading-normal">
+                      <td className="w-[30%] h-12 pl-6 py-6">
+                        <div className="flex items-center ">
+                          <Image className="w-8	h-8" src={btc} alt="bitcoin" />
+                          <span className="ml-4">{asset.symbol}</span>
+                        </div>
+                      </td>
+                      <td className="w-[30%] h-12 py-6">
+                        {true ? asset.weight : "--"}
+                      </td>
+                      <td className="w-[30%] h-12 py-6">
+                        {true ? asset.holding : "--"}
+                      </td>
+                      <td className="w-[10%] h-12 pr-6 py-[18px]">
+                        <div>$ 6.35</div>
+                        <div className="text-green-500">5.50%</div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
