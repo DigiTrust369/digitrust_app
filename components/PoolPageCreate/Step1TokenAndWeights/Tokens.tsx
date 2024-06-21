@@ -1,12 +1,12 @@
 import _isEmpty from "lodash/isEmpty";
 import { useFieldArray } from "react-hook-form";
-
+import "./styles.module.scss";
 import Dropdown from "@/components/Common/Dropdown";
 import { useTypedForm } from "@/hooks/useTypedForm";
 import AddMoreButton from "./AddMoreButton";
 import LockButton from "./LockButton";
 import TrashButton from "./TrashButton";
-import Tokens from "./const";
+import { fetchTokens } from "./const";
 
 type Props = {};
 
@@ -28,6 +28,8 @@ const TokensFields = (props: Props) => {
   });
 
   const watchTokens = watch("tokens");
+
+  const { response: Tokens } = fetchTokens();
 
   function handleAddMoreToken() {
     if (_isEmpty(fields)) {
@@ -88,9 +90,11 @@ const TokensFields = (props: Props) => {
           .filter((_, idx) => idx !== tokenIdx)
           .map((x) => x.name)
           .filter(Boolean);
-        const tokenOptions = Tokens.filter(
-          (x) => !excludeFields.includes(x.value) || token.name === x.value
+        const tokenOptions = Tokens?.filter(
+          (x) => !excludeFields.includes(x.name) || token.name === x.name
         );
+
+        console.log("Token options:", tokenOptions);
         return (
           <div className="input-group p-1 flex items-center" key={tokenIdx}>
             {/* button */}

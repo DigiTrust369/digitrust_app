@@ -6,6 +6,8 @@ import PoolSummary from "./PoolSummary";
 import Step1TokenAndWeights from "./Step1TokenAndWeights";
 import styles from "./styles.module.scss";
 import Step2PoolFee from "./Step2PoolFee";
+import Step3InitLiquid from "./Step3InitLiquid";
+import Step4Preview from "./Step4Preview";
 
 type Props = {};
 
@@ -25,6 +27,17 @@ const FormWrapper = (props: Props) => {
               <Step2PoolFee
                 onNext={() => setStep(2)}
                 onBack={() => setStep(0)}
+              />
+            )}
+            {step === 2 && (
+              <Step3InitLiquid
+                onNext={() => setStep(3)}
+                onBack={() => setStep(1)}
+              />
+            )}
+            {step === 3 && (
+              <Step4Preview
+                onBack={() => setStep(2)}
               />
             )}
           </div>

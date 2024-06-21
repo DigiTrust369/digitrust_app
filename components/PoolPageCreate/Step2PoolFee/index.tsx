@@ -33,7 +33,7 @@ const Step2PoolFee = (props: Props) => {
                 </svg>
               </div>
             </button>
-            <h5 className="font-semibold dark:text-gray-300">Set pool fees</h5>
+            <h5 className="font-semibold text-gray-300">Set pool fees</h5>
           </div>
         </div>
         <div className="flex flex-col mb-4">
@@ -49,15 +49,14 @@ const Step2PoolFee = (props: Props) => {
               <button className="bal-btn px-3 h-9 text-base bg-transparent text-blue-500  dark:text-blue-400 border border-blue-200 dark:border-blue-700 dark:hover:border-blue-600 dark:focus:border-blue-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200 inline-block rounded-lg shadow hover:shadow-none cursor-pointer mr-2 capitalize w-18 mr-1">
                 <div className="content justify-center">0.1%</div>
               </button>
-              <button className="bal-btn px-3 h-9 text-base bg-transparent text-gray-500  dark:text-gray-400 border border-gray-200 dark:border-gray-700 dark:hover:border-gray-600 dark:focus:border-gray-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200 inline-block rounded-lg shadow hover:shadow-none cursor-pointer mr-2 capitalize w-18 mr-1">
+              <button className="bal-btn px-3 h-9 text-base bg-transparent text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 dark:hover:border-gray-600 dark:focus:border-gray-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200 inline-block rounded-lg shadow hover:shadow-none cursor-pointer mr-2 capitalize w-18 mr-1">
                 <div className="content justify-center">0.3%</div>
               </button>
-              <button className="bal-btn px-3 h-9 text-base bg-transparent text-gray-500  dark:text-gray-400 border border-gray-200 dark:border-gray-700 dark:hover:border-gray-600 dark:focus:border-gray-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200 inline-block rounded-lg shadow hover:shadow-none cursor-pointer mr-2 capitalize w-18 mr-1">
+              <button className="bal-btn px-3 h-9 text-base bg-transparent text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 dark:hover:border-gray-600 dark:focus:border-gray-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200 inline-block rounded-lg shadow hover:shadow-none cursor-pointer mr-2 capitalize w-18 mr-1">
                 <div className="content justify-center">1.0%</div>
               </button>
-            </div>
-            <div className="">
-              <div className="custom-input border dark:border-gray-900">
+
+              <div className="px-1 rounded-lg shadow-inner h-full flex items-center custom-input border dark:border-gray-900 text-gray-500 ">
                 <input
                   className="w-12 h-full text-right bg-transparent"
                   placeholder="0.1"
@@ -66,7 +65,9 @@ const Step2PoolFee = (props: Props) => {
                 />
                 <div className="px-1">%</div>
               </div>
+
             </div>
+
           </div>
         </div>
         <button

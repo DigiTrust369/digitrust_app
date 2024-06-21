@@ -26,6 +26,10 @@ const Overview = dynamic(() => import("@/components/DetailsPage/OverviewGM"), {
   ssr: false,
 });
 
+const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
+  ssr: false,
+});
+
 // const MorePools = dynamic(() => import("@/components/DetailsPage/MorePools"), {
 //   ssr: false,
 // });
@@ -35,6 +39,7 @@ export default function DetailsPage() {
     <>
       <Info />
       <main className="px-5 sm:px-[50px] lg:px-[90px] pb-12 sm:pb-24">
+        <Chart />
         <Overview />
       </main>
     </>

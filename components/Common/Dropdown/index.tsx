@@ -13,7 +13,7 @@ const Dropdown = (props: Props) => {
   const { list = [], onChange, ...rest } = { ...props };
   const [keyword, setKeyword] = useState("");
   const options = list.filter((x) =>
-    x?.label?.toLowerCase().includes(keyword.toLowerCase())
+    x?.name?.toLowerCase().includes(keyword.toLowerCase())
   );
 
   return (
@@ -74,10 +74,10 @@ const Dropdown = (props: Props) => {
     >
       {/* @ts-ignore */}
       {options?.map((x, idx) => (
-        <Option value={x?.value} key={idx}>
+        <Option value={x?.name} key={idx}>
           <div className="flex space-x-2 px-2 py-4">
-            {x?.icon && <img src={x?.icon} width={24} height={24} />}
-            <div className="text-base">{x?.label}</div>
+            {x?.logo && <img src={x?.logo} width={24} height={24} />}
+            <div className="text-base">{String(x?.name).toUpperCase()}</div>
           </div>
         </Option>
       ))}

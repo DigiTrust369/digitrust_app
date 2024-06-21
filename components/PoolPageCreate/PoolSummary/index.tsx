@@ -1,4 +1,3 @@
-"use client";
 import cn from "classnames";
 import {
   Cell,
@@ -11,7 +10,7 @@ import {
 
 import styles from "./styles.module.scss";
 import { useTypedForm } from "@/hooks/useTypedForm";
-import Tokens from "../Step1TokenAndWeights/const";
+import { fetchTokens } from "../Step1TokenAndWeights/const";
 
 type Props = {};
 
@@ -27,11 +26,13 @@ const PoolSummary = (props: Props) => {
   const tokensValues = watch("tokens")?.filter(
     (x) => x?.name && x?.percent > 0
   );
+  const { response: Tokens } = fetchTokens();
+
   const list = tokensValues?.map((x) => ({
     ...x,
     value: x?.percent,
-    icon: Tokens?.find(y => y.value === x.name)?.icon,
-    marketPrice: Tokens?.find(y => y.value === x.name)?.marketPrice,
+    icon: Tokens?.find(y => y.name === x.name)?.logo,
+    marketPrice: Tokens?.find(y => y.name === x.name)?.price,
   }));
 
   return (
