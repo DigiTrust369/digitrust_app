@@ -6,6 +6,7 @@ import { useWallet } from "@suiet/wallet-kit";
 import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import { env } from "process";
+import "@/components/DetailsPage/Info.css"
 
 export default function Info() {
   const format = useFormatter();
@@ -65,7 +66,7 @@ export default function Info() {
   }, []);
 
   return (
-    <section className="px-10 sm:px-[90px] bg-blue-50 lg:bg-details xl:object-contain 2xl:bg-none">
+    <section className="info px-10 sm:px-[90px] lg:bg-details xl:object-contain 2xl:bg-none">
       <div className="container mx-auto pt-[55px] pb-[108px]">
         <div className="space-y-6">
           <div className="flex items-center gap-x-6">

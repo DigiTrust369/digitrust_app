@@ -10,10 +10,10 @@ type Props = {
 
 const Step2PoolFee = (props: Props) => {
   return (
-    <div className={cn(styles.root, "bal-card content p-4")}>
+    <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
       <div className="flex flex-col">
         <div className="flex flex-col mb-4">
-          <span className="text-xs text-secondary mb-1 text-white">Polygon Mainnet</span>
+          <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
           <div className="flex flex-row items-center">
             <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button">
               <div className="inline-block bal-icon flex">
@@ -33,12 +33,12 @@ const Step2PoolFee = (props: Props) => {
                 </svg>
               </div>
             </button>
-            <h5 className="font-semibold text-gray-300">Set pool fees</h5>
+            <h5 className="font-semibold">Set pool fees</h5>
           </div>
         </div>
         <div className="flex flex-col mb-4">
           <div className="mb-2">
-            <h6 className="mb-1 mb-2 text-white">Initial swap fee</h6>
+            <h6 className="mb-1 mb-2 font-semibold">Initial swap fee</h6>
             <p className="text-gray-600">
               0.30% is best for most weighted pools with established tokens. Go
               higher for more exotic tokens.

@@ -78,7 +78,7 @@ const navLinksRight = [
 
 export default function Footer() {
   return (
-    <footer className="text-sm xl:text-base">
+    <footer className="text-sm xl:text-base bg-white">
       <div className="justify-between space-y-12 px-[60px] py-14 lg:flex lg:space-y-0 xl:px-[120px]">
         <div className="space-y-10 lg:space-y-[60px]">
           {/* Logo */}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import "@/components/LandingPage/LandingPage.css";
 import arrowUpIc from "@/assets/images/icons/arrow-up-ic.png";
 import depositIc from "@/assets/images/icons/deposit-ic.png";
@@ -11,7 +11,7 @@ import tvIc from "@/assets/images/icons/tv-ic.png";
 import peopleIc from "@/assets/images/icons/people-ic.png";
 import chartUpIc from "@/assets/images/icons/chart-up-ic.png";
 
-const Banner: React.FC<{ time: number }> = ({ time }) => {
+const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, children }) => {
   const [isChanged, setIsChanged] = useState(false);
   let content = isChanged ? (
     <div className="mx-auto w-[90%] pt-[111px]">
@@ -131,8 +131,9 @@ const Banner: React.FC<{ time: number }> = ({ time }) => {
     };
   }, []);
   return (
-    <section>
-      <div className="h-[554px] hero-background">
+    <section className="hero-background">
+      {children}
+      <div className="h-[554px]">
         {content}
       </div>
     </section>

@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 
 interface ResponseProps {
-  logo?: string;
-  price?: string;
+  id: number;
   name?: string;
+  symbol?: string;
+  price?: number;
+  logo_url?: string;
 }
 
 export function fetchTokens() {

@@ -5,6 +5,7 @@ import { useTypedForm } from "@/hooks/useTypedForm";
 // import Tokens from "../Step1TokenAndWeights/const";
 import { useFieldArray } from "react-hook-form";
 import TokenLiquid from "./TokenLiquid"
+import Summary from "./Summary";
 
 type Props = {
     onBack?: () => void;
@@ -29,10 +30,10 @@ const Step4Preview = (props: Props) => {
     console.log(fields)
 
     return (
-        <div className={cn(styles.root, "bal-card content p-4")}>
+        <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
             <div className="flex flex-col">
                 <div className="flex flex-col mb-4">
-                    <span className="text-xs text-secondary mb-1 text-white">Polygon Mainnet</span>
+                    <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
                     <div className="flex flex-row items-center">
                         <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button">
                             <div className="inline-block bal-icon flex">
@@ -52,17 +53,33 @@ const Step4Preview = (props: Props) => {
                                 </svg>
                             </div>
                         </button>
-                        <h5 className="font-semibold text-gray-300">Preview new weighted pool</h5>
+                        <h5 className="font-semibold">Preview new weighted pool</h5>
                     </div>
                 </div>
 
-                <TokenLiquid />
+                <div className="flex flex-col border rounded-lg mb-4">
+                    {/* row */}
+                    <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
+                        Tokens and initial seed liquidity
+                    </h6>
+                    {/* row */}
+                    {/* row */}
+                    <TokenLiquid />
+                    {/* row */}
+                    {/* row */}
+                </div>
+                <div className="flex flex-col border rounded-lg mb-4">
+                    <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
+                        Summary
+                    </h6>
+                    <Summary />
 
+                </div>
                 <button
                     className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
                     type="button"
                 >
-                    <div className="content justify-center"> Approve for adding liquidity</div>
+                    <div className="content justify-center"> Approve for creating vault</div>
                 </button>
             </div>
         </div>

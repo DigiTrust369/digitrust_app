@@ -34,7 +34,7 @@ const Dropdown = (props: Props) => {
             stroke-linecap="round"
             stroke-linejoin="round"
             className="feather feather-chevron-down"
-            color="white"
+            color="curentColor"
           >
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
@@ -76,8 +76,8 @@ const Dropdown = (props: Props) => {
       {options?.map((x, idx) => (
         <Option value={x?.name} key={idx}>
           <div className="flex space-x-2 px-2 py-4">
-            {x?.logo && <img src={x?.logo} width={24} height={24} />}
-            <div className="text-base">{String(x?.name).toUpperCase()}</div>
+            {x?.logo_url && <img src={x?.logo_url} width={24} height={24} />}
+            <div className="text-base">{String(x?.symbol).toUpperCase()}</div>
           </div>
         </Option>
       ))}

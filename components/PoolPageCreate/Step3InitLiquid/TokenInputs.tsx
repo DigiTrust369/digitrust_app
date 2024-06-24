@@ -21,28 +21,29 @@ export default function TokenInputs() {
         name: "tokens",
     });
 
-    const { response: Tokens } = fetchTokens();
-
     const tokensValues = watch("tokens")?.filter(
         (x) => x?.name && x?.percent > 0
     );
+    const { response: Tokens } = fetchTokens();
+
     const list = tokensValues?.map((x) => ({
         ...x,
         value: x?.percent,
-        icon: Tokens?.find(y => y.name === x.name)?.logo,
+        icon: Tokens?.find(y => y.name === x.name)?.logo_url,
         marketPrice: Tokens?.find(y => y.name === x.name)?.price,
+        symbol: Tokens?.find(y => y.name === x.name)?.symbol,
     }));
-
+    console.log("Step3: ", fields)
     return (
         <>
             <ul className="pt-2 ">
-                {list.map((token, tokenIdx) => <li key={token?.id} className="p-2 rounded-lg border border-white mb-4">
+                {list.map((token, tokenIdx) => <li key={token?.id} className="p-2 rounded-lg border mb-4">
                     <div className="flex justify-between p-1">
                         <div className="flex items-center h-10 px-3 gap-x-2 bg-[#EAF0F6] mr-2 rounded-lg">
                             {/*Symbol*/}
-                            <img alt="" src={token?.logo} className="h-6" />
+                            <img alt="" src={token?.icon} className="h-6" />
                             {/*Name*/}
-                            <div className="text-base font-medium">{token?.name}</div>
+                            <div className="text-base font-medium">{token?.symbol}</div>
                             {/*Weight*/}
                             <div className="text-sm	text-gray-700">{token?.percent}%</div>
                         </div>
@@ -58,15 +59,15 @@ export default function TokenInputs() {
                             }}
                         />
                     </div>
-                    <div className="flex justify-between text-sm text-white">
+                    <div className="flex justify-between text-sm">
                         <div>Balance: <span>0</span></div>
                         <div>${(token?.amount * token?.marketPrice).toFixed(2)}</div>
                     </div>
                 </li>)}
             </ul>
 
-            <div className="px-3 py-4 border border-white rounded-lg mb-5">
-                <div className="flex justify-between text-base text-white font-semibold">
+            <div className="px-3 py-4 border rounded-lg mb-5">
+                <div className="flex justify-between text-base font-semibold">
                     <span>Total</span><span>${fields.map(token => (+token?.amount * token?.marketPrice)).reduce(
                         (accumulator, currentValue) => accumulator + currentValue,
                         0,

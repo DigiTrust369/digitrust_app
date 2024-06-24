@@ -133,7 +133,7 @@ async function postData(url = "", data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-export default function Header(props: { isHome: boolean }) {
+export default function Header(props: { isHome: boolean, isDetail: boolean | false }) {
   const format = useFormatter();
   const { startOnborda } = useOnborda();
   const { userEmail, setUserEmail } = useGlobalContext();
@@ -344,13 +344,12 @@ export default function Header(props: { isHome: boolean }) {
     }
   }, [email]);
 
-  const classes = `flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base ${
-    props.isHome ? "bg-white" : "bg-blue-600 text-white"
-  }`;
+  const classes = `w-[84%] mx-auto flex items-center justify-between px-5 py-2 text-sm rounded-xl xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
+    }`;
 
   return (
-    <Fragment>
-      {email == "" && (
+    <div className={props.isDetail ? "bg-blue-50" : ""} >
+      {email == "" ? (
         <div className="bg-blue-400 text-white flex items-center justify-center py-2">
           <Image
             src={Hot}
@@ -366,7 +365,7 @@ export default function Header(props: { isHome: boolean }) {
             className="animate-pulse"
           />
         </div>
-      )}
+      ) : (<div className="h-5"></div>)}
       <header className={classes}>
         {/* Logo */}
         <div>
@@ -428,9 +427,8 @@ export default function Header(props: { isHome: boolean }) {
         </nav>*/}
         {email != "" && (
           <nav
-            className={`hidden sm:block pt-3 ${
-              props.isHome ? "" : "text-white"
-            }`}
+            className={`hidden sm:block pt-3 ${props.isHome ? "" : "text-white"
+              }`}
           >
             <ul className="flex justify-center gap-x-10">
               <li key={"profile"}>
@@ -462,9 +460,8 @@ export default function Header(props: { isHome: boolean }) {
             <div className="hidden sm:block">
               <div className="flex flex-1 justify-end gap-x-3 ">
                 <div
-                  className={`flex items-center pt-3 capitalize w-fit ${
-                    props.isHome ? "text-blue-600" : "text-white"
-                  }`}
+                  className={`flex items-center pt-3 capitalize w-fit ${props.isHome ? "text-blue-600" : "text-white"
+                    }`}
                 >
                   <WalletIcon></WalletIcon>
                   <span className="font-bold pl-2">
@@ -476,11 +473,10 @@ export default function Header(props: { isHome: boolean }) {
                 </div>
 
                 <div
-                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${
-                    props.isHome
-                      ? "border border-blue-600 text-white"
-                      : "bg-white text-blue-600"
-                  }`}
+                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${props.isHome
+                    ? "border border-blue-600 text-white"
+                    : "bg-white text-blue-600"
+                    }`}
                 >
                   <div className="flex items-center gap-x-2">
                     <button className=" bg-white rounded-md">
@@ -979,6 +975,6 @@ export default function Header(props: { isHome: boolean }) {
           </>
         )}
       </header>
-    </Fragment>
+    </div>
   );
 }

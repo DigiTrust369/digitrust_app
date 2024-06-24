@@ -84,7 +84,7 @@ const TokensFields = (props: Props) => {
   }
 
   return (
-    <div className="w-full my-4">
+    <div className="w-full my-4 px-4">
       {fields.map((token, tokenIdx) => {
         const excludeFields = watchTokens
           .filter((_, idx) => idx !== tokenIdx)
@@ -94,11 +94,10 @@ const TokensFields = (props: Props) => {
           (x) => !excludeFields.includes(x.name) || token.name === x.name
         );
 
-        console.log("Token options:", tokenOptions);
         return (
           <div className="input-group p-1 flex items-center" key={tokenIdx}>
             {/* button */}
-            <div className="w-full">
+            <div className="w-1/3">
               <Dropdown
                 placeholder="Select token"
                 list={tokenOptions}
@@ -113,7 +112,7 @@ const TokensFields = (props: Props) => {
             {/* input number */}
             <input
               type="number"
-              className="input h-10 text-xl text-right font-numeric mx-4 w-full px-2"
+              className="input h-10 text-xl text-right font-numeric ml-4 mr-1 w-1/2 pl-2"
               value={+token?.percent}
               {...register(`tokens.${tokenIdx}.percent`)}
               onChange={(e) => {
@@ -122,7 +121,7 @@ const TokensFields = (props: Props) => {
                   percent: +e?.target?.value,
                 });
               }}
-            />
+            />%
             {/* input number */}
             {/* buttons */}
             <div className="flex flex-row items-center">

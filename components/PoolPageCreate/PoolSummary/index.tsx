@@ -14,12 +14,7 @@ import { fetchTokens } from "../Step1TokenAndWeights/const";
 
 type Props = {};
 
-const colors = ["#ffed00", "#ff0000", "#27272A"];
-
-const list = [
-  { name: "RAI", value: 1 },
-  { name: "SUSHI", value: 1 },
-];
+const colors = ["#ffed00", "#ff0000", "#27272A", "#008000", "#FFA500", "#0000FF", "#A020F0"];
 
 const PoolSummary = (props: Props) => {
   const { watch } = useTypedForm("CreateVaults");
@@ -31,20 +26,21 @@ const PoolSummary = (props: Props) => {
   const list = tokensValues?.map((x) => ({
     ...x,
     value: x?.percent,
-    icon: Tokens?.find(y => y.name === x.name)?.logo,
+    icon: Tokens?.find(y => y.name === x.name)?.logo_url,
     marketPrice: Tokens?.find(y => y.name === x.name)?.price,
+    symbol: Tokens?.find(y => y.name === x.name)?.symbol,
   }));
 
   return (
     <div className={cn("flex flex-col", styles.root)}>
       <div className="flex flex-col bal-card rounded-lg overflow-hidden bg-white dark:bg-gray-850 shadow-xl content styles_root__XCc9d">
-        <div className="text-white px-4 py-4">Pool summary</div>
+        <div className="px-4 py-4">Pool summary</div>
         <div>
           <div className={styles["divider"]}></div>
         </div>
         {/* chart */}
         <div className="px-4 py-4">
-          <ResponsiveContainer width={280} height={280}>
+          <ResponsiveContainer width={280} height={300}>
             <PieChart width={280} height={280}>
               <Pie
                 dataKey="value"
@@ -65,7 +61,7 @@ const PoolSummary = (props: Props) => {
         {/* chart */}
       </div>
       <div className="mt-4 flex flex-col bal-card rounded-lg overflow-hidden bg-white dark:bg-gray-850 shadow-xl content styles_root__XCc9d">
-        <div className="text-white px-4 py-4 flex">
+        <div className="px-4 py-4 flex">
           <div className="mr-2">Token prices</div>
           <div>
             <svg
@@ -92,10 +88,10 @@ const PoolSummary = (props: Props) => {
         <div className="px-4 py-4">
           {list.map((x, idx) => (
             <div
-              className="flex items-center justify-between text-white py-1"
+              className="flex items-center justify-between py-1"
               key={idx}
             >
-              <span className="mr-4">{x?.name}</span>
+              <span className="mr-4">{x?.symbol}</span>
               <div className="flex flex-row justify-center">
                 <div className="mr-4">
                   <span>${x?.marketPrice}</span>

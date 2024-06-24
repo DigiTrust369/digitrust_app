@@ -65,7 +65,7 @@ const navLinksRight = [
   {
     id: 2,
     title: "FAQs",
-    link: "/",
+    link: "#faqs",
   },
 
   {
@@ -179,9 +179,10 @@ export default function Footer() {
               {navLinksRight.map((item) => (
                 <li key={item.id}>
                   <Link
-                    className="capitalize duration-300 hover:text-blue-600"
+                    className="capitalize duration-300 hover:text-blue-600 "
                     href={item.link}
                     key={item.id}
+                    scroll={true}
                   >
                     {item.title}
                   </Link>
