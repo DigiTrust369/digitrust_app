@@ -25,29 +25,29 @@ const Step1TokenAndWeights = (props: Props) => {
   );
 
   async function createPool(event: any) {
-    event.preventDefault();
+    // event.preventDefault();
 
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
-    const txb = new TransactionBlock();
-    const contractAddress = "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
-    const contractModule = "book";
-    const contractMethod = "new_pool";
-    txb.moveCall({
-      target: `${contractAddress}::${contractModule}::${contractMethod}`,
-      arguments: [
-        txb.pure("0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453")
-      ],
-      typeArguments: [
-        "0x2::sui::SUI", //QUOTE_COIN_TYPE,
-        "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT" //BASE_COIN_TYPE
-      ]
-    });
+    // const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+    // const txb = new TransactionBlock();
+    // const contractAddress = "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c";
+    // const contractModule = "book";
+    // const contractMethod = "new_pool";
+    // txb.moveCall({
+    //   target: `${contractAddress}::${contractModule}::${contractMethod}`,
+    //   arguments: [
+    //     txb.pure("0x016b9a6e8e171665973eff12f701058ddb37c2dcaaf0e9616949b82d88521453")
+    //   ],
+    //   typeArguments: [
+    //     "0x2::sui::SUI", //QUOTE_COIN_TYPE,
+    //     "0xe733afcdbcd61f8a795342dfb3cf4ea8977b3426a0f1df7a2bd3c50d23d1c99c::dgt::DGT" //BASE_COIN_TYPE
+    //   ]
+    // });
 
-    await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
+    // await signAndExecuteTransactionBlock({
+    //   transactionBlock: txb as any,
+    // });
 
-    console.log(txb);
+    // console.log(txb);
   }
 
   return (
@@ -90,11 +90,11 @@ const Step1TokenAndWeights = (props: Props) => {
             {/* row */}
           </div>
           <button
-            className="bal-btn px-4 h-12 text-base  bg-gradient-to-tr from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
+            className="bal-btn px-4 h-12 text-base  bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
             type="button"
-            onClick={createPool}
+            onClick={onNext}
           >
-            Create Pool
+            Create Vault
           </button>
         </div>
         {/* card */}

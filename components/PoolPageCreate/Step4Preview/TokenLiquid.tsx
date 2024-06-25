@@ -26,7 +26,7 @@ export default function TokenLiquid() {
             <ul className="my-4 px-4">
                 {fields.map((token, tokenIdx) => <li key={token?.id} className="p-2">
                     <div className="flex items-center p-1">
-                        <img alt="logo" src={token?.icon} className="h-9 mr-4" />
+                        <img alt="logo" src={token?.logo_url} className="h-9 mr-4" />
                         <div className="w-full">
                             <div className="flex justify-between font-semibold">
                                 <div>{token?.percent}% {token?.symbol}</div>
@@ -34,7 +34,7 @@ export default function TokenLiquid() {
                             </div>
                             <div className="flex justify-between text-sm text-slate-600	">
                                 <div>Initial weight: <span>100%</span></div>
-                                <div>${(token?.amount * token?.marketPrice).toFixed(2)}</div>
+                                <div>${(token?.amount * token?.price).toFixed(2)}</div>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@ export default function TokenLiquid() {
             </ul>
             <div className="px-3 py-4 border-t rounded-lg ">
                 <div className="flex justify-between text-base font-semibold">
-                    <span>Total</span><span>${fields.map(token => (+token?.amount * token?.marketPrice)).reduce(
+                    <span>Total</span><span>${fields.map(token => (+token?.amount * token?.price)).reduce(
                         (accumulator, currentValue) => accumulator + currentValue,
                         0,
                     ).toFixed(2) || '-'}</span>

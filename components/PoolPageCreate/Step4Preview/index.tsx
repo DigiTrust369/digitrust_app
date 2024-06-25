@@ -12,6 +12,7 @@ type Props = {
 };
 
 const Step4Preview = (props: Props) => {
+    const { onBack } = props;
     const { register, control, watch } = useTypedForm("CreateVaults");
     const {
         fields,
@@ -35,7 +36,7 @@ const Step4Preview = (props: Props) => {
                 <div className="flex flex-col mb-4">
                     <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
                     <div className="flex flex-row items-center">
-                        <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button">
+                        <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button" onClick={onBack}>
                             <div className="inline-block bal-icon flex">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +77,7 @@ const Step4Preview = (props: Props) => {
 
                 </div>
                 <button
-                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
+                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
                     type="button"
                 >
                     <div className="content justify-center"> Approve for creating vault</div>
