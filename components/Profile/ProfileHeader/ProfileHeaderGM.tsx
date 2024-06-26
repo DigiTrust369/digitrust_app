@@ -321,6 +321,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         } else {
           setEmail(data?.email);
           setWalletAddress(data?.wallet);
+          sessionStorage.setItem("wallet", data?.wallet)
         }
         window.location.hash = "";
         toast.dismiss(myToast);

@@ -29,6 +29,35 @@ const Step4Preview = (props: Props) => {
         name: "tokens",
     });
     console.log(fields)
+    console.log(sessionStorage.getItem("wallet"))
+    const vaultName = fields.map(token => `${token.amount}${token.symbol}`).join('-');
+    const vaultSymbols = fields.map(token => token.symbol);
+
+    const createVault = () => {
+        const data = {
+            "manager": sessionStorage.getItem("wallet"),
+            "vault_symbol": vaultName,
+            "symbols": vaultSymbols,
+            "token_adrs": ["0x11", "0x1"],
+            "created_at": Date.now(),
+            "end_at": 34234,
+            "manage_fee": 12
+        }
+        const postData = async (data = {}) => {
+            const response = await fetch('https://dgt-dev.vercel.app/v1/create_vault', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            })
+            return response.json()
+        };
+
+        postData(data).then(data => {
+            console.log(data)
+        })
+    }
 
     return (
         <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
@@ -79,6 +108,7 @@ const Step4Preview = (props: Props) => {
                 <button
                     className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
                     type="button"
+                    onClick={createVault}
                 >
                     <div className="content justify-center"> Approve for creating vault</div>
                 </button>
