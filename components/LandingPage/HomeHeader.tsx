@@ -76,7 +76,7 @@ export default function Header() {
     //     </div>
     //   </header>
     // </div>
-    <header className="flex items-center justify-between px-[35px] py-[18px] text-sm xl:px-[120px] xl:text-base">
+    <header className="w-[84%] mx-auto flex items-center justify-between px-5 py-2 text-sm xl:text-base bg-white rounded-xl">
       {/* Logo */}
       <div>
         <Link href="/">
@@ -94,7 +94,7 @@ export default function Header() {
         </Link>
       </div>
       {/* Navigations */}
-      {/*<nav className="hidden lg:block">
+      <nav className="hidden lg:block">
         <ul className="flex items-center gap-x-10">
           {navLinks.map((item) => (
             <li key={item.id}>
@@ -108,7 +108,7 @@ export default function Header() {
             </li>
           ))}
         </ul>
-      </nav>*/}
+      </nav>
       {/* Button */}
       <a className="block" href="/home">
         <Button>Launch App</Button>

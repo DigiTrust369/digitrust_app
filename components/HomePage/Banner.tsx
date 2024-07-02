@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-
-import bannerHero from "@/assets/images/bg-Hero.png";
+import { useState, useEffect, ReactNode } from "react";
+import "@/components/LandingPage/LandingPage.css";
 import arrowUpIc from "@/assets/images/icons/arrow-up-ic.png";
 import depositIc from "@/assets/images/icons/deposit-ic.png";
 import walletIc from "@/assets/images/icons/wallet-ic.png";
@@ -12,10 +11,10 @@ import tvIc from "@/assets/images/icons/tv-ic.png";
 import peopleIc from "@/assets/images/icons/people-ic.png";
 import chartUpIc from "@/assets/images/icons/chart-up-ic.png";
 
-const Banner: React.FC<{ time: number }> = ({ time }) => {
+const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, children }) => {
   const [isChanged, setIsChanged] = useState(false);
   let content = isChanged ? (
-    <div className="relative mx-auto w-[90%] top-[111px]">
+    <div className="mx-auto w-[90%] pt-[111px]">
       <div className="flex-col align-center">
         <h1 className="text-2xl sm:text-[42px] leading-[42px] text-white font-semibold tracking-tight text-center">
           Block any trader in easy 3 steps
@@ -111,7 +110,7 @@ const Banner: React.FC<{ time: number }> = ({ time }) => {
           </div>
         </div>
         <div className="sm:mt-[35px] text-center">
-          <Link href="/detail">
+          <Link href="/pool">
             <button className="bg-white rounded-[10px]">
               <div className="px-5 py-2.5 sm:px-[41px] sm:py-[13px] text-[#2563EB] text-base sm:text-xl font-semibold leading-[30px] tracking-tight">
                 Create Vault
@@ -132,13 +131,9 @@ const Banner: React.FC<{ time: number }> = ({ time }) => {
     };
   }, []);
   return (
-    <section>
-      <div className="relative h-[554px]">
-        <Image
-          className="absolute h-[554px] object-cover"
-          src={bannerHero}
-          alt="bannerHero"
-        />
+    <section className="hero-background">
+      {children}
+      <div className="h-[554px]">
         {content}
       </div>
     </section>

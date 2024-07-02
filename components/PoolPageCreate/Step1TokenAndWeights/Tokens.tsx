@@ -1,12 +1,12 @@
 import _isEmpty from "lodash/isEmpty";
 import { useFieldArray } from "react-hook-form";
-
+import "./styles.module.scss";
 import Dropdown from "@/components/Common/Dropdown";
 import { useTypedForm } from "@/hooks/useTypedForm";
 import AddMoreButton from "./AddMoreButton";
 import LockButton from "./LockButton";
 import TrashButton from "./TrashButton";
-import Tokens from "./const";
+import { fetchTokens } from "./const";
 
 type Props = {};
 
@@ -28,6 +28,8 @@ const TokensFields = (props: Props) => {
   });
 
   const watchTokens = watch("tokens");
+
+  const { response: Tokens } = fetchTokens();
 
   function handleAddMoreToken() {
     if (_isEmpty(fields)) {
@@ -81,20 +83,21 @@ const TokensFields = (props: Props) => {
     remove(tokenIdx);
   }
 
+  console.log("Step1: Fields: ", fields)
   return (
-    <div className="w-full my-4">
+    <div className="w-full my-4 px-4">
       {fields.map((token, tokenIdx) => {
         const excludeFields = watchTokens
           .filter((_, idx) => idx !== tokenIdx)
           .map((x) => x.name)
           .filter(Boolean);
-        const tokenOptions = Tokens.filter(
-          (x) => !excludeFields.includes(x.value) || token.name === x.value
+        const tokenOptions = Tokens?.filter(
+          (x) => !excludeFields.includes(x.name) || token.name === x.name
         );
         return (
           <div className="input-group p-1 flex items-center" key={tokenIdx}>
             {/* button */}
-            <div className="w-full">
+            <div className="w-1/3">
               <Dropdown
                 placeholder="Select token"
                 list={tokenOptions}
@@ -102,6 +105,9 @@ const TokensFields = (props: Props) => {
                   update(tokenIdx, {
                     ...token,
                     name: value,
+                    symbol: Tokens?.find(y => y.name == value)?.symbol,
+                    logo_url: Tokens?.find(y => y.name == value)?.logo_url,
+                    price: Tokens?.find(y => y.name == value)?.price,
                   });
                 }}
               />
@@ -109,7 +115,7 @@ const TokensFields = (props: Props) => {
             {/* input number */}
             <input
               type="number"
-              className="input h-10 text-xl text-right font-numeric mx-4 w-full px-2"
+              className="input h-10 text-xl text-right font-numeric ml-4 mr-1 w-1/2 pl-2"
               value={+token?.percent}
               {...register(`tokens.${tokenIdx}.percent`)}
               onChange={(e) => {
@@ -118,7 +124,7 @@ const TokensFields = (props: Props) => {
                   percent: +e?.target?.value,
                 });
               }}
-            />
+            />%
             {/* input number */}
             {/* buttons */}
             <div className="flex flex-row items-center">

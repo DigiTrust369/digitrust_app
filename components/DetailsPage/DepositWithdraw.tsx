@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import { useOnborda } from "onborda";
 import usdt from "@/assets/images/crypto/tether.svg";
 import usdc from "@/assets/images/crypto/usdc.svg";
-import digitrustLogo from "@/assets/images/digitrust_notext.png";
+import digitrustLogo from "@/assets/images/digitrust_token.png";
 import "./DepositWithdraw.css";
 
 const optionsDeposit = [{ label: "DGT", image: digitrustLogo }];
@@ -558,9 +558,10 @@ export default function DepositWithdraw() {
                               height={24}
                               objectFit="cover"
                             />
-                            <span className="dropdown-option-label pt-1">
+                            <span className="dropdown-option-label">
                               DGT
                             </span>
+                            <span className="dropdown-caret"></span>
                           </div>
                           {/* Dropdown with image */}
                           {/* <div className="dropdown">
@@ -752,9 +753,8 @@ export default function DepositWithdraw() {
                               <span className="dropdown-caret"></span>
                             </div>
                             <ul
-                              className={`dropdown-menu ${
-                                isDropdownWithdrawOpen ? "open" : ""
-                              }`}
+                              className={`dropdown-menu ${isDropdownWithdrawOpen ? "open" : ""
+                                }`}
                             >
                               {optionsWithdraw.map((option, index) => (
                                 <li

@@ -27,7 +27,7 @@ import rectangleBlueRight from "@/assets/images/rectangle-blue-right.png";
 import minus from "@/assets/images/icons/minus.svg";
 import plus from "@/assets/images/icons/plus.svg";
 import "@/components/LandingPage/LandingPage.css";
-import { url } from "inspector";
+import Header from "@/components/LandingPage/HomeHeader";
 
 export default function HomePage() {
   const [isOpen, setIsOpen] = useState({
@@ -47,26 +47,28 @@ export default function HomePage() {
 
   return (
     <>
-      {/* <Layout> */}
-      {/* Hero banner */}
-      <section className="hero-background flex relative">
-        <div className="w-[55%] sm:w-1/2">
-          <div className="z-50 flex-1 space-y-[44px] py-[70px] pl-[50px] text-white xl:max-w-6xl xl:py-[120px] xl:pl-[120px]">
-            <div className="space-y-5">
-              <h3 className="text-base font-normal xl:text-[22px]">
-                Welcome to DigiTrust
-              </h3>
-              <h1 className="font-extrabold leading-normal text-xl md:max-w-lg md:text-5xl xl:max-w-2xl xl:text-[60px] xl:leading-[80px] 2xl:text-[70px]">
-                Introducing Smart Vault Aggregator
-              </h1>
-              <p className="max-w-sm text-sm font-extralight md:leading-[35px] -tracking-[0.4px] md:text-sm xl:max-w-lg xl:text-xl">
-                Your Gateway to Enhanced Investment in the Decentralized Finance
-                Space.
-              </p>
-            </div>
+      <div className="hero-background">
+        <div className="h-5"></div>
+        <Header />
+        {/* Hero banner */}
+        <section className="flex relative">
+          <div className="w-[55%] sm:w-1/2">
+            <div className="z-50 flex-1 space-y-[44px] py-[70px] pl-[50px] text-white xl:max-w-6xl xl:py-[120px] xl:pl-[120px]">
+              <div className="space-y-5">
+                <h3 className="text-base font-normal xl:text-[22px]">
+                  Welcome to DigiTrust
+                </h3>
+                <h1 className="font-extrabold leading-normal text-xl md:max-w-lg md:text-5xl xl:max-w-2xl xl:text-[60px] xl:leading-[80px] 2xl:text-[70px]">
+                  Introducing Smart Vault Aggregator
+                </h1>
+                <p className="max-w-sm text-sm font-extralight md:leading-[35px] -tracking-[0.4px] md:text-sm xl:max-w-lg xl:text-xl">
+                  Your Gateway to Enhanced Investment in the Decentralized Finance
+                  Space.
+                </p>
+              </div>
 
-            <div className="space-y-16">
-              {/* <div className="flex items-center gap-x-[22px] text-base font-medium capitalize leading-[20px]">
+              <div className="space-y-16">
+                {/* <div className="flex items-center gap-x-[22px] text-base font-medium capitalize leading-[20px]">
                     <a className="block" href="/home">
                       <button className="rounded-[10px] bg-white px-6 py-4 text-sm text-blue-600 xl:text-base hover:bg-blue-50">
                         Start Investing
@@ -79,7 +81,7 @@ export default function HomePage() {
                     </a>
                   </div> */}
 
-              {/* <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
+                {/* <div className="flex items-center gap-x-[24px] text-[17px] font-normal leading-[30px] -tracking-[0.34px]">
                     <div className="flex items-center gap-x-1.5 text-sm xl:text-base">
                       <span>
                         <svg
@@ -122,18 +124,18 @@ export default function HomePage() {
                       Great Service
                     </div>
                   </div> */}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="w-[45%] sm:w-1/2 py-7 md:py-14 overflow-hidden">
-          <Image
-            className="h-full object-left-top object-cover"
-            src={imageHero}
-            alt="imageHero"
-          ></Image>
-        </div>
-      </section>
-
+          <div className="w-[45%] sm:w-1/2 py-7 md:py-14 overflow-hidden">
+            <Image
+              className="h-full object-left-top object-cover"
+              src={imageHero}
+              alt="imageHero"
+            ></Image>
+          </div>
+        </section>
+      </div>
       {/* Logo brands */}
       <section className="container mx-auto flex flex-wrap sm:flex-nowrap items-center justify-center gap-x-5 gap-y-7 px-5 py-5 md:gap-x-14 md:gap-y-14 md:px-60 md:py-16 bg-gray">
         <Image className="h-14" src={suiLogo} alt="sui logo"></Image>
@@ -165,7 +167,7 @@ export default function HomePage() {
           AI-Driven Portfolio
         </h1>
         {/* Account abtraction */}
-        <div className="flex flex-wrap md:flex-nowrap	items-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
+        <div className="flex flex-wrap md:flex-nowrap	items-center md:justify-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
           <div className="max-w-sm space-y-10 xl:max-w-lg">
             <h1 className="text-2xl md:text-4xl font-bold uppercase leading-[130%] text-blue-600">
               ACCOUNT ABSTRACTION
@@ -187,16 +189,16 @@ export default function HomePage() {
           </div>
 
           <Image
-            className="ml-auto"
+            className=""
             src={accountAbtraction}
             alt="accountAbtraction"
           ></Image>
         </div>
 
         {/* MULTI-SIGNATURE VAULTS */}
-        <div className="flex flex-wrap md:flex-nowrap	items-center gap-x-5 bg-blue-50 px-[60px] py-10 xl:px-[120px]">
+        <div className="flex flex-wrap md:flex-nowrap	items-center md:justify-center gap-x-5 bg-blue-50 px-[60px] py-10 xl:px-[120px]">
           <Image
-            className="mr-auto"
+            className=""
             src={multiSignatureVaults}
             alt="multiSignatureVaults"
           ></Image>
@@ -225,52 +227,40 @@ export default function HomePage() {
         </div>
 
         {/* AI-DRIVEN INVESTMENT RECOMMENDATIONS */}
-        <div className="relative overflow-hidden pt-10">
-          <Image
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 xl:left-2/3"
-            src={rectangleBlue}
-            alt=""
-          ></Image>
+        <div className="ai-driven flex flex-wrap md:flex-nowrap	items-center md:justify-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
+          <div className="max-w-sm space-y-10 xl:max-w-lg">
+            <h1 className="text-2xl md:text-4xl font-bold uppercase leading-[130%] text-blue-600">
+              AI-DRIVEN INVESTMENT RECOMMENDATIONS
+            </h1>
 
-          <div className="relative z-50 flex items-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
-            <div className="-mt-12 md:-mt-24 max-w-sm space-y-10 xl:max-w-lg">
-              <h1 className="text-2xl md:text-4xl font-bold uppercase leading-[130%] text-blue-600">
-                AI-DRIVEN INVESTMENT RECOMMENDATIONS
-              </h1>
+            <div className="space-y-9 text-base font-normal leading-normal text-gray-600">
+              <p>
+                <span className="font-bold">Personalized Investment Strategies: </span>
+                Analyzes user preferences, risk tolerance, and market trends
+                to generate personalized investment strategies.
+              </p>
 
-              <div className="space-y-9 text-base font-normal leading-normal text-gray-600">
-                <p>
-                  <span className="font-bold">
-                    Personalized Investment Strategies:{" "}
-                  </span>
-                  Analyzes user preferences, risk tolerance, and market trends
-                  to generate personalized investment strategies.
-                </p>
-
-                <p>
-                  <span className="font-bold">Sentiment Analysis: </span>
-                  Incorporating sentiment analysis, the Al assesses social
-                  media, news articles, and other relevant data sources to gauge
-                  market sentiment.
-                </p>
-              </div>
+              <p>
+                <span className="font-bold">Sentiment Analysis: </span>
+                Incorporating sentiment analysis, the Al assesses social
+                media, news articles, and other relevant data sources to gauge
+                market sentiment.
+              </p>
             </div>
-
-            <Image className="ml-auto" src={aiVerify} alt="aiVerify"></Image>
           </div>
+
+          <Image
+            className=""
+            src={aiVerify}
+            alt="aiVerify"
+          ></Image>
         </div>
 
-        {/* AI-DRIVEN INVESTMENT RECOMMENDATIONS */}
-        <div className="relative overflow-hidden md:pt-10">
-          <Image
-            className="absolute left-[35%] top-1/2 -translate-x-1/2 -translate-y-[40%] object-cover"
-            src={rectangleBlueRight}
-            alt="rectangleBlueRight"
-          ></Image>
-
-          <div className="relative h-full">
-            <div className="relative z-50 flex flex-wrap md:flex-nowrap items-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
-              <Image className="mr-auto" src={aiVerify} alt="aiVerify"></Image>
+        {/* AI-VERIFIED AUDIT FOR SMART CONTRACTS */}
+        <div className="ai-verified md:pt-10">
+          <div className="h-full">
+            <div className="relative z-50 flex flex-wrap md:flex-nowrap md:justify-center items-center gap-x-5 px-[60px] py-10 xl:px-[120px]">
+              <Image className="" src={aiVerify} alt="aiVerify"></Image>
               <div className="md:-mt-12 md:-mt-24 max-w-sm space-y-10 xl:max-w-lg">
                 <h1 className="text-2xl md:text-4xl font-bold uppercase leading-[130%] text-blue-600">
                   AI-VERIFIED AUDIT FOR SMART CONTRACTS
@@ -294,7 +284,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative z-50 flex flex-wrap md:flex-nowrap items-center gap-x-5 px-[60px] pb-16 md:pb-32 xl:px-[120px]">
+            <div className="relative z-50 flex flex-wrap md:flex-nowrap md:justify-center items-center gap-x-5 px-[60px] pb-16 md:pb-32 xl:px-[120px]">
               <div className="md:-mt-24 max-w-sm space-y-10 xl:max-w-lg">
                 <h1 className="text-2xl md:text-4xl font-bold uppercase leading-[130%] text-blue-600">
                   PREDICTIVE YIELD FARMING STRATEGIES
@@ -317,7 +307,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Image className="ml-auto" src={aiVerify} alt="aiVerify"></Image>
+              <Image className="" src={aiVerify} alt="aiVerify"></Image>
             </div>
           </div>
         </div>
@@ -922,7 +912,7 @@ export default function HomePage() {
       </section>
 
       {/* Frequently Ask Questions */}
-      <section className="bg-blue-50 px-[60px] md:px-[100px] pb-20 md:pb-[160px] pt-[85px] xl:px-[150px]">
+      <section id="faqs" className="bg-blue-50 px-[60px] md:px-[100px] pb-20 md:pb-[160px] pt-[85px] xl:px-[150px]">
         <h1 className="mb-12 md:mb-[120px] text-center text-3xl md:text-[50px] font-bold leading-[130%]">
           Frequently Ask Questions
         </h1>

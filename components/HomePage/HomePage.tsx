@@ -7,7 +7,7 @@ export default function HomePage() {
     <div>
       <Layout>
         {/* Hero banner */}
-        <Banner time={8000} />
+        {/* <Banner time={8000} /> */}
 
         {/* Vaults */}
         <Vaults />

@@ -15,7 +15,7 @@ const AllowcatedInfo = (props: Props) => {
   const total = Math.min(actualTotal, 100);
 
   return (
-    <div className="p-2 px-4 my-4 w-full bg-slate-800 text-white">
+    <div className="py-2 px-4 w-full rounded-lg bg-gray-50">
       <div className="flex justify-between w-full">
         <span>Total allocated</span>
         <span className={`${actualTotal > total ? "text-red-600" : ""}`}>
@@ -24,7 +24,7 @@ const AllowcatedInfo = (props: Props) => {
       </div>
       <div
         className="progress-track my-2"
-        style={{ background: "rgb(51 65 85)" }}
+        style={{ background: "rgb(234, 240, 246)" }}
       >
         <div
           className="progress-bar h-1 bg-green-400"
