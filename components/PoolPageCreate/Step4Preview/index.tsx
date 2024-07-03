@@ -6,14 +6,26 @@ import { useTypedForm } from "@/hooks/useTypedForm";
 import { useFieldArray } from "react-hook-form";
 import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
+import toast from "react-hot-toast";
 
 type Props = {
     onBack?: () => void;
 };
 
+const postData = async (data = {}) => {
+    const response = await fetch('https://dgt-dev.vercel.app/v1/create_vault', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+    return response;
+};
+
 const Step4Preview = (props: Props) => {
     const { onBack } = props;
-    const { register, control, watch } = useTypedForm("CreateVaults");
+    const { register, control, watch, reset } = useTypedForm("CreateVaults");
     const {
         fields,
         append,
@@ -33,7 +45,7 @@ const Step4Preview = (props: Props) => {
     const vaultName = fields.map(token => `${token.amount}${token.symbol}`).join('-');
     const vaultSymbols = fields.map(token => token.symbol);
 
-    const createVault = () => {
+    const createVault = async () => {
         const data = {
             "manager": sessionStorage.getItem("wallet"),
             "vault_symbol": vaultName,
@@ -43,20 +55,15 @@ const Step4Preview = (props: Props) => {
             "end_at": 34234,
             "manage_fee": 12
         }
-        const postData = async (data = {}) => {
-            const response = await fetch('https://dgt-dev.vercel.app/v1/create_vault', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data)
-            })
-            return response.json()
-        };
 
-        postData(data).then(data => {
-            console.log(data)
-        })
+        const response = await postData(data);
+        const resData = await response.json();
+        if (resData.status == 'ok') {
+            toast.success("Created Vault Successfully !");
+            setTimeout(() => reset(), 5000);
+        } else {
+            toast.error("Something went wrong! Try again!");
+        }
     }
 
     return (
