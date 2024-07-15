@@ -13,6 +13,9 @@ import usdc from "@/assets/images/crypto/usdc.svg";
 import btc from "@/assets/images/crypto/bitcoin.svg";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 import Link from "next/link";
+// import CommentSection from "./Comment/CommentSection";
+import CommentSection from "./Comment/Comments";
+import { TelegramShareButton, TelegramIcon } from "react-share";
 
 interface Asset {
   asset: string;
@@ -38,6 +41,12 @@ export default function Overview() {
   // Call Api
   const [datas, setDatas] = useState<any[]>([]);
   const [dataDetails, setDataDetails] = useState<any>();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
+
+  function clickHandler() {
+    setIsFollowing((prevState) => !prevState);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,9 +86,6 @@ export default function Overview() {
 
   return (
     <div className="mt-11 ">
-      <div className="sm:hidden w-full mb-10 py-1 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
-        <DepositWithdraw />
-      </div>
       <div>
         <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           Overview
@@ -207,8 +213,34 @@ export default function Overview() {
             </table>
           </div>
         </div>
-        <div className="hidden sm:block py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px]">
-          <DepositWithdraw />
+        <div className="hidden h-fit sm:block py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px] "> {/*overflow-y-scroll	*/}
+          {/* <DepositWithdraw /> */}
+          <div className="flex items-center gap-5 justify-between">
+            <div className="flex items-center gap-5">
+              <Image width={48} src={digitrustNoTextLogo} alt='logo' />
+              <h1 className="text-xl	">A NEW VAULT</h1>
+            </div>
+            <button
+              className={`p-3 rounded-[10px] border ${isFollowing && !isUnFollowedDisplayed
+                ? "border-blue-600 text-blue-600"
+                : "bg-blue-600 text-white"
+                } ${isFollowing && isUnFollowedDisplayed
+                  ? "bg-red-300 text-white"
+                  : ""
+                } text-base leading-normal font-medium tracking-tight`}
+              onClick={clickHandler}
+              onMouseEnter={() => setIsUnFollowedDisplayed(true)}
+              onMouseLeave={() => setIsUnFollowedDisplayed(false)}
+            >
+              {isFollowing && !isUnFollowedDisplayed && "Following"}
+              {isFollowing && isUnFollowedDisplayed && "Unfollow"}
+              {!isFollowing && "Follow"}
+            </button>
+          </div>
+          <TelegramShareButton url="Digitrust" title='Join with us' className="mt-5 flex gap-2 items-center">
+            Share <TelegramIcon size={30} />
+          </TelegramShareButton>
+          <CommentSection />
         </div>
       </div>
     </div>

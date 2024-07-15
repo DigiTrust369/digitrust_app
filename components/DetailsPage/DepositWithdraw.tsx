@@ -40,7 +40,11 @@ async function postData(url = "", data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-export default function DepositWithdraw() {
+interface Props {
+  defaultIndex: number;
+}
+
+export default function DepositWithdraw({ defaultIndex }: Props) {
   const [depositAmount, setDepositAmount] = useState(1);
   const [withdrawAmount, setWithdrawAmount] = useState(1);
   const wallet = useWallet();
@@ -223,10 +227,10 @@ export default function DepositWithdraw() {
 
   return (
     <div className="w-full rounded-[10px]">
-      <div className="w-full h-[492px]">
-        <Tab.Group>
+      <div className="w-full">
+        <Tab.Group defaultIndex={defaultIndex}>
           <Tab.List className="mb-5 sm:mb-[40px] flex items-center gap-x-[6px] rounded-xl bg-[#E0E9F4] p-1">
-            <Tab as={Fragment}>
+            <Tab as={Fragment} >
               {({ selected }) => (
                 <button
                   className={
@@ -239,7 +243,7 @@ export default function DepositWithdraw() {
                 </button>
               )}
             </Tab>
-            <Tab as={Fragment}>
+            <Tab as={Fragment} >
               {({ selected }) => (
                 <button
                   className={
