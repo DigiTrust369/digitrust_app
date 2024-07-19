@@ -383,41 +383,16 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           )}
         </div>
 
-        {/* Navigations */}
-        {/*<nav className="hidden lg:block ml-20">
-          <ul className="flex justify-cente gap-x-10">
-            {navLinks.map((item) => (
-              <li>
-                <Link
-                  className="capitalize duration-300 hover:text-blue-600"
-                  href={item.link}
-                  key={item.id}
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>*/}
-        {email != "" && (
-          <nav
-            className={`hidden sm:block ${props.isHome ? "" : "text-white"
-              }`}
-          >
-            <ul className="flex justify-center gap-x-10">
-              <li key={"profile"}>
-                <Link className="ml-2" href={"/profile"}>
-                  Profile
-                </Link>
-              </li>
-              <li key={"logout"}>
-                <button className="astext ml-2" onClick={logOutWallet}>
-                  Log out
-                </button>
-              </li>
-            </ul>
-          </nav>
-        )}
+        {/* Create vault button */}
+        {props.isHome ? (<button>
+          <Link href="/pool">
+            <div className="px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 bg-blue-600 text-white hover:drop-shadow-md">
+              Click to create your profile
+            </div>
+          </Link>
+        </button>) : <></>}
+
+        {/* Login button */}
         {email == "" ? (
           <button
             className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"

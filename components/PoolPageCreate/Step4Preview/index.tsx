@@ -70,7 +70,7 @@ const Step4Preview = (props: Props) => {
         <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
             <div className="flex flex-col">
                 <div className="flex flex-col mb-4">
-                    <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
+                    {/* <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span> */}
                     <div className="flex flex-row items-center">
                         <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button" onClick={onBack}>
                             <div className="inline-block bal-icon flex">
@@ -90,14 +90,14 @@ const Step4Preview = (props: Props) => {
                                 </svg>
                             </div>
                         </button>
-                        <h5 className="font-semibold">Preview new weighted pool</h5>
+                        <h5 className="font-semibold">Preview new weighted profile</h5>
                     </div>
                 </div>
 
                 <div className="flex flex-col border rounded-lg mb-4">
                     {/* row */}
                     <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
-                        Tokens and initial seed liquidity
+                        Tokens and initial profile
                     </h6>
                     {/* row */}
                     {/* row */}
@@ -117,7 +117,7 @@ const Step4Preview = (props: Props) => {
                     type="button"
                     onClick={createVault}
                 >
-                    <div className="content justify-center"> Approve for creating vault</div>
+                    <div className="content justify-center"> Approve for creating profile</div>
                 </button>
             </div>
         </div>

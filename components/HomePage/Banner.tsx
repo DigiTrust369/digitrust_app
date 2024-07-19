@@ -142,8 +142,8 @@ const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, childre
   return (
     <section className="hero-background">
       {children}
-      <div className="h-[554px]">
-        {content}
+      <div className="">
+        {/* {content} */}
       </div>
     </section>
   );
