@@ -17,6 +17,7 @@ import Link from "next/link";
 import CommentSection from "./Comment/Comments";
 import { TelegramShareButton, TelegramIcon } from "react-share";
 
+
 interface Asset {
   asset: string;
   symbol: string;
@@ -91,8 +92,8 @@ export default function Overview() {
           Overview
         </h1>
       </div>
-      <div className="flex flex-wrap sm:flex-nowrap justify-between">
-        <div className="w-full sm:w-[67%] h-full ">
+      <div className="flex flex-col lg:flex-row bg-background text-foreground p-4">
+        <div className="flex-1">
           {/* Balance */}
           <div className="sm:grid sm:grid-cols-3 sm:gap-x-4">
             <div className="sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
@@ -213,8 +214,7 @@ export default function Overview() {
             </table>
           </div>
         </div>
-        <div className="hidden h-fit sm:block py-10 sm:py-0 sm:w-[30%] h-[297px] rounded-[10px] "> {/*overflow-y-scroll	*/}
-          {/* <DepositWithdraw /> */}
+        {/* <div className="hidden h-fit sm:block py-10 sm:py-0 sm:w-[30%] rounded-[10px] ">
           <div className="flex items-center gap-5 justify-between">
             <div className="flex items-center gap-5">
               <Image width={48} src={digitrustNoTextLogo} alt='logo' />
@@ -241,7 +241,8 @@ export default function Overview() {
             Share <TelegramIcon size={30} />
           </TelegramShareButton>
           <CommentSection />
-        </div>
+        </div> */}
+
       </div>
     </div>
   );
