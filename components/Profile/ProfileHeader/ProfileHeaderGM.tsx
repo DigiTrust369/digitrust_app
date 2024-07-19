@@ -411,12 +411,25 @@ export default function Header(props: { isHome: boolean }) {
             ))}
           </ul>
         </nav>*/}
-        {email != "" &&
-          <nav className={`hidden sm:block pt-3 ${props.isHome ? "" : "text-white"}`}>
-            <ul className="flex justify-center gap-x-10"><li key={'profile'}><Link className="ml-2" href={"/profile"}>Profile</Link></li>
-              <li key={'logout'}><button className="astext ml-2" onClick={logOutWallet}>Log out</button></li></ul>
+        {email != "" && (
+          <nav
+            className={`hidden sm:block ${props.isHome ? "" : "text-white"
+              }`}
+          >
+            <ul className="flex justify-center gap-x-10">
+              <li key={"profile"}>
+                <Link className="ml-2" href={"/profile"}>
+                  Profile
+                </Link>
+              </li>
+              <li key={"logout"}>
+                <button className="astext ml-2" onClick={logOutWallet}>
+                  Log out
+                </button>
+              </li>
+            </ul>
           </nav>
-        }
+        )}
         {email == "" ? (
           <button
             className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"

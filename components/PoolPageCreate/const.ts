@@ -5,15 +5,15 @@ export const STEPS = [
   },
   {
     value: 2,
-    label: "Set pool fees",
+    label: "Set profile management fee",
   },
   {
     value: 3,
-    label: "Set initial liquidity",
+    label: "Set initial profile",
   },
   {
     value: 4,
-    label: "Confirm pool creation",
+    label: "Confirm profile creation",
   },
 ];
 

@@ -14,7 +14,7 @@ const PoolSteps = (props: Props) => {
   return (
     <div className={cn("flex flex-col rounded-lg", styles.root)}>
       <div className="text-base text-center px-4 py-4">
-        Create a weighted pool steps
+        Create a weighted profile steps
       </div>
       <div>
         <div className={styles["divider"]}></div>

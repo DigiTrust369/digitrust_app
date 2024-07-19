@@ -15,7 +15,7 @@ const Step3InitLiquid = (props: Props) => {
     <div className={cn(styles.root, "bal-card content p-4")}>
       <div className="flex flex-col">
         <div className="flex flex-col mb-4">
-          <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
+          {/* <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span> */}
           <div className="flex flex-row items-center">
             <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button" onClick={onBack}>
               <div className="inline-block bal-icon flex">
@@ -35,7 +35,7 @@ const Step3InitLiquid = (props: Props) => {
                 </svg>
               </div>
             </button>
-            <h5 className="font-semibold">Set initial liquidity</h5>
+            <h5 className="font-semibold">Set initial profile</h5>
           </div>
         </div>
 

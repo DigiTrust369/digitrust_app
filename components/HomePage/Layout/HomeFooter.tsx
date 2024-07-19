@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { scriptURLPost } from "@/constants/google";
+import toast, { Toaster } from "react-hot-toast";
+import { FormEvent, useState } from "react";
 
 import digitrustLogo from "@/assets/images/digitrust.png";
 
@@ -77,6 +80,43 @@ const navLinksRight = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+
+  async function submitHandler(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = {
+      Wallet: "0x12345",
+      Email: email,
+      Date: new Date(),
+    };
+
+    var keyValuePairs = [];
+
+    for (let [key, value] of Object.entries(form)) {
+      keyValuePairs.push(key + "=" + value);
+    }
+
+    var formDataString = keyValuePairs.join("&");
+
+    const response = await fetch(scriptURLPost, {
+      redirect: "follow",
+      mode: "no-cors",
+      method: "POST",
+      body: formDataString,
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
+
+    toast.success("Thank you for subscribing!");
+
+    setEmail("");
+    const url = `https://script.google.com/macros/s/AKfycbwpKywlfgvuc_P_6ZYtAArtiKW9pgEmGuuKpmWOsqcAqQbG2C1My2kaV3eQkUdMicTK/exec?email=${email}`;
+    const res = await fetch(url);
+    const da = await res.json();
+  }
+
   return (
     <footer className="text-sm xl:text-base bg-white">
       <div className="justify-between space-y-12 px-[60px] py-14 lg:flex lg:space-y-0 xl:px-[120px]">
@@ -139,53 +179,31 @@ export default function Footer() {
         </div>
 
         <div className="hidden sm:display-block space-y-10 lg:flex lg:justify-end lg:gap-x-[75px] lg:space-y-0">
-          <nav>
-            <ul className="space-y-3 text-sm leading-[20px] lg:space-y-[48px] xl:text-base">
-              {navLinksLeft.map((item) => (
-                <li>
-                  <Link
-                    className="capitalize duration-300 hover:text-blue-600"
-                    href={item.link}
-                    key={item.id}
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav>
-            <ul className="space-y-3 text-sm leading-[20px] lg:space-y-[48px] xl:text-base">
-              {navLinksCenter.map((item) => (
-                <li>
-                  <Link
-                    className="capitalize duration-300 hover:text-blue-600"
-                    href={item.link}
-                    key={item.id}
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav>
-            <ul className="space-y-3 text-sm leading-[20px] lg:space-y-[48px] xl:text-base">
-              {navLinksRight.map((item) => (
-                <li>
-                  <Link
-                    className="capitalize duration-300 hover:text-blue-600"
-                    href={item.link}
-                    key={item.id}
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="relative space-y-[30px] pt-[60px] px-5 sm:pl-[70px]">
+            <div className="space-y-[13px]">
+              <p className="text-base font-normal leading-[150%]">
+                Subscribe to our newsletter to get early information and special
+                calls.
+              </p>
+            </div>
+            <div className="text-gray-800">
+              <form onSubmit={submitHandler} method="post">
+                <input
+                  className="w-[370px] sm:w-[500px] rounded-full py-5 pl-[30px] md:pr-[200px] focus:outline-none xl:text-base border border-blue-600"
+                  type="email"
+                  placeholder="Enter your Email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="absolute left-[265px] sm:left-[436px] mt-[5px] items-center rounded-full bg-blue-600 px-[45px] py-4 text-white duration-300 hover:bg-blue-500/90"
+                >
+                  Start
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
 
