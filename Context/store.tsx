@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, Dispatch, SetStateAction, useState, Children, ReactElement } from "react";
-import AlgorandIcon from "@/icons/AlgorandIcon";
+import KlayIcon from "@/icons/KlayIcon";
 
 interface ContextProps {
     userEmail: string,
@@ -17,15 +17,15 @@ const GlobalContext = createContext<ContextProps>({
     setUserEmail: (): string => '',
     chain: '',
     setChain: (): string => '',
-    selectedKeys: <AlgorandIcon />,
+    selectedKeys: <KlayIcon />,
     setSelectedKeys: (): ReactElement<any, any> => <></>,
 })
 
 export const GlobalContextProvider = ({ children }) => {
     const [userEmail, setUserEmail] = useState('');
-    const [chain, setChain] = useState('Algorand');
+    const [chain, setChain] = useState('Klaytn');
     const [selectedKeys, setSelectedKeys] = useState(
-        <AlgorandIcon />
+        <KlayIcon />
     );
     return (
         <GlobalContext.Provider value={{ userEmail, setUserEmail, chain, setChain, selectedKeys, setSelectedKeys }}>

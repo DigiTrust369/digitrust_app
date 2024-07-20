@@ -27,7 +27,7 @@ import { redirect } from 'next/navigation'
 interface Props {
     isHome: boolean;
     email: string;
-    walletAddress: string;
+    walletAddress: string | null;
     point: number;
     chain: string;
     setChain: (chain: string) => void;
