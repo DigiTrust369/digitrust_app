@@ -25,7 +25,7 @@ import digitrustWhiteLogo from "@/assets/images/digitrust_white.png";
 import digitrustNoTextWhiteLogo from "@/assets/images/digitrust_white_notext.png";
 import digitrustLogo from "@/assets/images/digitrust.png";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
-import { scriptURLPost, scriptURLGet } from "@/constants/google";
+import { scriptURLPostAlgorand, scriptURLGetAlgorand, scriptURLGetEvmApt, scriptURLPostEvmApt } from "@/constants/google";
 import { setBalance } from "viem/actions";
 import Hot from "@/assets/images/Hot.png";
 import { useGlobalContext } from "@/Context/store";
@@ -136,7 +136,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState<string | ''>("");
+  const [walletAddress, setWalletAddress] = useState<string | null>("");
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
@@ -229,69 +229,108 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
         const NewdecodedJwt = jwtDecode(oauthParams.id_token as string);
 
+        let scriptURLGet;
+        if (chain === "Klaytn") {
+          scriptURLGet = scriptURLGetEvmApt;
+        }
+        if (chain === "Algorand") {
+          scriptURLGet = scriptURLGetAlgorand;
+        }
         const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
         const res = await fetch(url);
         const data = await res.json();
 
         if (data == null) {
-          //Get EVM address
-          // const account_id = generateRandomness().substring(0, 4);
-          // const address_id = generateRandomness().substring(0, 3);
+          if (chain === "Klaytn") {
+            //Get EVM address
+            const account_id = generateRandomness().substring(0, 4);
+            const address_id = generateRandomness().substring(0, 3);
 
-          // const { evmAddress } = await generateAddress(account_id, address_id);
+            const { evmAddress } = await generateAddress(account_id, address_id);
 
-          // const { aptAddress } = await generateAPTAddress(account_id);
+            const { aptAddress } = await generateAPTAddress(account_id);
 
-          //Get Algorand address
-          const { algoAddress } = await generateAlgorandAddress(
-            NewdecodedJwt?.email
-          );
+            if (evmAddress != null && aptAddress != null) {
+              const form = {
+                Email: NewdecodedJwt?.email,
+                Date: new Date(),
+                EVMAddress: evmAddress.address,
+                AptosAddress: aptAddress.address,
+              };
 
-          if (algoAddress != null) {
-            const form = {
-              Email: NewdecodedJwt?.email,
-              AlgorandAddress: algoAddress.address,
-              Date: new Date(),
-            };
+              var keyValuePairs = [];
 
-            var keyValuePairs = [];
+              for (let [key, value] of Object.entries(form)) {
+                keyValuePairs.push(key + "=" + value);
+              }
 
-            for (let [key, value] of Object.entries(form)) {
-              keyValuePairs.push(key + "=" + value);
+              var formDataString = keyValuePairs.join("&");
+
+              const response = await fetch(scriptURLPostEvmApt, {
+                redirect: "follow",
+                mode: "no-cors",
+                method: "POST",
+                body: formDataString,
+                headers: {
+                  "Content-Type": "text/plain;charset=utf-8",
+                },
+              });
+              sessionStorage.setItem("wallet", evmAddress);
             }
-
-            var formDataString = keyValuePairs.join("&");
-
-            const response = await fetch(scriptURLPost, {
-              redirect: "follow",
-              mode: "no-cors",
-              method: "POST",
-              body: formDataString,
-              headers: {
-                "Content-Type": "text/plain;charset=utf-8",
-              },
-            });
-            setEmail(NewdecodedJwt?.email);
-            sessionStorage.setItem("wallet", algoAddress);
-            await postData("https://dgt-dev.vercel.app/v1/claim_token", {
-              receiver: NewdecodedJwt?.email,
-              amount: 1024,
-              created_at: new Date(),
-              email: NewdecodedJwt?.email,
-            }).then((data) => {
-              console.log(data); // JSON data parsed by `data.json()` call
-              toast.success(
-                "Claim your first token success!\n Let's try Digitrust!",
-                {
-                  style: {
-                    maxWidth: "900px",
-                  },
-                  duration: 5000,
-                }
-              );
-              //startOnborda();
-            });
           }
+
+          if (chain === "Algorand") {
+            //Get Algorand address
+            const { algoAddress } = await generateAlgorandAddress(
+              NewdecodedJwt?.email
+            );
+
+            if (algoAddress != null) {
+              const form = {
+                Email: NewdecodedJwt?.email,
+                AlgorandAddress: algoAddress.address,
+                Date: new Date(),
+              };
+
+              var keyValuePairs = [];
+
+              for (let [key, value] of Object.entries(form)) {
+                keyValuePairs.push(key + "=" + value);
+              }
+
+              var formDataString = keyValuePairs.join("&");
+
+              const response = await fetch(scriptURLPostAlgorand, {
+                redirect: "follow",
+                mode: "no-cors",
+                method: "POST",
+                body: formDataString,
+                headers: {
+                  "Content-Type": "text/plain;charset=utf-8",
+                },
+              });
+              sessionStorage.setItem("wallet", algoAddress);
+            }
+          }
+          setEmail(NewdecodedJwt?.email);
+          await postData("https://dgt-dev.vercel.app/v1/claim_token", {
+            receiver: NewdecodedJwt?.email,
+            amount: 1024,
+            created_at: new Date(),
+            email: NewdecodedJwt?.email,
+          }).then((data) => {
+            console.log(data); // JSON data parsed by `data.json()` call
+            toast.success(
+              "Claim your first token success!\n Let's try Digitrust!",
+              {
+                style: {
+                  maxWidth: "900px",
+                },
+                duration: 5000,
+              }
+            );
+            //startOnborda();
+          });
         } else {
           setEmail(data?.email);
           setWalletAddress(data?.wallet);
