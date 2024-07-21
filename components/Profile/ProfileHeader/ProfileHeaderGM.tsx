@@ -239,7 +239,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
         const res = await fetch(url);
         const data = await res.json();
-
+        console.log(data);
         if (data == null) {
           if (chain === "Klaytn") {
             //Get EVM address
@@ -312,6 +312,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
               sessionStorage.setItem("wallet", algoAddress);
             }
           }
+
           setEmail(NewdecodedJwt?.email);
           await postData("https://dgt-dev.vercel.app/v1/claim_token", {
             receiver: NewdecodedJwt?.email,
@@ -359,6 +360,31 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
   const classes = `w-[84%] mx-auto flex items-center justify-between px-5 py-2 text-sm rounded-xl xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
     }`;
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      console.log(chain);
+      let scriptURLGet;
+      if (chain === "Klaytn") {
+        scriptURLGet = scriptURLGetEvmApt;
+      }
+      if (chain === "Algorand") {
+        scriptURLGet = scriptURLGetAlgorand;
+      }
+      console.log(scriptURLGet);
+      const url = `${scriptURLGet}?email=${email}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log(data);
+        setWalletAddress(data?.wallet)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  },[chain])
 
   return (
     <div className={props.isDetail ? "bg-blue-50" : ""} >

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useFormatter } from "next-intl";
 import {
@@ -33,7 +33,6 @@ interface Props {
 
 export default function InfoDropdown({ isHome, email, walletAddress, point, login: beginZkLogin, logout: logOutWallet, selectedKeys, setSelectedKeys, chain, setChain }: Props) {
     const format = useFormatter();
-
     return (
         <div className="flex gap-5">
             <ChainDropdown chain={chain} setChain={setChain} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
