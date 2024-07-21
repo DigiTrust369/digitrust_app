@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
-import { scriptURLPost } from "@/constants/google";
+import { scriptURLPostEvmApt } from "@/constants/google";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent, useState } from "react";
 
@@ -99,7 +99,7 @@ export default function Footer() {
 
     var formDataString = keyValuePairs.join("&");
 
-    const response = await fetch(scriptURLPost, {
+    const response = await fetch(scriptURLPostEvmApt, {
       redirect: "follow",
       mode: "no-cors",
       method: "POST",
