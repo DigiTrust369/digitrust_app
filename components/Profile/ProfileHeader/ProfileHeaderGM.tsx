@@ -141,6 +141,12 @@ export default function Header(props: { isHome: boolean }) {
       <Down />
     </>
   );
+
+  useEffect(() => {
+    console.log(selectedKeys.props.children[1]);
+    setChain(selectedKeys.props.children[1]);
+  },[selectedKeys])
+
   const iconClasses =
     "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
@@ -158,6 +164,7 @@ export default function Header(props: { isHome: boolean }) {
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
   const [point, setPoint] = useState(0);
+  const [chain, setChain] = useState('Klaytn');
 
   useEffect(() => {
     const getOauthParams = async () => {
@@ -556,7 +563,7 @@ export default function Header(props: { isHome: boolean }) {
                   <Button isIconOnly variant="bordered" className={`p-4 capitalize w-fit text-blue-600 ${props.isHome ? "" : "bg-white"}`} disableRipple>
                     <WalletIcon></WalletIcon>
                     <span className="font-bold pl-4">
-                      <div className="px-1">{"0x1234...6789"}</div>
+                      <div className="px-1">{chain == 'Klaytn'? "0x1234...6789":chain == 'Sui'? "0x98765...4321":chain == 'Aptos'?"0x2222...2222":chain == 'Algorand'?"0x1111...1111":"0x0000...0000"}</div>
                     </span>
                   </Button>
                 </DropdownTrigger>
