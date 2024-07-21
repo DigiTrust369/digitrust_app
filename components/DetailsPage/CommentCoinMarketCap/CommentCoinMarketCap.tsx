@@ -184,8 +184,15 @@ export default function Comment() {
                     {isFollowed ? "Unfollow" : "Follow"}
                     </Button>
                 </CardHeader>
-                <CardBody className="flex items-center px-3 py-0 text-small text-default-400">
-                    <Tabs aria-label="Dynamic tabs" items={tabs}>
+                <CardBody className="flex items-center px-3 py-0 text-medium text-default-400">
+                    <Tabs aria-label="Dynamic tabs" 
+                        items={tabs}
+                        className="w-full text-base font-medium leading-7"
+                        classNames={{
+                            tabList: "w-full",
+                            tab: "flex-1 px-0",
+                        }}
+                        >
                         {(item) => (
                         <Tab key={item.id} title={item.label}>
                             <ScrollShadow className="h-[450px]">
