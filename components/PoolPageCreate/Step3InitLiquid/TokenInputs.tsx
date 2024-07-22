@@ -3,8 +3,10 @@ import icon from "@/assets/images/crypto/bitcoin.svg";
 import { useTypedForm } from "@/hooks/useTypedForm";
 import { fetchTokens } from "../Step1TokenAndWeights/const";
 import { useFieldArray } from "react-hook-form";
+import { useFormatter } from "next-intl";
 
 export default function TokenInputs() {
+    const format = useFormatter();
     const { register, control, watch } = useTypedForm("CreateVaults");
     const {
         fields,
@@ -20,6 +22,11 @@ export default function TokenInputs() {
         control,
         name: "tokens",
     });
+
+    const totalAmount = fields.map(token => (+token?.amount * token?.price)).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+    ).toFixed(2);
 
     console.log("Step3 Fields: ", fields)
     return (
@@ -47,19 +54,16 @@ export default function TokenInputs() {
                             }}
                         />
                     </div>
-                    <div className="flex justify-between text-sm">
+                    {/* <div className="flex justify-between text-sm">
                         <div>Balance: <span>0</span></div>
                         <div>${(token?.amount * token?.price).toFixed(2)}</div>
-                    </div>
+                    </div> */}
                 </li>)}
             </ul>
 
             <div className="px-3 py-4 border rounded-lg mb-5">
                 <div className="flex justify-between text-base font-semibold">
-                    <span>Total</span><span>${fields.map(token => (+token?.amount * token?.price)).reduce(
-                        (accumulator, currentValue) => accumulator + currentValue,
-                        0,
-                    ).toFixed(2) || '-'}</span>
+                    <span>Total</span><span>${isNaN(+totalAmount) ? 0 : format.number(+totalAmount)}</span>
                 </div>
             </div>
         </>

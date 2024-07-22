@@ -5,23 +5,21 @@ import { copyVault } from "@/constants/suiSignTransaction";
 import { useWallet } from "@suiet/wallet-kit";
 import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
-import { env } from "process";
-import "@/components/DetailsPage/Info.css"
+import "@/components/DetailsPage/Info.css";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import DepositWithdraw from "./DepositWithdraw";
 
 export default function Info() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const format = useFormatter();
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
   const { isOnbordaVisible } = useOnborda();
+  const [defaultIndex, setDefaultIndex] = useState(0);
 
   //Value for copy vault
   const wallet = useWallet();
-
-  function clickHandler() {
-    setIsFollowing((prevState) => !prevState);
-  }
 
   useEffect(() => {
     const fetchDataDetails = async () => {
@@ -98,7 +96,7 @@ export default function Info() {
             </svg>
             <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              $aHYPE
+              {dataDetails.map((data) => data.vault_name)}
             </div>
           </div>
           {/* <div className="flex items-center gap-x-3">
@@ -217,25 +215,23 @@ export default function Info() {
 
           <div className="flex items-center gap-x-[14px]">
             <button
-              onClick={clickHandler}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border ${
-                isFollowing && !isUnFollowedDisplayed
-                  ? "border-blue-600 text-blue-600"
-                  : "bg-blue-600 text-white"
-              } ${
-                isFollowing && isUnFollowedDisplayed
-                  ? "bg-red-300 text-white"
-                  : ""
-              } text-base sm:text-xl leading-normal font-medium tracking-tight`}
-              onMouseEnter={() => setIsUnFollowedDisplayed(true)}
-              onMouseLeave={() => setIsUnFollowedDisplayed(false)}
+              onClick={() => {
+                onOpen();
+                setDefaultIndex(0);
+              }}
+              className={`w-24 sm:w-36 py-3 rounded-[10px] border bg-blue-600 text-white text-base sm:text-xl leading-normal font-medium tracking-tight`}
             >
-              {/* {isFollowing ? "Following" : "Follow"} */}
-              {isFollowing && !isUnFollowedDisplayed && "Following"}
-              {isFollowing && isUnFollowedDisplayed && "Unfollow"}
-              {!isFollowing && "Follow"}
+              Deposit
             </button>
-
+            <button
+              onClick={() => {
+                onOpen();
+                setDefaultIndex(1);
+              }}
+              className={`w-24 sm:w-36 py-3 rounded-[10px] border border-blue-600 text-blue-600 text-base sm:text-xl leading-normal font-medium tracking-tight`}
+            >
+              Withdraw
+            </button>
             <button
               id="onborda-step2"
               className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
@@ -246,6 +242,18 @@ export default function Info() {
           </div>
         </div>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={true}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+              <ModalBody>
+                <DepositWithdraw defaultIndex={defaultIndex} />
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </section>
   );
 }

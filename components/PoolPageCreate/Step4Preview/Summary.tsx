@@ -30,20 +30,20 @@ value
     console.log(vaultName)
     return <div className="my-4 px-4">
         <div className="flex justify-between mb-1">
-            <span>Vault name:</span>
+            <span>Profile name:</span>
             <span>{vaultName}</span>
         </div>
         <div className="flex justify-between mb-1">
-            <span>Vault symbol:</span>
+            <span>Profile symbol:</span>
             <span>{vaultName}</span>
         </div>
         <div className="flex justify-between mb-1">
-            <span>Vault fee:</span>
+            <span>Profile management fee:</span>
             <span>0%</span>
         </div>
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
             <span>Vault fee manager:</span>
             <span>0%</span>
-        </div>
+        </div> */}
     </div>
 }

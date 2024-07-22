@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useFormatter } from "next-intl";
 import {
@@ -21,7 +21,7 @@ import { chain } from "lodash";
 interface Props {
     isHome: boolean;
     email: string;
-    walletAddress: string;
+    walletAddress: string | null;
     point: number;
     chain: string;
     setChain: (chain: string) => void;
@@ -33,7 +33,6 @@ interface Props {
 
 export default function InfoDropdown({ isHome, email, walletAddress, point, login: beginZkLogin, logout: logOutWallet, selectedKeys, setSelectedKeys, chain, setChain }: Props) {
     const format = useFormatter();
-
     return (
         <div className="flex gap-5">
             <ChainDropdown chain={chain} setChain={setChain} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
@@ -85,10 +84,10 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                             <div className="grid grid-row-auto grid-flow-col">
                                 <span>Wallet</span>
                                 <span className="text-blue-600 font-bold px-1">
-                                    <div className="px-1">{`${walletAddress.slice(
+                                    <div className="px-1">{`${walletAddress?.slice(
                                         0,
                                         4
-                                    )}...${walletAddress.slice(-5, -1)}`}</div>
+                                    )}...${walletAddress?.slice(-5, -1)}`}</div>
                                 </span>
                             </div>
 

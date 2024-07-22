@@ -268,6 +268,8 @@ export default function VaultsList() {
     return { ...obj1, ...vaultsList[index] };
   });
 
+  console.log(mergedData);
+
   const clickDepositHandler = async (value: string) => {
     setVaultId(value);
     const url = `https://dgt-dev.vercel.app/v1/vault_detail?vault_id=${value}`;
@@ -280,7 +282,7 @@ export default function VaultsList() {
       <div className="flex flex-wrap sm:flex-nowrap items-start justify-between">
         <div>
           <h1 className="font-semibold text-[#2563EB] text-3xl sm:text-[36px] sm:leading-[54px]">
-            All Vaults
+            All Profiles
           </h1>
           <p className="py-2 text-[#90A3BF] leading-6">Overview</p>
         </div>
@@ -346,7 +348,7 @@ export default function VaultsList() {
             <thead>
               <tr>
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  Vault Name
+                  Profile Name
                 </th>
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                   Price

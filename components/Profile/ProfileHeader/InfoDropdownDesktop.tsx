@@ -27,7 +27,7 @@ import { redirect } from 'next/navigation'
 interface Props {
     isHome: boolean;
     email: string;
-    walletAddress: string;
+    walletAddress: string | null;
     point: number;
     chain: string;
     setChain: (chain: string) => void;
@@ -131,10 +131,10 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
                         disableRipple
                     >
                         <WalletIcon />
-                        {`${walletAddress.slice(
+                        {`${walletAddress?.slice(
                             0,
                             4
-                        )}...${walletAddress.slice(-5, -1)}`}
+                        )}...${walletAddress?.slice(-5, -1)}`}
                         <Down />
                     </Button>
                 </DropdownTrigger>

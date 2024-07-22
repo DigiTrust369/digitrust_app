@@ -20,9 +20,7 @@ const Step1TokenAndWeights = (props: Props) => {
   const { signAndExecuteTransactionBlock } = useWalletKit();
   const { onNext } = { ...props };
   const { watch } = useTypedForm("CreateVaults");
-  const tokensValues = watch("tokens")?.filter(
-    (x) => x?.name && x?.percent > 0
-  );
+  const watchTokens = watch("tokens");
 
   async function createPool(event: any) {
     // event.preventDefault();
@@ -70,7 +68,7 @@ const Step1TokenAndWeights = (props: Props) => {
         {/* title */}
         {/* card */}
         <div className="mb-2">
-          <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
+          {/* <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span> */}
           <h5 className="font-semibold mb-2">Choose tokens & weights</h5>
           <div className="flex flex-col border rounded-lg mb-4">
             {/* row */}
@@ -93,8 +91,9 @@ const Step1TokenAndWeights = (props: Props) => {
             className="bal-btn px-4 h-12 text-base  bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
             type="button"
             onClick={onNext}
+            disabled={watchTokens.length < 2 || !watchTokens.every(token => token.name)}
           >
-            Create Vault
+            Create Profile
           </button>
         </div>
         {/* card */}
