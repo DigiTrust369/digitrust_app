@@ -384,7 +384,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     };
   
     fetchData();
-  },[chain])
+  },[chain,email])
 
   return (
     <div className={props.isDetail ? "bg-blue-50" : ""} >
