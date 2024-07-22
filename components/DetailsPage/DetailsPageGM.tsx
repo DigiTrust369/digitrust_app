@@ -76,8 +76,8 @@ export default function DetailsPage() {
     <>
       <Info />
       <main className="px-5 sm:px-[50px] lg:px-[90px] pb-12 sm:pb-24">
-        <div className="flex flex-col lg:flex-row bg-background text-foreground p-4">
-          <div className="flex-1">
+        <div className="flex">
+          <div className="flex-grow p-4">
             {/* <Chart /> */}
             {/* <CoinPriceChart coinId="bitcoin" /> */}
             <div>
@@ -86,9 +86,9 @@ export default function DetailsPage() {
             </div>
             <Overview />
           </div>    
-          <div className="w-full lg:w-1/3 lg:pl-4">
-            <Comment />
-          </div>
+          <aside className="min-h-[89vh] w-full md:w-70 lg:w-80 md:fixed md:right-0 md:top-[header-height] md:bottom-0 md:overflow-y-auto bg-white z-10">
+              <Comment />
+          </aside>
         </div>
       </main>
     </>

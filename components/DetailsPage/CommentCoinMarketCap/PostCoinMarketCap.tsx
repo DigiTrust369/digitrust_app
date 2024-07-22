@@ -4,16 +4,21 @@ import { Button } from '@nextui-org/button'
 import LikeIcon from '@/icons/LikeIcon'
 import CommentIcon from '@/icons/CommentIcon'
 import ShareIcon from '@/icons/ShareIcon'
+import BearIcon from '@/icons/Bear'
+import BullIcon from '@/icons/Bull'
+import ViewIcon from '@/icons/ViewIcon'
 
 interface Data {
     id:string,
-    liked:boolean,
+    bulled:boolean,
+    beared:boolean,
     userAvatar: string,
     userName: string,
     postTime: string,
     content: string,
     postImage: string,
-    like: number,
+    bull: number,
+    bear:number,
     comment:number,
     share:number,
     listComment:Array<Comment>
@@ -42,13 +47,28 @@ interface Props {
 const CommentCoinMarketCap = (props: Props) => {
     const [items, setItems] = useState(props.data);
 
-    const likeUpdate = async(id:string) =>{
+    const bullUpdate = async(id:string) =>{
         const newItems = items.map(item => {
             if (item.id === id) {
                 return {
                     ...item,
-                    liked: !item.liked,
-                    like: item.liked ? item.like - 1 : item.like + 1
+                    bulled: !item.bulled,
+                    bull: item.bulled ? item.bull - 1 : item.bull + 1
+                };
+            }
+            return item;
+        });
+        
+        setItems(newItems);
+    }
+
+    const bearUpdate = async(id:string) =>{
+        const newItems = items.map(item => {
+            if (item.id === id) {
+                return {
+                    ...item,
+                    beared: !item.beared,
+                    bear: item.beared ? item.bear - 1 : item.bear + 1
                 };
             }
             return item;
@@ -117,8 +137,19 @@ const CommentCoinMarketCap = (props: Props) => {
                     ))}
 
                     <div className="flex items-center space-x-4 mb-4 ml-2">
-                        <Button size='sm' color="primary" variant="light" startContent={<LikeIcon like = {d.liked?"1":"0"} />} onPress={async() => likeUpdate(d.id)}>
+                        <Button size='sm' color="primary" variant="light" startContent={<BearIcon />} onPress={async() => bearUpdate(d.id)}>
+                            <p className={d.beared?"text-[#3251ec]":"text-[#989090]"}>{d.bear}</p>
+                        </Button>
+                        <Button size='sm' color="primary" variant="light" startContent={<BullIcon />} onPress={async() => bullUpdate(d.id)}>
+                            <p className={d.bulled?"text-[#3251ec]":"text-[#989090]"}>{d.bull}</p>
+                        </Button>
+                        {/* <Button size='sm' color="primary" variant="light" startContent={<LikeIcon like = {d.liked?"1":"0"} />} onPress={async() => likeUpdate(d.id)}>
                             <p className={d.liked?"text-[#3251ec]":"text-[#989090]"}>{d.like}</p>
+                        </Button> */}
+                    </div>
+                    <div className="flex items-center space-x-4 mb-4 ml-2">
+                        <Button size='sm' color="primary" variant="light" startContent={<ViewIcon comment = {isComment} />} onPress={commentUpdate}>
+                            <p className={CommnetStyle}>View</p>
                         </Button>
                         <Button size='sm' color="primary" variant="light" startContent={<CommentIcon comment = {isComment} />} onPress={commentUpdate}>
                             <p className={CommnetStyle}>Comment</p>
