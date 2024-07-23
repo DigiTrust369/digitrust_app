@@ -5,7 +5,7 @@ import { scriptURLPostEvmApt } from "@/constants/google";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent, useState } from "react";
 
-import digitrustLogo from "@/assets/images/digitrust.png";
+import leofiLogo from "@/assets/images/leofi.png";
 
 const navLinksLeft = [
   {
@@ -123,7 +123,7 @@ export default function Footer() {
         <div className="space-y-10 lg:space-y-[60px]">
           {/* Logo */}
           <Link href="/">
-            <Image src={digitrustLogo} alt="digitrust logo" height={50} />
+            <Image src={leofiLogo} alt="leofi logo" height={50} />
           </Link>
 
           {/* Socical Link */}
@@ -189,7 +189,7 @@ export default function Footer() {
             <div className="text-gray-800">
               <form onSubmit={submitHandler} method="post">
                 <input
-                  className="w-[370px] sm:w-[500px] rounded-full py-5 pl-[30px] md:pr-[200px] focus:outline-none xl:text-base border border-blue-600"
+                  className="w-[370px] sm:w-[500px] rounded-full py-5 pl-[30px] md:pr-[200px] focus:outline-none xl:text-base border border-[#ed1c24]"
                   type="email"
                   placeholder="Enter your Email"
                   value={email}
@@ -197,7 +197,7 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  className="absolute left-[265px] sm:left-[436px] mt-[5px] items-center rounded-full bg-blue-600 px-[45px] py-4 text-white duration-300 hover:bg-blue-500/90"
+                  className="absolute left-[265px] sm:left-[436px] mt-[5px] items-center rounded-full bg-[#ed1c24] px-[45px] py-4 text-white duration-300 hover:bg-[#ed1c24]/90"
                 >
                   Start
                 </button>
@@ -207,8 +207,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex flex-wrap sm:flex-nowrap gap-y-5 items-center justify-between bg-blue-600 px-[60px] py-10 text-white xl:px-[100px]">
-        <p>© 2023 DIGITRUST - All Rights Reserved</p>
+      <div className="footer-background flex flex-wrap sm:flex-nowrap gap-y-5 items-center justify-between px-[60px] py-10 text-white xl:px-[100px]">
+        <p>© 2024 LEOFI - All Rights Reserved</p>
         <div className="flex items-center gap-x-24">
           <Link href="/">Terms of use</Link>
           <Link href="/">Privacy policy</Link>

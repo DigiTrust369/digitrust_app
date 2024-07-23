@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 
 type Props = {
     onBack?: () => void;
+    fee: number;
 };
 
 const postData = async (data = {}) => {
@@ -53,9 +54,9 @@ const Step4Preview = (props: Props) => {
             "token_adrs": ["0x11", "0x1"],
             "created_at": Date.now(),
             "end_at": 34234,
-            "manage_fee": 12
+            "manage_fee": props.fee,
         }
-
+        console.log(data)
         const response = await postData(data);
         const resData = await response.json();
         if (resData.status == 'ok') {
@@ -109,7 +110,7 @@ const Step4Preview = (props: Props) => {
                     <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
                         Summary
                     </h6>
-                    <Summary />
+                    <Summary fee={props.fee} />
 
                 </div>
                 <button

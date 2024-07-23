@@ -36,7 +36,8 @@ import filterIc from "@/assets/images/icons/filter-icon.svg";
 import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
-import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import DepositIcon from "@/icons/DepositIcon";
 
 interface Vault {
   url: string;
@@ -281,7 +282,7 @@ export default function VaultsList() {
     <div>
       <div className="flex flex-wrap sm:flex-nowrap items-start justify-between">
         <div>
-          <h1 className="font-semibold text-[#2563EB] text-3xl sm:text-[36px] sm:leading-[54px]">
+          <h1 className="font-semibold text-leofi text-3xl sm:text-[36px] sm:leading-[54px]">
             All Profiles
           </h1>
           <p className="py-2 text-[#90A3BF] leading-6">Overview</p>
@@ -381,7 +382,7 @@ export default function VaultsList() {
                     <div className="flex items-center gap-4">
                       <Image
                         className="h-[32px] w-[32px]"
-                        src={digitrustNoTextLogo}
+                        src={leofiNotextLogo}
                         alt={vault.vault_name}
                         width={32}
                         height={32}
@@ -417,17 +418,13 @@ export default function VaultsList() {
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap">
                     <button
-                      className="border rounded-[10px] border-[#2563EB]"
+                      className="border rounded-[10px] border-leofi"
                       id="onborda-step1"
                       onClick={() => clickDepositHandler(vault.vault_id)}
                     >
                       <Link href="/detail">
-                        <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">
-                          <Image
-                            className="hidden sm:block w-[18px] h-[18px]"
-                            src={depositIc}
-                            alt="deposit-icon"
-                          />
+                        <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-leofi">
+                          <DepositIcon />
                           <span className="font-normal">Deposit</span>
                         </div>
                       </Link>

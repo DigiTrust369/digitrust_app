@@ -6,11 +6,12 @@ import styles from "./styles.module.scss";
 type Props = {
   onNext?: () => void;
   onBack?: () => void;
+  setFee: (value: number) => void;
+  fee: number;
 };
 
 const Step2PoolFee = (props: Props) => {
-  const [fee, setFee] = useState(0);
-  const { onNext, onBack } = props;
+  const { onNext, onBack, setFee, fee } = props;
   return (
     <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
       <div className="flex flex-col">

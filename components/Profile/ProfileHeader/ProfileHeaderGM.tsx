@@ -23,7 +23,7 @@ import axios from "axios";
 import Image from "next/image";
 import digitrustWhiteLogo from "@/assets/images/digitrust_white.png";
 import digitrustNoTextWhiteLogo from "@/assets/images/digitrust_white_notext.png";
-import digitrustLogo from "@/assets/images/digitrust.png";
+import leofiLogo from "@/assets/images/leofi.png";
 import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
 import { scriptURLPostAlgorand, scriptURLGetAlgorand, scriptURLGetEvmApt, scriptURLPostEvmApt } from "@/constants/google";
 import { setBalance } from "viem/actions";
@@ -136,7 +136,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState<string | null>('');
+  const [walletAddress, setWalletAddress] = useState<string>();
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     setEmail("");
     window.location.hash = "";
     // window.location.href = window.location.origin + "/home";
-    sessionStorage.removeItem('wallet')
+    sessionStorage.clear();
   };
 
   const beginZkLogin = async () => {
@@ -240,7 +240,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         const res = await fetch(url);
         const data = await res.json();
 
-        if (data == null) {
+        if (!data) {
           if (chain === "Klaytn") {
             //Get EVM address
             const account_id = generateRandomness().substring(0, 4);
@@ -275,7 +275,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem("wallet", evmAddress);
+              sessionStorage.setItem(`${chain}wallet`, evmAddress);
             }
           }
 
@@ -309,7 +309,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem("wallet", algoAddress);
+              sessionStorage.setItem(`${chain}wallet`, algoAddress);
             }
           }
           setEmail(NewdecodedJwt?.email);
@@ -334,15 +334,39 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         } else {
           setEmail(data?.email);
           setWalletAddress(data?.wallet);
-          sessionStorage.setItem("wallet", data?.wallet)
+          sessionStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
       }
     };
     getUserAddress();
-    setWalletAddress(sessionStorage.getItem('wallet'));
+    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
   }, [oauthParams]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let scriptURLGet;
+      if (chain === "Klaytn") {
+        scriptURLGet = scriptURLGetEvmApt;
+      }
+      if (chain === "Algorand") {
+        scriptURLGet = scriptURLGetAlgorand;
+      }
+      const url = `${scriptURLGet}?email=${email}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        setWalletAddress(data?.wallet);
+        // sessionStorage.setItem(`${chain}wallet`, walletAddress || data?.wallet);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
+  }, [chain, email])
 
   useEffect(() => {
     // window.localStorage.setItem("userEmail", email);
@@ -357,13 +381,13 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     }
   }, [email]);
 
-  const classes = `w-[84%] mx-auto flex items-center justify-between px-5 py-2 text-sm rounded-xl xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
-    }`;
+  const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : "bg-blue-600 text-white"
+    }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
 
   return (
     <div className={props.isDetail ? "bg-blue-50" : ""} >
       {email == "" ? (
-        <div className="bg-blue-400 text-white flex items-center justify-center py-2">
+        <div className="bg-white text-leofi flex items-center justify-center py-2">
           <Image
             src={Hot}
             alt="hot logo"
@@ -385,8 +409,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           {props.isHome ? (
             <Link href="/">
               <Image
-                src={digitrustLogo}
-                alt="digitrust logo"
+                src={leofiLogo}
+                alt="leofi logo"
                 height={50}
                 className="hidden sm:block"
               />
@@ -425,7 +449,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Create vault button */}
         {props.isHome ? (<button>
           <Link href="/pool">
-            <div className="px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 bg-blue-600 text-white hover:drop-shadow-md">
+            <div className="create-profile-btn shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
@@ -439,7 +463,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
               <GoogleIcon />
-              <span className="text-blue-500 mx-2">Google login</span>
+              <span className="text-leofi mx-2">Google login</span>
             </div>
           </button>
         ) : (
