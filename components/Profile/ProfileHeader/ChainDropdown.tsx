@@ -13,7 +13,7 @@ import AptosIcon from "@/icons/AptosIcon";
 import AlgorandIcon from "@/icons/AlgorandIcon";
 import Down from "@/icons/Down";
 import KlayIcon from "@/icons/KlayIcon";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 interface Props {
     selectedKeys: ReactElement<any, any>;

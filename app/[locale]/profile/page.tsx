@@ -18,6 +18,54 @@ const fetchProfile = async () => {
 export default async function profile() {
   const profile = await fetchProfile();
 
+  const dataExample = {
+    "profile_id": "unique_profile_id_4",
+    "username": "user123",
+    "email": "user123@example.com",
+    "management_fee":"0.3",
+    "bio": "This is a brief bio of user123.",
+    "profile_picture_url": "https://example.com/profile_picture.jpg",
+    "wallet_address": "0x1234567890abcdef1234567890abcdef12345678",
+    "asset_portfolio": [
+        {
+            "asset_id": "asset_id_1",
+            "amount": 10,
+            "asset_type": "cryptocurrency"
+        },
+        {
+            "asset_id": "asset_id_2",
+            "amount": 5,
+            "asset_type": "token"
+        }
+    ],
+    "transaction_history": [
+        {
+            "transaction_id": "tx_1",
+            "date": "2023-07-18T00:00:00Z",
+            "transaction_type": "deposit",
+            "status": "completed"
+        },
+        {
+            "transaction_id": "tx_2",
+            "date": "2023-07-19T00:00:00Z",
+            "transaction_type": "withdrawal",
+            "status": "pending"
+        }
+    ],
+    "followers": [
+        {
+            "name": "dgt_v1"
+        }
+    ],
+    "following": [
+        {
+            "name": "dgt_v1"
+        }
+    ],
+    "created_at": 1626624000,
+    "updated_at": 1626627600
+  };
+
   if (!profile || Object.keys(profile).length === 0) {
     return <div>User not found</div>;
   }

@@ -312,6 +312,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
               sessionStorage.setItem(`${chain}wallet`, algoAddress);
             }
           }
+
           setEmail(NewdecodedJwt?.email);
           await postData("https://dgt-dev.vercel.app/v1/claim_token", {
             receiver: NewdecodedJwt?.email,
@@ -383,6 +384,31 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
   const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : "bg-blue-600 text-white"
     }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(chain);
+      let scriptURLGet;
+      if (chain === "Klaytn") {
+        scriptURLGet = scriptURLGetEvmApt;
+      }
+      if (chain === "Algorand") {
+        scriptURLGet = scriptURLGetAlgorand;
+      }
+      console.log(scriptURLGet);
+      const url = `${scriptURLGet}?email=${email}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log(data);
+        setWalletAddress(data?.wallet)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [chain, email])
 
   return (
     <div className={props.isDetail ? "bg-blue-50" : ""} >
