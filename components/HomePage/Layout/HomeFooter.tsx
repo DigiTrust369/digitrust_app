@@ -197,7 +197,7 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  className="absolute left-[265px] sm:left-[436px] mt-[5px] items-center rounded-full bg-[#ed1c24] px-[45px] py-4 text-white duration-300 hover:bg-[#ed1c24]/90"
+                  className="absolute left-[265px] sm:left-[440px] mt-[5px] items-center rounded-full bg-[#ed1c24] px-[45px] py-4 text-white duration-300 hover:bg-[#ed1c24]/90"
                 >
                   Start
                 </button>

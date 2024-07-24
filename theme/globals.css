@@ -189,11 +189,6 @@ body {
   box-shadow: 0 0 10px 5px rgba(16, 24, 40, 0.1);
 }
 
-.create-profile-btn {
-  background: rgb(237, 28, 36);
-  background: linear-gradient(135deg, rgba(237, 28, 36, 0.8) 0%, rgba(215, 228, 2, 0.68) 100%);
-}
-
 .hero-background,
 .footer-background {
   /* background-image: url('../../assets/images/bg-Hero.png');
@@ -201,4 +196,9 @@ body {
   background: rgba(237, 28, 36, 0.9);
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(237, 28, 36, 0.9) 50%, rgba(228, 136, 2, 1) 100%);
   width: 100%;
+}
+
+.bg-leofi {
+  background: rgb(237, 28, 36);
+  background: linear-gradient(135deg, rgba(237, 28, 36, 0.8) 0%, rgba(215, 228, 2, 0.68) 100%);
 }

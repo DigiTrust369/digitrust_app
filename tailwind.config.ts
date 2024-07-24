@@ -16,7 +16,9 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'leofi': "#ee4d2d",
+        'leofi': '#ee4d2d',
+        'leofired': '#ed1c24',
+        'leofiorange': '#e48802',
       }
     },
   },

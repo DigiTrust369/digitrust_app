@@ -24,7 +24,7 @@ import Image from "next/image";
 import digitrustWhiteLogo from "@/assets/images/digitrust_white.png";
 import digitrustNoTextWhiteLogo from "@/assets/images/digitrust_white_notext.png";
 import leofiLogo from "@/assets/images/leofi.png";
-import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import leofiNoTextLogo from "@/assets/images/leofi_notext.png";
 import { scriptURLPostAlgorand, scriptURLGetAlgorand, scriptURLGetEvmApt, scriptURLPostEvmApt } from "@/constants/google";
 import { setBalance } from "viem/actions";
 import Hot from "@/assets/images/Hot.png";
@@ -382,7 +382,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     }
   }, [email]);
 
-  const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : "bg-blue-600 text-white"
+  const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
     }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
 
   useEffect(() => {
@@ -411,7 +411,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   }, [chain, email])
 
   return (
-    <div className={props.isDetail ? "bg-blue-50" : ""} >
+    <div className={props.isDetail ? "hero-background" : ""} >
       {email == "" ? (
         <div className="bg-white text-leofi flex items-center justify-center py-2">
           <Image
@@ -428,7 +428,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
             className="animate-pulse"
           />
         </div>
-      ) : (<div className="h-5"></div>)}
+      ) : ''}
       <header className={classes}>
         {/* Logo */}
         <div>
@@ -444,8 +444,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           ) : (
             <Link href="/">
               <Image
-                src={digitrustWhiteLogo}
-                alt="digitrust logo"
+                src={leofiLogo}
+                alt="leofi logo"
                 height={50}
                 className="hidden sm:block"
               />
@@ -454,8 +454,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           {props.isHome ? (
             <Link href="/">
               <Image
-                src={digitrustNoTextLogo}
-                alt="digitrust logo"
+                src={leofiNoTextLogo}
+                alt="leofi logo"
                 className="sm:hidden object-fit"
                 width={60}
               />
@@ -475,7 +475,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Create vault button */}
         {props.isHome ? (<button>
           <Link href="/pool">
-            <div className="create-profile-btn shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
+            <div className="bg-leofi shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
@@ -496,43 +496,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           <>
             {/* Desktop */}
             <div className="hidden sm:block">
-              {/* <div className="flex flex-1 justify-end gap-x-3 ">
-                <div
-                  className={`flex items-center pt-3 capitalize w-fit ${props.isHome ? "text-blue-600" : "text-white"
-                    }`}
-                >
-                  <WalletIcon></WalletIcon>
-                  <span className="font-bold pl-2">
-                    <div className="px-1">{`${walletAddress.slice(
-                      0,
-                      4
-                    )}...${walletAddress.slice(-5, -1)}`}</div>
-                  </span>
-                </div>
-
-                <div
-                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${props.isHome
-                    ? "border border-blue-600 text-white"
-                    : "bg-white text-blue-600"
-                    }`}
-                >
-                  <div className="flex items-center gap-x-2">
-                    <button className=" bg-white rounded-md">
-                      <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
-                        <GoogleIcon />
-                        <span className="text-blue-600 font-bold mx-2">
-                          <div>{email.replace("@gmail.com", "")}</div>
-                        </span>
-                      </div>
-                    </button>
-                    <div className="text-gray-400 font-bold">
-                      {format.number(point)} DGT
-                    </div>
-
-                    <ChainDropdown selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
-                  </div>
-                </div>
-              </div> */}
               <InfoDropdownDesktop
                 isHome={props.isHome}
                 email={email}

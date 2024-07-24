@@ -19,7 +19,7 @@ const FormWrapper = (props: Props) => {
 
   return (
     <form>
-      <div className="layout-container mt-8">
+      <div className="layout-container my-8">
         <div className="flex justify-center	">
           <div className="flex-none w-64">
             <PoolSteps active={step} onChangeStep={(step) => setStep(step)} />
