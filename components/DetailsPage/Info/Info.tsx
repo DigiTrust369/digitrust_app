@@ -7,7 +7,6 @@ import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import DepositWithdraw from "./DepositWithdraw";
 
 export default function Info() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -64,14 +63,13 @@ export default function Info() {
   }, []);
 
   return (
-    <section className="info px-10 sm:px-[90px] lg:bg-details xl:object-contain 2xl:bg-none">
-      <div className="container mx-auto pt-[55px] pb-[108px]">
-        <div className="space-y-6">
+    <section>
+        <div className="space-y-6 mt-5 ml-3">
           <div className="flex items-center gap-x-6">
             {/* <Image src={""} alt={"logo"}></Image> */}
             <svg
-              width="80"
-              height="80"
+              width="60"
+              height="60"
               viewBox="0 0 80 80"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -99,26 +97,6 @@ export default function Info() {
               {dataDetails.map((data) => data.vault_name)}
             </div>
           </div>
-          {/* <div className="flex items-center gap-x-3">
-            {dataDetails.map((data) => (
-              <div
-                key={data.vault_id}
-                className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency"
-              >
-                <span>{data.currency}</span>
-                aHYPE
-              </div>
-            ))} */}
-          {/* <div className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency">
-              {dataDetails && (
-                  <span>{dataDetails.currency}</span>
-              )}
-              aHYPE
-          </div> */}
-          {/* <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
-              Live on Avalanche
-            </div>
-          </div> */}
 
           {dataDetails.map((data) => (
             <p
@@ -169,60 +147,9 @@ export default function Info() {
                 </svg>
               </button>
             </div>
-            {/* <div className="flex flex-wrap sm:flex-nowrap gap-y-3 gap-x-3">
-              <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
-                <div className="flex gap-x-4 text-base font-semibold leading-4">
-                  <p className="uppercase text-blue-600">STAKED</p>
-                  {dataDetails.map((data) => (
-                    <div key={data.vault_id} className="flex text-gray-800">
-                      <span>{data.currency}</span>
-                      <p>{data.tvl}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <button>
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 4.5C7.58172 4.5 4 8.08172 4 12.5C4 16.9183 7.58172 20.5 12 20.5C16.4183 20.5 20 16.9183 20 12.5C20 8.08172 16.4183 4.5 12 4.5ZM2 12.5C2 6.97715 6.47715 2.5 12 2.5C17.5228 2.5 22 6.97715 22 12.5C22 18.0228 17.5228 22.5 12 22.5C6.47715 22.5 2 18.0228 2 12.5Z"
-                      fill="#C3D4E9"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M11 17.5V11.5H13V17.5H11Z"
-                      fill="#C3D4E9"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M11 9.5V7.5H13V9.5H11Z"
-                      fill="#C3D4E9"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div> */}
           </div>
 
           <div className="flex items-center gap-x-[14px]">
-            {/* <button
-              onClick={() => {
-                onOpen();
-                setDefaultIndex(0);
-              }}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border bg-blue-600 text-white text-base sm:text-xl leading-normal font-medium tracking-tight`}
-            >
-              Deposit
-            </button> */}
             <button
               onClick={() => {
                 onOpen();
@@ -241,19 +168,6 @@ export default function Info() {
             </button>
           </div>
         </div>
-      </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={true}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
-              <ModalBody>
-                <DepositWithdraw defaultIndex={defaultIndex} />
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </section>
   );
 }

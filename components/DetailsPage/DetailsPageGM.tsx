@@ -14,6 +14,7 @@ import Comment from "../DetailsPage/CommentCoinMarketCap/CommentCoinMarketCap";
 import CoinPriceChart from "./NewChart/CoinPriceChart";
 
 const CandlestickChart = dynamic(() => import('./NewChart/CanddleChart'), { ssr: false });
+
 interface CandleData {
   time: string;
   open: number;
@@ -22,7 +23,30 @@ interface CandleData {
   close: number;
 }
 
-const Info = dynamic(() => import("@/components/DetailsPage/Info"), {
+interface Asset {
+  asset: string;
+  symbol: string;
+  contract: string;
+  chain: string;
+  invest_amount: number;
+  weight: string;
+  holding: string;
+  price_change: {
+    "24h": string;
+  };
+  dgt_score: number;
+  status: boolean;
+  logo_url: string;
+  asset_url: string;
+}
+
+interface PiePart {
+  name: string; 
+  value: number; 
+  logo_url: string
+}
+
+const Info = dynamic(() => import("@/components/DetailsPage/Info/Info"), {
   ssr: false,
 });
 
@@ -37,6 +61,8 @@ const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
 
 export default function DetailsPage() {
   const [chartData, setChartData] = useState<CandleData[]>([]);
+  const [dataDetails, setDataDetails] = useState<any>();
+  const [pieChartData, setPieChartData] = useState<PiePart[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,29 +94,63 @@ export default function DetailsPage() {
       }
     };
 
+    const fetchDataDetails = async () => {
+      // Api Default
+      const response = await fetch(
+        "https://dgt-dev.vercel.app/v1/vault_allocation?vault_id=dgt1"
+      );
+      const data = await response.json();
+      // console.log(data);
+      setDataDetails(data);
+    };
+
     fetchData();
+    fetchDataDetails();
   }, []);
+
+  useEffect(()=>{
+    const assets = dataDetails?.assets || [];
+    const PieChartData: { name: string; value: number; logo_url: string }[] =
+    dataDetails?.assets.map((asset: Asset) => {
+      return {
+        name: asset.symbol,
+        value: parseFloat(asset.holding.slice(0, -1)),
+        logo_url: asset.logo_url,
+      };
+    });
+    setPieChartData(PieChartData)
+  },[dataDetails])
+
+  
 
 
   return (
-    <>
-      <Info />
-      <main className="px-5 sm:px-[50px] lg:px-[90px] pb-12 sm:pb-24">
-        <div className="flex">
-          <div className="flex-grow p-4">
-            {/* <Chart /> */}
-            {/* <CoinPriceChart coinId="bitcoin" /> */}
-            <div>
-              <h1>Bitcoin Price</h1>
-              {chartData.length > 0 && <CandlestickChart data={chartData} />}
-            </div>
-            <Overview />
-          </div>    
-          <aside className="min-h-[89vh] w-full md:w-70 lg:w-80 md:fixed md:right-0 md:top-[header-height] md:bottom-0 md:overflow-y-auto bg-white z-10">
-              <Comment />
-          </aside>
+    <div className="flex h-screen">
+      <div className="w-1/4 p-4 overflow-y-auto border">
+        <Info />
+        <div>
+          <h1 className="mt- 2pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+            Overview
+          </h1>
         </div>
+        <div className="flex items-center justify-center mt-2">
+          <PieChart data={pieChartData} />
+        </div>
+      </div>
+      <main className="w-1/2 p-4 overflow-y-auto scrollbar-hide">
+          {/* <Chart /> */}
+          {/* <CoinPriceChart coinId="bitcoin" /> */}
+          <div>
+            <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+              Bitcoin Price
+            </h1>
+          </div>
+          {chartData.length > 0 && <CandlestickChart data={chartData} />}
+          <Overview />  
       </main>
-    </>
+      <div className="w-1/4 p-4 overflow-y-auto border">
+            <Comment />
+      </div>
+    </div>
   );
 }

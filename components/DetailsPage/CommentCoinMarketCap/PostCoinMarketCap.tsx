@@ -7,31 +7,32 @@ import ShareIcon from '@/icons/ShareIcon'
 import BearIcon from '@/icons/Bear'
 import BullIcon from '@/icons/Bull'
 import ViewIcon from '@/icons/ViewIcon'
+import { useGlobalContext } from "@/Context/store";
 
 interface Data {
     id:string,
-    bulled:boolean,
-    beared:boolean,
     userAvatar: string,
     userName: string,
     postTime: string,
     content: string,
-    postImage: string,
-    bull: number,
-    bear:number,
-    comment:number,
-    share:number,
+    bull: string[],
+    bear:string[],
+    share:string[],
     listComment:Array<Comment>
 }
 
 interface Comment{
     idComment:string,
+    userAvatar: string,
+    userName: string,
     mainComment:string,
     listReply: Array<reply>
 }
 
 interface reply {
     idReply:string,
+    userAvatar: string,
+    userName: string,
     mainReply:string
 }
 
@@ -45,15 +46,27 @@ interface Props {
 
 
 const CommentCoinMarketCap = (props: Props) => {
-    const [items, setItems] = useState(props.data);
+    const [items, setItems] = useState<Array<Data>>(props.data);
+    const { userEmail } = useGlobalContext();
+
+    function removeStringFromArray(arr: string[], stringToRemove: string): string[] {
+        return arr.filter(item => item !== stringToRemove);
+    }
+
+    function addStringToNewArray(arr: string[], stringToAdd: string): string[] {
+        return [...arr, stringToAdd];
+    }
+
+    function checkArrayForStringCaseInsensitive(arr: string[], searchString: string): boolean {
+    return arr.some(item => item.toLowerCase() === searchString.toLowerCase());
+    }
 
     const bullUpdate = async(id:string) =>{
         const newItems = items.map(item => {
             if (item.id === id) {
                 return {
                     ...item,
-                    bulled: !item.bulled,
-                    bull: item.bulled ? item.bull - 1 : item.bull + 1
+                    bull: !checkArrayForStringCaseInsensitive(item.bull,userEmail) ? addStringToNewArray(item.bull,userEmail): removeStringFromArray(item.bull, userEmail)
                 };
             }
             return item;
@@ -67,8 +80,7 @@ const CommentCoinMarketCap = (props: Props) => {
             if (item.id === id) {
                 return {
                     ...item,
-                    beared: !item.beared,
-                    bear: item.beared ? item.bear - 1 : item.bear + 1
+                    bear: !checkArrayForStringCaseInsensitive(item.bear,userEmail) ? addStringToNewArray(item.bear,userEmail) : removeStringFromArray(item.bear, userEmail)
                 };
             }
             return item;
@@ -76,6 +88,16 @@ const CommentCoinMarketCap = (props: Props) => {
         
         setItems(newItems);
     }
+
+    useEffect(()=>{
+        console.log(userEmail);
+        console.log(items);
+    },[items])
+
+    useEffect(()=>{
+        console.log(items[0].bear)
+        console.log(items[0].bull)
+    },[])
 
 
 
@@ -121,27 +143,42 @@ const CommentCoinMarketCap = (props: Props) => {
                         </div>
                         <p className="mb-2">
                             <span className="text-primary">#BTC</span> <br />
-                            <span className="text-muted-foreground">#{d.content}</span> <br />
-                            <span className="text-primary">#ETF #ETFs #BTC</span>
+                            <span className="text-primary">{d.content}</span> <br />
                         </p>
-                        <img src={d.postImage} alt="Post Image" className="w-full h-auto rounded-lg mb-2" />
-                        <a href="#" className="text-primary">Read all...</a>
                     </div>
                     {d.listComment.map((comment)=> (
-                        <div className='ml-4'>
-                            <div>*{comment.mainComment}</div>
+                        <div className='ml-5'>
+                            <div className="flex items-center space-x-2 mb-2 bg-gray-100 rounded-2xl">
+                                <img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />
+                                <div>
+                                    <p className="font-semibold">{comment.userName}</p>
+                                </div>
+                                <div>
+                                    <p>{comment.mainComment}</p>
+                                </div>
+                            </div>
                             {comment.listReply.map((reply)=> (
-                                <div className='ml-4'>-{reply.mainReply}</div>
+                                <div className='ml-6'>
+                                    <div className="flex items-center space-x-2 mb-2 bg-gray-200 rounded-2xl">
+                                        <img src={reply.userAvatar} alt="User Avatar" className="rounded-full" />
+                                        <div>
+                                            <p className="font-semibold">{reply.userName}</p>
+                                        </div>
+                                        <div>
+                                            <p>{reply.mainReply}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     ))}
 
                     <div className="flex items-center space-x-4 mb-4 ml-2">
                         <Button size='sm' color="primary" variant="light" startContent={<BearIcon />} onPress={async() => bearUpdate(d.id)}>
-                            <p className={d.beared?"text-[#3251ec]":"text-[#989090]"}>{d.bear}</p>
+                            <p className={checkArrayForStringCaseInsensitive(d.bear,userEmail)?"text-[#3251ec]":"text-[#989090]"}>{d.bear.length}</p>
                         </Button>
                         <Button size='sm' color="primary" variant="light" startContent={<BullIcon />} onPress={async() => bullUpdate(d.id)}>
-                            <p className={d.bulled?"text-[#3251ec]":"text-[#989090]"}>{d.bull}</p>
+                            <p className={checkArrayForStringCaseInsensitive(d.bull,userEmail)?"text-[#3251ec]":"text-[#989090]"}>{d.bull.length}</p>
                         </Button>
                         {/* <Button size='sm' color="primary" variant="light" startContent={<LikeIcon like = {d.liked?"1":"0"} />} onPress={async() => likeUpdate(d.id)}>
                             <p className={d.liked?"text-[#3251ec]":"text-[#989090]"}>{d.like}</p>
