@@ -41,8 +41,8 @@ interface Asset {
 }
 
 interface PiePart {
-  name: string; 
-  value: number; 
+  name: string;
+  value: number;
   logo_url: string
 }
 
@@ -59,7 +59,7 @@ const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
 });
 
 
-export default function DetailsPage() {
+export default function DetailsPage(Props:any) {
   const [chartData, setChartData] = useState<CandleData[]>([]);
   const [dataDetails, setDataDetails] = useState<any>();
   const [pieChartData, setPieChartData] = useState<PiePart[]>([])
@@ -68,10 +68,10 @@ export default function DetailsPage() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=30'
+          `https://api.coingecko.com/api/v3/coins/${Props.coinID}/ohlc?vs_currency=usd&days=30`
         );
         const data: [number, number, number, number, number][] = await response.json();
-        
+
         const formattedData: CandleData[] = data.map(item => ({
           time: new Date(item[0]).toISOString().split('T')[0],
           open: item[1],
@@ -84,7 +84,7 @@ export default function DetailsPage() {
         formattedData.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
         // Remove any duplicate time entries
-        const uniqueData = formattedData.filter((v, i, a) => 
+        const uniqueData = formattedData.filter((v, i, a) =>
           a.findIndex(t => t.time === v.time) === i
         );
 
@@ -108,28 +108,28 @@ export default function DetailsPage() {
     fetchDataDetails();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const assets = dataDetails?.assets || [];
     const PieChartData: { name: string; value: number; logo_url: string }[] =
-    dataDetails?.assets.map((asset: Asset) => {
-      return {
-        name: asset.symbol,
-        value: parseFloat(asset.holding.slice(0, -1)),
-        logo_url: asset.logo_url,
-      };
-    });
+      dataDetails?.assets.map((asset: Asset) => {
+        return {
+          name: asset.symbol,
+          value: parseFloat(asset.holding.slice(0, -1)),
+          logo_url: asset.logo_url,
+        };
+      });
     setPieChartData(PieChartData)
-  },[dataDetails])
+  }, [dataDetails])
 
-  
+
 
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/4 p-4 overflow-y-auto border">
-        <Info />
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border">
+        <Info coinID={Props.coinID} />
         <div>
-          <h1 className="mt- 2pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+          <h1 className="mt-2 pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
             Overview
           </h1>
         </div>
@@ -137,20 +137,20 @@ export default function DetailsPage() {
           <PieChart data={pieChartData} />
         </div>
       </div>
-      <main className="w-1/2 p-4 overflow-y-auto scrollbar-hide">
-          {/* <Chart /> */}
-          {/* <CoinPriceChart coinId="bitcoin" /> */}
-          <div>
-            <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-              Bitcoin Price
-            </h1>
-          </div>
+      <main className="flex-1 md:w-1/2 h-screen md:h-auto p-4 overflow-y-auto scrollbar-hide">
+        <div>
+          <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+            {Props.coinID} Price
+          </h1>
+        </div>
+        <div className="w-full">
           {chartData.length > 0 && <CandlestickChart data={chartData} />}
-          <Overview />  
+        </div>
+        <Overview />
       </main>
-      <div className="w-1/4 p-4 overflow-y-auto border">
-            <Comment />
+      <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
+        <Comment coinID = {Props.coinID} />
       </div>
-    </div>
+  </div>
   );
 }

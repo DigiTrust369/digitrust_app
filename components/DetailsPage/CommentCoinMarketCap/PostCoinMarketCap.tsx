@@ -11,6 +11,7 @@ import { useGlobalContext } from "@/Context/store";
 
 interface Data {
     id:string,
+    profile_id:string,
     userAvatar: string,
     userName: string,
     postTime: string,
@@ -58,7 +59,7 @@ const CommentCoinMarketCap = (props: Props) => {
     }
 
     function checkArrayForStringCaseInsensitive(arr: string[], searchString: string): boolean {
-    return arr.some(item => item.toLowerCase() === searchString.toLowerCase());
+        return arr.some(item => item.toLowerCase() === searchString.toLowerCase());
     }
 
     const bullUpdate = async(id:string) =>{
@@ -88,17 +89,6 @@ const CommentCoinMarketCap = (props: Props) => {
         
         setItems(newItems);
     }
-
-    useEffect(()=>{
-        console.log(userEmail);
-        console.log(items);
-    },[items])
-
-    useEffect(()=>{
-        console.log(items[0].bear)
-        console.log(items[0].bull)
-    },[])
-
 
 
     const [isComment, setComment] = useState("0");
@@ -149,7 +139,8 @@ const CommentCoinMarketCap = (props: Props) => {
                     {d.listComment.map((comment)=> (
                         <div className='ml-5'>
                             <div className="flex items-center space-x-2 mb-2 bg-gray-100 rounded-2xl">
-                                <img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />
+                                {comment.userAvatar != null ? (<img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />)
+                                    :(<img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />)}
                                 <div>
                                     <p className="font-semibold">{comment.userName}</p>
                                 </div>
@@ -160,7 +151,8 @@ const CommentCoinMarketCap = (props: Props) => {
                             {comment.listReply.map((reply)=> (
                                 <div className='ml-6'>
                                     <div className="flex items-center space-x-2 mb-2 bg-gray-200 rounded-2xl">
-                                        <img src={reply.userAvatar} alt="User Avatar" className="rounded-full" />
+                                        {reply.userAvatar !=null ? (<img src={reply.userAvatar} alt="User Avatar" className="rounded-full" />)
+                                        :(<img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />)}
                                         <div>
                                             <p className="font-semibold">{reply.userName}</p>
                                         </div>

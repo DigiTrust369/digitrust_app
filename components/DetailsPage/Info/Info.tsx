@@ -7,8 +7,20 @@ import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import axios from 'axios';
 
-export default function Info() {
+
+const getCoinPrice = async (coinId:any) => {
+  try {
+    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
+    return response.data[coinId].usd;
+  } catch (error) {
+    console.error('Error fetching coin price:', error);
+    return null;
+  }
+};
+
+export default function Info(Props:any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const format = useFormatter();
@@ -16,6 +28,7 @@ export default function Info() {
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const { isOnbordaVisible } = useOnborda();
   const [defaultIndex, setDefaultIndex] = useState(0);
+  const [price, setPrice] = useState(null);
 
   //Value for copy vault
   const wallet = useWallet();
@@ -30,9 +43,19 @@ export default function Info() {
       setDataDetails(data);
     };
 
+    const fetchPrice = async () => {
+      const bitcoinPrice = await getCoinPrice(Props.coinID);
+      setPrice(bitcoinPrice);
+    };
+
     fetchDataDetails();
+    fetchPrice();
+    
+    // const interval = setInterval(fetchPrice, 60000); 
+    // return () => clearInterval(interval); 
   }, []);
   // End call api
+  
 
   const goToCopyVault = async () => {
     if (isOnbordaVisible) return;
@@ -94,26 +117,21 @@ export default function Info() {
             </svg>
             <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              {dataDetails.map((data) => data.vault_name)}
+              {Props.coinID}
             </div>
           </div>
-
-          {dataDetails.map((data) => (
-            <p
-              key={data.vault_id}
-              className="font-feature-settings max-w-5xl text-base font-normal text-gray-800"
-            >
-              {data.vault_desc}
-            </p>
-          ))}
 
           <div className="flex gap-x-3">
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
               <div className="flex gap-x-4 text-base font-semibold leading-4">
-                <p className="uppercase text-blue-600">MY BALANCE</p>
+                <p className="uppercase text-blue-600">{price ? (
+                          <p>${price}</p>
+                        ) : (
+                          <p>Loading...</p>
+                        )}</p>
                 {dataDetails.map((data) => (
                   <div key={data.vault_id} className="flex text-gray-800">
-                    <span>{format.number(+data.price)} DGT</span>
+                    <span>{format.number(+data.price)} USD</span>
                   </div>
                 ))}
               </div>
