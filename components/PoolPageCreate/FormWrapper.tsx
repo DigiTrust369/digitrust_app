@@ -15,10 +15,11 @@ type Props = {};
 
 const FormWrapper = (props: Props) => {
   const [step, setStep] = useState(0);
+  const [fee, setFee] = useState(0);
 
   return (
     <form>
-      <div className="layout-container mt-8">
+      <div className="layout-container my-8">
         <div className="flex justify-center	">
           <div className="flex-none w-64">
             <PoolSteps active={step} onChangeStep={(step) => setStep(step)} />
@@ -29,6 +30,8 @@ const FormWrapper = (props: Props) => {
               <Step2PoolFee
                 onNext={() => setStep(2)}
                 onBack={() => setStep(0)}
+                setFee={setFee}
+                fee={fee}
               />
             )}
             {step === 2 && (
@@ -40,6 +43,7 @@ const FormWrapper = (props: Props) => {
             {step === 3 && (
               <Step4Preview
                 onBack={() => setStep(2)}
+                fee={fee}
               />
             )}
           </div>

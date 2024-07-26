@@ -7,9 +7,20 @@ import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import DepositWithdraw from "./DepositWithdraw";
+import axios from 'axios';
 
-export default function Info() {
+
+const getCoinPrice = async (coinId:any) => {
+  try {
+    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
+    return response.data[coinId].usd;
+  } catch (error) {
+    console.error('Error fetching coin price:', error);
+    return null;
+  }
+};
+
+export default function Info(Props:any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const format = useFormatter();
@@ -17,6 +28,7 @@ export default function Info() {
   const [dataDetails, setDataDetails] = useState<any[]>([]);
   const { isOnbordaVisible } = useOnborda();
   const [defaultIndex, setDefaultIndex] = useState(0);
+  const [price, setPrice] = useState(null);
 
   //Value for copy vault
   const wallet = useWallet();
@@ -31,9 +43,19 @@ export default function Info() {
       setDataDetails(data);
     };
 
+    const fetchPrice = async () => {
+      const bitcoinPrice = await getCoinPrice(Props.coinID);
+      setPrice(bitcoinPrice);
+    };
+
     fetchDataDetails();
+    fetchPrice();
+    
+    // const interval = setInterval(fetchPrice, 60000); 
+    // return () => clearInterval(interval); 
   }, []);
   // End call api
+  
 
   const goToCopyVault = async () => {
     if (isOnbordaVisible) return;
@@ -64,14 +86,13 @@ export default function Info() {
   }, []);
 
   return (
-    <section className="info px-10 sm:px-[90px] lg:bg-details xl:object-contain 2xl:bg-none">
-      <div className="container mx-auto pt-[55px] pb-[108px]">
-        <div className="space-y-6">
+    <section>
+        <div className="space-y-6 mt-5 ml-3">
           <div className="flex items-center gap-x-6">
             {/* <Image src={""} alt={"logo"}></Image> */}
             <svg
-              width="80"
-              height="80"
+              width="60"
+              height="60"
               viewBox="0 0 80 80"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -96,26 +117,21 @@ export default function Info() {
             </svg>
             <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              {dataDetails.map((data) => data.vault_name)}
+              {Props.coinID}
             </div>
           </div>
-
-          {dataDetails.map((data) => (
-            <p
-              key={data.vault_id}
-              className="font-feature-settings max-w-5xl text-base font-normal text-gray-800"
-            >
-              {data.vault_desc}
-            </p>
-          ))}
 
           <div className="flex gap-x-3">
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
               <div className="flex gap-x-4 text-base font-semibold leading-4">
-                <p className="uppercase text-blue-600">MY BALANCE</p>
+                <p className="uppercase text-blue-600">{price ? (
+                          <p>${price}</p>
+                        ) : (
+                          <p>Loading...</p>
+                        )}</p>
                 {dataDetails.map((data) => (
                   <div key={data.vault_id} className="flex text-gray-800">
-                    <span>{format.number(+data.price)} DGT</span>
+                    <span>{format.number(+data.price)} USD</span>
                   </div>
                 ))}
               </div>
@@ -152,15 +168,6 @@ export default function Info() {
           </div>
 
           <div className="flex items-center gap-x-[14px]">
-            {/* <button
-              onClick={() => {
-                onOpen();
-                setDefaultIndex(0);
-              }}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border bg-blue-600 text-white text-base sm:text-xl leading-normal font-medium tracking-tight`}
-            >
-              Deposit
-            </button> */}
             <button
               onClick={() => {
                 onOpen();
@@ -179,19 +186,6 @@ export default function Info() {
             </button>
           </div>
         </div>
-      </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={true}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
-              <ModalBody>
-                <DepositWithdraw defaultIndex={defaultIndex} />
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </section>
   );
 }

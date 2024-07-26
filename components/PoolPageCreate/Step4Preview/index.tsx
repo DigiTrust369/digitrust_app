@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 
 type Props = {
     onBack?: () => void;
+    fee: number;
 };
 
 const postData = async (data = {}) => {
@@ -53,9 +54,9 @@ const Step4Preview = (props: Props) => {
             "token_adrs": ["0x11", "0x1"],
             "created_at": Date.now(),
             "end_at": 34234,
-            "manage_fee": 12
+            "manage_fee": props.fee,
         }
-
+        console.log(data)
         const response = await postData(data);
         const resData = await response.json();
         if (resData.status == 'ok') {
@@ -72,7 +73,7 @@ const Step4Preview = (props: Props) => {
                 <div className="flex flex-col mb-4">
                     {/* <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span> */}
                     <div className="flex flex-row items-center">
-                        <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button" onClick={onBack}>
+                        <button className="flex text-leofi hover:text-leofiorange mr-1" type="button" onClick={onBack}>
                             <div className="inline-block bal-icon flex">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -109,11 +110,11 @@ const Step4Preview = (props: Props) => {
                     <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
                         Summary
                     </h6>
-                    <Summary />
+                    <Summary fee={props.fee} />
 
                 </div>
                 <button
-                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
+                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-leofired to-leofiorange hover:from-leofi hover:to-leofi transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
                     type="button"
                     onClick={createVault}
                 >

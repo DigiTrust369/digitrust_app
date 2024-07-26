@@ -1,7 +1,11 @@
 import { useTypedForm } from "@/hooks/useTypedForm";
 import { useFieldArray } from "react-hook-form";
 
-export default function Summary() {
+type Props = {
+    fee: number;
+}
+
+export default function Summary(props: Props) {
     const { register, control, watch } = useTypedForm("CreateVaults");
     const {
         fields,
@@ -39,7 +43,7 @@ value
         </div>
         <div className="flex justify-between mb-1">
             <span>Profile management fee:</span>
-            <span>0%</span>
+            <span>{props.fee}%</span>
         </div>
         {/* <div className="flex justify-between">
             <span>Vault fee manager:</span>

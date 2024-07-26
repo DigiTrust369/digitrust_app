@@ -88,7 +88,7 @@ const Step1TokenAndWeights = (props: Props) => {
             {/* row */}
           </div>
           <button
-            className="bal-btn px-4 h-12 text-base  bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
+            className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-leofired to-leofiorange hover:from-leofi hover:to-leofi transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
             type="button"
             onClick={onNext}
             disabled={watchTokens.length < 2 || !watchTokens.every(token => token.name)}

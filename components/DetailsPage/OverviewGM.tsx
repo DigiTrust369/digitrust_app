@@ -89,13 +89,13 @@ export default function Overview() {
     <div className="mt-11 ">
       <div>
         <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-          Overview
+          History
         </h1>
       </div>
       <div className="flex flex-col lg:flex-row bg-background text-foreground p-4">
         <div className="flex-1">
           {/* Balance */}
-          <div className="sm:grid sm:grid-cols-3 sm:gap-x-4">
+          {/* <div className="sm:grid sm:grid-cols-3 sm:gap-x-4">
             <div className="sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
               <div className="text-base font-medium leading-7 text-gray-800">
                 Price
@@ -105,7 +105,7 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  {/* <span>{data.currency}</span> */}
+                  <span>{data.currency}</span>
                   <p>{format.number(data.price)} DGT</p>
                 </div>
               ))}
@@ -120,27 +120,11 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  {/* <span>{data.currency}</span> */}
+                  <span>{data.currency}</span>
                   <p>{format.number(data.tvl)} DGT</p>
                 </div>
               ))}
             </div>
-
-            {/* <div className="my-2 sm:my-0 sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
-              <div className="text-base font-medium leading-7 text-gray-800">
-                Volume
-              </div>
-              {datas.map((data) => (
-                <div
-                  key={data.vault_id}
-                  className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
-                >
-                  <span>{data.currency}</span>
-                  <p>{data.volume}</p>
-                </div>
-              ))}
-            </div> */}
-
             <div className="my-2 sm:my-0 sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
               <div className="text-base font-medium leading-7 text-gray-800">
                 Return
@@ -150,15 +134,15 @@ export default function Overview() {
                   key={data.vault_id}
                   className="flex items-center text-2xl sm:text-3xl font-semibold leading-7 text-gray-800"
                 >
-                  {/* <span>{data.currency}</span> */}
+                  <span>{data.currency}</span>
                   <p>{data.return} DGT</p>
                 </div>
               ))}
             </div>
-          </div>
-          <div className="mx-auto w-full text-bold text-xl">
+          </div> */}
+          {/* <div className="mx-auto w-full text-bold text-xl">
             <PieChart data={chartData} />
-          </div>
+          </div> */}
           <div className="overflow-x-auto">
             <table className="bg-white min-w-full border border-[#C3D4E9]">
               <thead>

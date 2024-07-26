@@ -23,8 +23,8 @@ import axios from "axios";
 import Image from "next/image";
 import digitrustWhiteLogo from "@/assets/images/digitrust_white.png";
 import digitrustNoTextWhiteLogo from "@/assets/images/digitrust_white_notext.png";
-import digitrustLogo from "@/assets/images/digitrust.png";
-import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import leofiLogo from "@/assets/images/leofi.png";
+import leofiNoTextLogo from "@/assets/images/leofi_notext.png";
 import { scriptURLPostAlgorand, scriptURLGetAlgorand, scriptURLGetEvmApt, scriptURLPostEvmApt } from "@/constants/google";
 import { setBalance } from "viem/actions";
 import Hot from "@/assets/images/Hot.png";
@@ -136,7 +136,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState<string | null>('');
+  const [walletAddress, setWalletAddress] = useState<string>();
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     setEmail("");
     window.location.hash = "";
     // window.location.href = window.location.origin + "/home";
-    sessionStorage.removeItem('wallet')
+    sessionStorage.clear();
   };
 
   const beginZkLogin = async () => {
@@ -239,8 +239,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         const url = `${scriptURLGet}?email=${NewdecodedJwt?.email}`;
         const res = await fetch(url);
         const data = await res.json();
-        console.log(data);
-        if (data == null) {
+
+        if (!data) {
           if (chain === "Klaytn") {
             //Get EVM address
             const account_id = generateRandomness().substring(0, 4);
@@ -275,7 +275,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem("wallet", evmAddress);
+              sessionStorage.setItem(`${chain}wallet`, evmAddress);
             }
           }
 
@@ -309,7 +309,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem("wallet", algoAddress);
+              sessionStorage.setItem(`${chain}wallet`, algoAddress);
             }
           }
 
@@ -335,15 +335,39 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         } else {
           setEmail(data?.email);
           setWalletAddress(data?.wallet);
-          sessionStorage.setItem("wallet", data?.wallet)
+          sessionStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
       }
     };
     getUserAddress();
-    setWalletAddress(sessionStorage.getItem('wallet'));
+    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
   }, [oauthParams]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let scriptURLGet;
+      if (chain === "Klaytn") {
+        scriptURLGet = scriptURLGetEvmApt;
+      }
+      if (chain === "Algorand") {
+        scriptURLGet = scriptURLGetAlgorand;
+      }
+      const url = `${scriptURLGet}?email=${email}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        setWalletAddress(data?.wallet);
+        // sessionStorage.setItem(`${chain}wallet`, walletAddress || data?.wallet);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
+  }, [chain, email])
 
   useEffect(() => {
     // window.localStorage.setItem("userEmail", email);
@@ -358,10 +382,10 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     }
   }, [email]);
 
-  const classes = `w-[84%] mx-auto flex items-center justify-between px-5 py-2 text-sm rounded-xl xl:text-base ${props.isHome ? "bg-white" : "bg-blue-600 text-white"
-    }`;
+  const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
+    }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       console.log(chain);
       let scriptURLGet;
@@ -382,14 +406,14 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
-  },[chain])
+  }, [chain, email])
 
   return (
-    <div className={props.isDetail ? "bg-blue-50" : ""} >
+    <div className={props.isDetail ? "hero-background" : ""} >
       {email == "" ? (
-        <div className="bg-blue-400 text-white flex items-center justify-center py-2">
+        <div className="bg-white text-leofi flex items-center justify-center py-2">
           <Image
             src={Hot}
             alt="hot logo"
@@ -404,15 +428,15 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
             className="animate-pulse"
           />
         </div>
-      ) : (<div className="h-5"></div>)}
+      ) : ''}
       <header className={classes}>
         {/* Logo */}
         <div>
           {props.isHome ? (
             <Link href="/">
               <Image
-                src={digitrustLogo}
-                alt="digitrust logo"
+                src={leofiLogo}
+                alt="leofi logo"
                 height={50}
                 className="hidden sm:block"
               />
@@ -420,8 +444,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           ) : (
             <Link href="/">
               <Image
-                src={digitrustWhiteLogo}
-                alt="digitrust logo"
+                src={leofiLogo}
+                alt="leofi logo"
                 height={50}
                 className="hidden sm:block"
               />
@@ -430,8 +454,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           {props.isHome ? (
             <Link href="/">
               <Image
-                src={digitrustNoTextLogo}
-                alt="digitrust logo"
+                src={leofiNoTextLogo}
+                alt="leofi logo"
                 className="sm:hidden object-fit"
                 width={60}
               />
@@ -451,7 +475,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Create vault button */}
         {props.isHome ? (<button>
           <Link href="/pool">
-            <div className="px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 bg-blue-600 text-white hover:drop-shadow-md">
+            <div className="bg-leofi shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
@@ -465,50 +489,13 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
               <GoogleIcon />
-              <span className="text-blue-500 mx-2">Google login</span>
+              <span className="text-leofi mx-2">Google login</span>
             </div>
           </button>
         ) : (
           <>
             {/* Desktop */}
             <div className="hidden sm:block">
-              {/* <div className="flex flex-1 justify-end gap-x-3 ">
-                <div
-                  className={`flex items-center pt-3 capitalize w-fit ${props.isHome ? "text-blue-600" : "text-white"
-                    }`}
-                >
-                  <WalletIcon></WalletIcon>
-                  <span className="font-bold pl-2">
-                    <div className="px-1">{`${walletAddress.slice(
-                      0,
-                      4
-                    )}...${walletAddress.slice(-5, -1)}`}</div>
-                  </span>
-                </div>
-
-                <div
-                  className={`flex items-center rounded-lg px-3 py-1 gap-x-2 ${props.isHome
-                    ? "border border-blue-600 text-white"
-                    : "bg-white text-blue-600"
-                    }`}
-                >
-                  <div className="flex items-center gap-x-2">
-                    <button className=" bg-white rounded-md">
-                      <div className="grid grid-row-auto grid-flow-col mx-1 my-1">
-                        <GoogleIcon />
-                        <span className="text-blue-600 font-bold mx-2">
-                          <div>{email.replace("@gmail.com", "")}</div>
-                        </span>
-                      </div>
-                    </button>
-                    <div className="text-gray-400 font-bold">
-                      {format.number(point)} DGT
-                    </div>
-
-                    <ChainDropdown selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
-                  </div>
-                </div>
-              </div> */}
               <InfoDropdownDesktop
                 isHome={props.isHome}
                 email={email}

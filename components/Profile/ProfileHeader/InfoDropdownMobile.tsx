@@ -21,7 +21,7 @@ import { chain } from "lodash";
 interface Props {
     isHome: boolean;
     email: string;
-    walletAddress: string | null;
+    walletAddress: string;
     point: number;
     chain: string;
     setChain: (chain: string) => void;

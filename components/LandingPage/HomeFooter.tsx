@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 import LFooter from "./Footer";
 import bgNewsletter from "@/assets/images/bg-newsletter.png";
-import { scriptURLPost } from "@/constants/google";
+import { scriptURLPostEvmApt } from "@/constants/google";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Footer() {
@@ -27,7 +27,7 @@ export default function Footer() {
 
     var formDataString = keyValuePairs.join("&");
 
-    const response = await fetch(scriptURLPost, {
+    const response = await fetch(scriptURLPostEvmApt, {
       redirect: "follow",
       mode: "no-cors",
       method: "POST",
@@ -60,7 +60,7 @@ export default function Footer() {
           <div className="relative space-y-[30px] py-[100px] px-5 sm:pl-[70px] text-white">
             <div className="space-y-[13px]">
               <h1 className="text-3xl sm:text-4xl font-bold leading-[110%] xl:text-[50px]">
-                Get Started with DigiTrust Today!
+                Get Started with Leofi Today!
               </h1>
               <p className="text-base font-normal leading-[150%] xl:text-xl">
                 Subscribe to our newsletter to get early information and special
