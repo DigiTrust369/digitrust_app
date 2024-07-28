@@ -37,7 +37,7 @@ import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
 import leofiNotextLogo from "@/assets/images/leofi_notext.png";
-import DepositIcon from "@/icons/DepositIcon";
+import RightArrowIcon from "@/icons/RightArrowIcon";
 
 interface Vault {
   url: string;
@@ -249,18 +249,19 @@ export default function VaultsList() {
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                   Profile Name
                 </th>
+                {/* 
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                   Price
                 </th>
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                   TVL
-                  {/* <Image
+                  <Image
                   className="w-[16px] h-[16px]"
                   src={arrowDownUpIc}
                   alt="arrow-icon"
-                /> */}
+                /> 
                 </th>
-
+                */}
                 <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
                   Asset
                 </th>
@@ -289,12 +290,12 @@ export default function VaultsList() {
                       <span className="text-[#90A3BF]">{vault.symbol}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                  {/* <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                     ${format.number(+vault.price.slice(0, -1))}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
                     ${format.number(+vault.tvl)}
-                  </td>
+                  </td> */}
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9] overflow-hidden">
                     <div className="w-full flex items-center">
                       {vault.assets.map((asset) => (
@@ -320,10 +321,10 @@ export default function VaultsList() {
                       id="onborda-step1"
                       onClick={() => clickDepositHandler(vault.vault_id)}
                     >
-                      <Link href="/detail">
+                      <Link href={`/detail/${vault.vault_id}`}>
                         <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-leofi">
-                          <DepositIcon />
-                          <span className="font-normal">Deposit</span>
+                          {/* <span className="font-normal text-sm">Go</span> */}
+                          <RightArrowIcon />
                         </div>
                       </Link>
                     </button>
