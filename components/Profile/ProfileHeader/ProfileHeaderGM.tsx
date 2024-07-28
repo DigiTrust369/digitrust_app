@@ -445,7 +445,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Create vault button */}
         {props.isHome ? (<button>
           <Link href="/create-profile">
-            <div className="bg-leofi shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
+            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
