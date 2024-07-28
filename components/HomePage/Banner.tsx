@@ -115,7 +115,7 @@ const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, childre
           </div>
         </div>
         <div className="sm:mt-[35px] text-center">
-          <Link href="/pool">
+          <Link href="/create-profile">
             <button className="bg-white rounded-[10px]">
               <div className="px-5 py-2.5 sm:px-[41px] sm:py-[13px] text-[#2563EB] text-base sm:text-xl font-semibold leading-[30px] tracking-tight">
                 Create Profile
