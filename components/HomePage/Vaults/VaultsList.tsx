@@ -422,7 +422,7 @@ export default function VaultsList() {
                       id="onborda-step1"
                       onClick={() => clickDepositHandler(vault.vault_id)}
                     >
-                      <Link href="/detail">
+                      <Link href="/detail/bitcoin">
                         <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-leofi">
                           <DepositIcon />
                           <span className="font-normal">Deposit</span>

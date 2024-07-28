@@ -117,7 +117,7 @@ export default function Info(Props:any) {
             </svg>
             <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              {Props.coinID}
+              {Props.coinID.toUpperCase()}
             </div>
           </div>
 

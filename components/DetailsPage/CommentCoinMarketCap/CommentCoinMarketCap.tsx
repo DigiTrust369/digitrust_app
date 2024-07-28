@@ -213,7 +213,7 @@ export default function Comment(Props:any) {
             <div className="flex gap-5">
                 <Avatar isBordered radius="full" size="md" src="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
                 <div className="flex flex-col gap-1 items-start justify-center">
-                    <h4 className="text-small font-semibold leading-none text-default-600">{Props.coinID}</h4>
+                    <h4 className="text-small font-semibold leading-none text-default-600">{Props.coinID.toUpperCase()}</h4>
                     <h5 className="text-small tracking-tight text-default-400">1.6M Followers</h5>
                 </div>
             </div>

@@ -17,7 +17,6 @@ import Link from "next/link";
 import CommentSection from "./Comment/Comments";
 import { TelegramShareButton, TelegramIcon } from "react-share";
 
-
 interface Asset {
   asset: string;
   symbol: string;
@@ -86,14 +85,13 @@ export default function Overview() {
     });
 
   return (
-    <div className="mt-11 ">
+    <div className="mt-11">
       <div>
         <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           History
         </h1>
       </div>
-      <div className="flex flex-col lg:flex-row bg-background text-foreground p-4">
-        <div className="flex-1">
+      <div className="overflow-x-auto scrollbar-hide">
           {/* Balance */}
           {/* <div className="sm:grid sm:grid-cols-3 sm:gap-x-4">
             <div className="sm:space-y-3 rounded-xl border border-gray-45 bg-white px-6 py-4 backdrop-blur-lg">
@@ -144,22 +142,22 @@ export default function Overview() {
             <PieChart data={chartData} />
           </div> */}
           <div className="overflow-x-auto">
-            <table className="bg-white min-w-full border border-[#C3D4E9]">
+            <table className="w-full bg-white min-w-full border border-[#C3D4E9]">
               <thead>
                 <tr className="">
-                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                 <th className="w-1/5 px-6 py-6 border-b border-b-[#C3D4E9] text-left text-base leading-4 text-gray-800 tracking-wider">
                     Asset
                   </th>
-                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                 <th className="w-1/5 px-6 py-6 border-b border-b-[#C3D4E9] text-left text-base leading-4 text-gray-800 tracking-wider">
                     Weight
                   </th>
-                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                 <th className="w-1/5 px-6 py-6 border-b border-b-[#C3D4E9] text-left text-base leading-4 text-gray-800 tracking-wider">
                     Holding
                   </th>
-                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                 <th className="w-1/5 px-6 py-6 border-b border-b-[#C3D4E9] text-left text-base leading-4 text-gray-800 tracking-wider">
                     Price 24h
                   </th>
-                  <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                 <th className="w-1/5 px-6 py-6 border-b border-b-[#C3D4E9] text-left text-base leading-4 text-gray-800 tracking-wider">
                     Explore
                   </th>
                 </tr>
@@ -167,7 +165,7 @@ export default function Overview() {
               <tbody>
                 {assets.map((asset) => (
                   <tr className="border-b border-b-[#C3D4E9] text-sm sm:text-base text-gray-800 font-medium leading-normal">
-                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 border-b border-b-[#C3D4E9]">
                       <div className="flex items-center">
                         <Image
                           src={asset.logo_url}
@@ -178,18 +176,18 @@ export default function Overview() {
                         <span className="ml-2 sm:ml-4">{asset.symbol}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 border-b border-b-[#C3D4E9]">
                       {asset.weight}
                     </td>
-                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 border-b border-b-[#C3D4E9]">
                       {format.number(+asset.holding.slice(0, -1))} DGT
                     </td>
-                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 border-b border-b-[#C3D4E9]">
                       <div className="text-green-500">
                         {format.number(+asset.price_change["24h"])}%
                       </div>
                     </td>
-                    <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 border-b border-b-[#C3D4E9]">
                       <Link href={asset.asset_url}>LINK</Link>
                     </td>
                   </tr>
@@ -197,7 +195,6 @@ export default function Overview() {
               </tbody>
             </table>
           </div>
-        </div>
         {/* <div className="hidden h-fit sm:block py-10 sm:py-0 sm:w-[30%] rounded-[10px] ">
           <div className="flex items-center gap-5 justify-between">
             <div className="flex items-center gap-5">
