@@ -40,7 +40,7 @@ const Step4Preview = (props: Props) => {
         return {
             "asset_id": `${token.asset_id}`,
             "amount": token.amount,
-            "asset_type": index % 2 === 0 ? "cryptocurrency" : 'token',
+            "asset_type": 'token',
         }
     })
 
