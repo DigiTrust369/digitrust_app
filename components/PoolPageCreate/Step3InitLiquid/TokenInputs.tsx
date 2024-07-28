@@ -41,17 +41,18 @@ export default function TokenInputs() {
                             {/*Weight*/}
                             <div className="text-sm	text-gray-700">{token?.percent}%</div>
                         </div>
-                        <input type="number"
-                            className="h-10 text-xl text-right font-numeric"
-                            placeholder="0"
-                            value={+token?.amount}
-                            {...register(`tokens.${tokenIdx}.amount`)}
-                            onChange={(e) => {
-                                update(tokenIdx, {
-                                    ...token,
-                                    amount: +e?.target?.value,
-                                });
-                            }}
+                        <input
+                        type="number"
+                        className="h-10 text-xl text-right font-numeric"
+                        placeholder="0"
+                        defaultValue={token.amount}
+                        {...register(`tokens.${tokenIdx}.amount`)}
+                        onBlur={(e) => {
+                            update(tokenIdx, {
+                            ...token,
+                            amount: e.target.value === '' ? '' : +e.target.value,
+                            });
+                        }}
                         />
                     </div>
                     {/* <div className="flex justify-between text-sm">
