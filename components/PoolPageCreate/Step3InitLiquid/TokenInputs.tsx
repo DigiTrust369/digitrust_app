@@ -28,7 +28,6 @@ export default function TokenInputs() {
         0,
     ).toFixed(2);
 
-    console.log("Step3 Fields: ", fields)
     return (
         <>
             <ul className="pt-2 ">
@@ -45,11 +44,12 @@ export default function TokenInputs() {
                         <input type="number"
                             className="h-10 text-xl text-right font-numeric"
                             placeholder="0"
+                            value={+token?.amount}
                             {...register(`tokens.${tokenIdx}.amount`)}
                             onChange={(e) => {
                                 update(tokenIdx, {
                                     ...token,
-                                    amount: +(e?.target?.value),
+                                    amount: +e?.target?.value,
                                 });
                             }}
                         />

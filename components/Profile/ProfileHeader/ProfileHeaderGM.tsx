@@ -333,7 +333,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           });
         } else {
           setEmail(data?.email);
-          // setWalletAddress(data?.wallet);
           sessionStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
@@ -341,7 +340,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       }
     };
     getUserAddress();
-    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
   }, [oauthParams]);
 
   useEffect(() => {
@@ -357,9 +355,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       try {
         const res = await fetch(url);
         const data = await res.json();
-        // setWalletAddress(data?.wallet);
         sessionStorage.setItem(`${chain}wallet`, data?.wallet);
-        // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
       } catch (error) {
         console.error("Error fetching data:", error);
       }

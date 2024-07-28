@@ -83,7 +83,6 @@ const TokensFields = (props: Props) => {
     remove(tokenIdx);
   }
 
-  console.log("Step1: Fields: ", fields)
   return (
     <div className="w-full my-4 px-4">
       {fields.map((token, tokenIdx) => {

@@ -8,6 +8,7 @@ import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
 import toast from "react-hot-toast";
 import { useGlobalContext } from "@/Context/store";
+import { redirect } from "next/navigation";
 
 type Props = {
     onBack?: () => void;
@@ -32,8 +33,7 @@ const Step4Preview = (props: Props) => {
         control,
         name: "tokens",
     });
-    console.log(fields)
-    console.log(sessionStorage.getItem("wallet"))
+
     const vaultName = fields.map(token => `${token.amount}${token.symbol}`).join('-');
     const vaultSymbols = fields.map(token => token.symbol);
     const portfolio = fields.map((token, index) => {
@@ -72,16 +72,13 @@ const Step4Preview = (props: Props) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            mode: "no-cors",
             body: JSON.stringify(data),
         });
-        console.log(response)
         if (response.ok) {
             const result = await response.json();
-
-            if (result.status === 'ok') {
+            if (result.success) {
                 toast.success("Created Profile Successfully !");
-                setTimeout(() => reset(), 5000);
+                // setTimeout(() => reset(), 5000);
             } else {
                 toast.error("Something went wrong! Try again!");
             }
