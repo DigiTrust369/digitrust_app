@@ -59,7 +59,7 @@ const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
 });
 
 
-export default function DetailsPage(Props:any) {
+export default function DetailsPage(Props: any) {
   const [chartData, setChartData] = useState<CandleData[]>([]);
   const [dataDetails, setDataDetails] = useState<any>();
   const [pieChartData, setPieChartData] = useState<PiePart[]>([])
@@ -129,7 +129,7 @@ export default function DetailsPage(Props:any) {
       <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border">
         <Info coinID={Props.coinID} />
         <div>
-          <h1 className="mt-2 pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+          <h1 className="mt-2 pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
             Overview
           </h1>
         </div>
@@ -139,7 +139,7 @@ export default function DetailsPage(Props:any) {
       </div>
       <main className="flex-1 md:w-1/2 h-screen md:h-auto p-4 overflow-y-auto scrollbar-hide">
         <div>
-          <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+          <h1 className="pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
             {Props.coinID} Price
           </h1>
         </div>
@@ -149,8 +149,8 @@ export default function DetailsPage(Props:any) {
         <Overview />
       </main>
       <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
-        <Comment coinID = {Props.coinID} />
+        <Comment coinID={Props.coinID} />
       </div>
-  </div>
+    </div>
   );
 }

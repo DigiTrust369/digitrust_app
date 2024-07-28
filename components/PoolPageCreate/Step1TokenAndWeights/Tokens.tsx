@@ -108,6 +108,7 @@ const TokensFields = (props: Props) => {
                     symbol: Tokens?.find(y => y.name == value)?.symbol,
                     logo_url: Tokens?.find(y => y.name == value)?.logo_url,
                     price: Tokens?.find(y => y.name == value)?.price,
+                    asset_id: Tokens?.find(y => y.name == value)?.id,
                   });
                 }}
               />

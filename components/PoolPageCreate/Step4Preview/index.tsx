@@ -7,25 +7,16 @@ import { useFieldArray } from "react-hook-form";
 import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
 import toast from "react-hot-toast";
+import { useGlobalContext } from "@/Context/store";
 
 type Props = {
     onBack?: () => void;
     fee: number;
 };
 
-const postData = async (data = {}) => {
-    const response = await fetch('https://dgt-dev.vercel.app/v1/create_vault', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    })
-    return response;
-};
-
 const Step4Preview = (props: Props) => {
-    const { onBack } = props;
+    const { userEmail, walletAddress } = useGlobalContext();
+    const { onBack, fee } = props;
     const { register, control, watch, reset } = useTypedForm("CreateVaults");
     const {
         fields,
@@ -45,23 +36,55 @@ const Step4Preview = (props: Props) => {
     console.log(sessionStorage.getItem("wallet"))
     const vaultName = fields.map(token => `${token.amount}${token.symbol}`).join('-');
     const vaultSymbols = fields.map(token => token.symbol);
+    const portfolio = fields.map((token, index) => {
+        return {
+            "asset_id": `${token.asset_id}`,
+            "amount": token.amount,
+            "asset_type": index % 2 === 0 ? "cryptocurrency" : 'token',
+        }
+    })
 
     const createVault = async () => {
+        // const data = {
+        //     "manager": sessionStorage.getItem("wallet"),
+        //     "vault_symbol": vaultName,
+        //     "symbols": vaultSymbols,
+        //     "token_adrs": ["0x11", "0x1"],
+        //     "created_at": Date.now(),
+        //     "end_at": 34234,
+        //     "manage_fee": fee,
+        // }
         const data = {
-            "manager": sessionStorage.getItem("wallet"),
-            "vault_symbol": vaultName,
-            "symbols": vaultSymbols,
-            "token_adrs": ["0x11", "0x1"],
+            "profile_id": userEmail.split('@')[0],
+            "username": userEmail.split('@')[0],
+            "email": userEmail,
+            "management_fee": `${fee}`,
+            "wallet_address": walletAddress,
+            "asset_portfolio": portfolio,
             "created_at": Date.now(),
-            "end_at": 34234,
-            "manage_fee": props.fee,
+            "updated_at": 1626627600
         }
         console.log(data)
-        const response = await postData(data);
-        const resData = await response.json();
-        if (resData.status == 'ok') {
-            toast.success("Created Vault Successfully !");
-            setTimeout(() => reset(), 5000);
+
+        const url = 'https://dgt-dev.vercel.app/v1/create_vault';
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            mode: "no-cors",
+            body: JSON.stringify(data),
+        });
+        console.log(response)
+        if (response.ok) {
+            const result = await response.json();
+
+            if (result.status === 'ok') {
+                toast.success("Created Profile Successfully !");
+                setTimeout(() => reset(), 5000);
+            } else {
+                toast.error("Something went wrong! Try again!");
+            }
         } else {
             toast.error("Something went wrong! Try again!");
         }
