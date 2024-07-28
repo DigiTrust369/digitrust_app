@@ -135,7 +135,7 @@ export default function Comment(Props:any) {
 
     const getData = async() =>{  
         setIsLoading(true);
-        await postData("https://dgt-dev.vercel.app/v1/profile/add_post",{}).then
+        await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_post`,{}).then
         ((data) => {
              setDataTopPost(data);
              setIsLoading(false);
@@ -151,52 +151,68 @@ export default function Comment(Props:any) {
     function getRandomInt(max:number) {
         return Math.floor(Math.random() * max);
     }
-    const [itemsTop, setItemsTop] = useState(dataTop);
-    const [itemsLast, setItemsLast] = useState(dataLast);
+    // const [itemsTop, setItemsTop] = useState(dataTop);
+    // const [itemsLast, setItemsLast] = useState(dataLast);
     const [curPost,setCurPost] = useState("");
     const newPost = async() =>{
         if(curPost == "")
         {
-            const newItem = {
-                id:getRandomInt(99999).toString(),
-                profile_id:"pn_v1",
-                userAvatar: "https://placehold.co/40x40",
-                userName: userEmail,
-                postTime: new Date().getHours().toString()+"h",
-                content: content,
-                bull: [],
-                bear: [],
-                share:[],
-                listComment:[]
-            };
-            setItemsTop(prevItems => [...prevItems, newItem]);
-            setItemsLast(prevItems => [...prevItems, newItem]);
-            getData();
-        }
-        else
-        {
-            const newItems = itemsTop.map(item => {
-                if (item.id === curPost) {
-                    return {
-                        ...item,
-                        listComment: [
-                            ...item.listComment,
-                            {
-                                idComment: getRandomInt(99999).toString(),
-                                userAvatar: "https://placehold.co/40x40",
-                                userName: userEmail,
-                                mainComment: content
-                            }
-                        ]
-                    };
-                }
-                return item;
-            });
-            setItemsTop(newItems);
+            // const newItem = {
+            //     id:getRandomInt(99999).toString(),
+            //     profile_id:"pn_v1",
+            //     userAvatar: "https://placehold.co/40x40",
+            //     userName: userEmail,
+            //     postTime: new Date().getHours().toString()+"h",
+            //     content: content,
+            //     bull: [],
+            //     bear: [],
+            //     share:[],
+            //     listComment:[]
+            // };
+            // setItemsTop(prevItems => [...prevItems, newItem]);
+            // setItemsLast(prevItems => [...prevItems, newItem]);
+            // getData();
 
             const fetchData = async () => {  
                 setIsLoading(true);
-                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bull_id`,{
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_post`,{
+                    id:getRandomInt(99999).toString(),
+                    profile_id: Props.coinID,
+                    userName: userEmail,
+                    postTime: new Date().toString(),
+                    content: content,
+                }).then
+                ((data) => {
+                    console.log(data)
+                    getData();
+                })
+            }
+            fetchData();
+        }
+        else
+        {
+            // const newItems = itemsTop.map(item => {
+            //     if (item.id === curPost) {
+            //         return {
+            //             ...item,
+            //             listComment: [
+            //                 ...item.listComment,
+            //                 {
+            //                     idComment: getRandomInt(99999).toString(),
+            //                     userAvatar: "https://placehold.co/40x40",
+            //                     userName: userEmail,
+            //                     mainComment: content
+            //                 }
+            //             ]
+            //         };
+            //     }
+            //     return item;
+            // });
+            // setItemsTop(newItems);
+
+            const fetchData = async () => {  
+                setIsLoading(true);
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_comment`,{
                     idPost: curPost,
                     profile_id: Props.coinID,
                     commentUserName: userEmail,
@@ -270,7 +286,8 @@ export default function Comment(Props:any) {
     useEffect(() => {
         // This will run whenever the data prop changes
         // You can update your component's state here if needed
-    }, [itemsTop]);
+        console.log(dataTopPost)
+    }, [dataTopPost]);
 
     return (
     <div>
@@ -310,7 +327,7 @@ export default function Comment(Props:any) {
                                 <div className="flex justify-between items-center">Loading...</div>
                             ) : (item.id == "top" ? 
                                 <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} />   
-                                : <CommentCoinMarketCap data={itemsLast} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> )
+                                : <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> )
                         }
                     </ScrollShadow>
                 </Tab>
