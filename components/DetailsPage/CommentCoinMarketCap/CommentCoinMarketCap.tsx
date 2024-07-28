@@ -2,6 +2,7 @@ import {Tabs, Tab, Card, CardHeader, CardBody, CardFooter, Avatar, Button,Scroll
 import { useEffect, useState } from "react";
 import CommentCoinMarketCap from "./PostCoinMarketCap";
 import { useGlobalContext } from "@/Context/store";
+import { IdentificationIcon } from "@heroicons/react/20/solid";
 
 async function postData(url = "", data = {}) {
     // Default options are marked with *
@@ -56,22 +57,12 @@ export default function Comment(Props:any) {
                     userName:"alvin",
                     userAvatar: "https://placehold.co/40x40",
                     mainComment:"Hello world",
-                    listReply:[
-                        {
-                            idReply:"1",
-                            userName:"ichi",
-                            userAvatar: "https://placehold.co/40x40",
-                            mainReply:"Hi World"
-                        }
-                    ]
                 },
                 {
                     idComment:"2",
                     userName:"alvin",
                     userAvatar: "https://placehold.co/40x40",
                     mainComment:"I'm here",
-                    listReply:[
-                    ]
                 }
             ]
         },
@@ -90,21 +81,7 @@ export default function Comment(Props:any) {
                     idComment:"1",
                     userName:"alvin",
                     userAvatar: "https://placehold.co/40x40",
-                    mainComment:"Great",
-                    listReply:[
-                        {
-                            idReply:"1",
-                            userName:"hello",
-                            userAvatar: "https://placehold.co/40x40",
-                            mainReply:"Good Job!"
-                        },
-                        {
-                            idReply:"2",
-                            userName:"ichi",
-                            userAvatar: "https://placehold.co/40x40",
-                            mainReply:"That's good!"
-                        },
-                    ]
+                    mainComment:"Great"
                 }
             ]
         },
@@ -151,15 +128,19 @@ export default function Comment(Props:any) {
 
     useEffect(() => {
         const fetchData = async () => {  
-           setIsLoading(true);
-           await postData("https://dgt-dev.vercel.app/v1/profile/add_post",{}).then
-           ((data) => {
-                setDataTopPost(data);
-                setIsLoading(false);
-            })
+            await getData();
         }
         fetchData();
     }, []);
+
+    const getData = async() =>{  
+        setIsLoading(true);
+        await postData("https://dgt-dev.vercel.app/v1/profile/add_post",{}).then
+        ((data) => {
+             setDataTopPost(data);
+             setIsLoading(false);
+         })
+    }
 
     useEffect(() => {
         // This will run whenever dataTopPost changes
@@ -172,34 +153,118 @@ export default function Comment(Props:any) {
     }
     const [itemsTop, setItemsTop] = useState(dataTop);
     const [itemsLast, setItemsLast] = useState(dataLast);
-    const newPost = () =>{
-        const newItem = {
-            id:getRandomInt(99999).toString(),
-            profile_id:"pn_v1",
-            userAvatar: "https://placehold.co/40x40",
-            userName: userEmail,
-            postTime: new Date().getHours().toString()+"h",
-            content: content,
-            bull: [],
-            bear: [],
-            share:[],
-            listComment:[]
-        };
-        setItemsTop(prevItems => [...prevItems, newItem]);
-        setItemsLast(prevItems => [...prevItems, newItem]);
+    const [curPost,setCurPost] = useState("");
+    const newPost = async() =>{
+        if(curPost == "")
+        {
+            const newItem = {
+                id:getRandomInt(99999).toString(),
+                profile_id:"pn_v1",
+                userAvatar: "https://placehold.co/40x40",
+                userName: userEmail,
+                postTime: new Date().getHours().toString()+"h",
+                content: content,
+                bull: [],
+                bear: [],
+                share:[],
+                listComment:[]
+            };
+            setItemsTop(prevItems => [...prevItems, newItem]);
+            setItemsLast(prevItems => [...prevItems, newItem]);
+            getData();
+        }
+        else
+        {
+            const newItems = itemsTop.map(item => {
+                if (item.id === curPost) {
+                    return {
+                        ...item,
+                        listComment: [
+                            ...item.listComment,
+                            {
+                                idComment: getRandomInt(99999).toString(),
+                                userAvatar: "https://placehold.co/40x40",
+                                userName: userEmail,
+                                mainComment: content
+                            }
+                        ]
+                    };
+                }
+                return item;
+            });
+            setItemsTop(newItems);
+
+            const fetchData = async () => {  
+                setIsLoading(true);
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bull_id`,{
+                    idPost: curPost,
+                    profile_id: Props.coinID,
+                    commentUserName: userEmail,
+                    mainComment: content,
+                    idComment: getRandomInt(99999).toString(),
+                }).then
+                ((data) => {
+                    console.log(data)
+                    getData();
+                })
+            }
+            fetchData();
+        }
         setContent("");
+        setCurPost("");
+        
     }
 
-    function setLike(){
-        console.log("Like")
+    function setBull(id:any){
+        const fetchData = async () => {  
+            setIsLoading(true);
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bull_id`,{
+                id:id,
+                profile_id:Props.coinID,
+                userName: userEmail,
+            }).then
+            ((data) => {
+                console.log(data);
+                getData();
+            })
+        }
+        fetchData();
     }
 
-    function setComment(){
-        console.log("Comment")
+    function setBear(id:any){
+        const fetchData = async () => {  
+            setIsLoading(true);
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bear_id`,{
+                id:id,
+                profile_id:Props.coinID,
+                userName: userEmail,
+            }).then
+            ((data) => {
+                console.log(data);
+                getData();
+            })
+        }
+        fetchData();
     }
 
-    function setShare(){
-        console.log("Share")
+    function setComment(id:any){
+        setCurPost(id)
+    }
+
+    function setShare(id:any){
+        const fetchData = async () => {  
+            setIsLoading(true);
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/share_profile`,{
+                id:id,
+                profile_id:Props.coinID,
+                userName: userEmail,
+            }).then
+            ((data) => {
+                 console.log(data);
+                 getData();
+            })
+        }
+        fetchData();
     }
 
     useEffect(() => {
@@ -244,10 +309,9 @@ export default function Comment(Props:any) {
                             isLoading ? (
                                 <div className="flex justify-between items-center">Loading...</div>
                             ) : (item.id == "top" ? 
-                                <CommentCoinMarketCap data={dataTopPost} setLike={setLike} setComment={setComment} setShare={setShare} />   
-                                : <CommentCoinMarketCap data={itemsLast} setLike={setLike} setComment={setComment} setShare={setShare} /> )
+                                <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} />   
+                                : <CommentCoinMarketCap data={itemsLast} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> )
                         }
-                   
                     </ScrollShadow>
                 </Tab>
                 )}
@@ -256,10 +320,10 @@ export default function Comment(Props:any) {
         <div className="p-4 border-t flex items-center">
             <img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full mr-2" />
             <input type="text" 
-                placeholder="Post your comment..." 
+                placeholder="What are you thinking..." 
                 className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
                 onChange={(event) => setContent(event.target.value)} />
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>Post</button>
+            <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>{curPost == ""? "Post":"Comment"}</button>
         </div>
     </div>
     )

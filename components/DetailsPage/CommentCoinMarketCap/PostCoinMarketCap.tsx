@@ -27,7 +27,6 @@ interface Comment{
     userAvatar: string,
     userName: string,
     mainComment:string,
-    listReply: Array<reply>
 }
 
 interface reply {
@@ -39,9 +38,10 @@ interface reply {
 
 interface Props {
     data: Array<Data>,
-    setLike: Dispatch<void>,
-    setComment:Dispatch<void>,
-    setShare:Dispatch<void>,
+    setBull: (id: string) => void,
+    setBear: (id: string) => void,
+    setComment: (id: string) => void,
+    setShare: (id: string) => void,
   }
 
 
@@ -49,6 +49,7 @@ interface Props {
 const CommentCoinMarketCap = (props: Props) => {
     const [items, setItems] = useState<Array<Data>>(props.data);
     const { userEmail } = useGlobalContext();
+    const [curPost,setCurPost] = useState("");
 
     function removeStringFromArray(arr: string[], stringToRemove: string): string[] {
         return arr.filter(item => item !== stringToRemove);
@@ -74,6 +75,7 @@ const CommentCoinMarketCap = (props: Props) => {
         });
         
         setItems(newItems);
+        props.setBull(id);
     }
 
     const bearUpdate = async(id:string) =>{
@@ -88,15 +90,14 @@ const CommentCoinMarketCap = (props: Props) => {
         });
         
         setItems(newItems);
+        props.setBear(id);
     }
 
 
     const [isComment, setComment] = useState("0");
-    function commentUpdate(){
-        if(isComment == "0")
-            setComment("1")
-        else
-            setComment("0")
+    function commentUpdate(id: string) {
+        setCurPost(curPost === id ? "" : id);
+        props.setComment(id);
     }
 
     let CommnetStyle;
@@ -107,17 +108,15 @@ const CommentCoinMarketCap = (props: Props) => {
         CommnetStyle = `text-[#3251ec]`;
     }
 
-    let LikeStyle = `text-[#989090]`;;
-    // if (isLike === "0") {
-    //     LikeStyle = `text-[#989090]`;
-    // }
-    // else{
-    //     LikeStyle = `text-[#3251ec]`;
-    // }
 
-    function shareUpdate(){
-
+    function shareUpdate(id:any){
+        props.setShare(id);
     }
+
+    useEffect(() => {
+        console.log(props.data)
+        setItems(props.data);
+    }, [props.data]);
 
     return (
         <div>
@@ -136,11 +135,14 @@ const CommentCoinMarketCap = (props: Props) => {
                             <span className="text-primary">{d.content}</span> <br />
                         </p>
                     </div>
-                    {d.listComment.map((comment)=> (
-                        <div className='ml-5'>
+                    {d.listComment.map((comment) => (
+                        <div key={comment.idComment} className='ml-5'>
                             <div className="flex items-center space-x-2 mb-2 bg-gray-100 rounded-2xl">
-                                {comment.userAvatar != null ? (<img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />)
-                                    :(<img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />)}
+                                {comment.userAvatar != null ? (
+                                    <img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />
+                                ) : (
+                                    <img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />
+                                )}
                                 <div>
                                     <p className="font-semibold">{comment.userName}</p>
                                 </div>
@@ -148,20 +150,6 @@ const CommentCoinMarketCap = (props: Props) => {
                                     <p>{comment.mainComment}</p>
                                 </div>
                             </div>
-                            {comment.listReply.map((reply)=> (
-                                <div className='ml-6'>
-                                    <div className="flex items-center space-x-2 mb-2 bg-gray-200 rounded-2xl">
-                                        {reply.userAvatar !=null ? (<img src={reply.userAvatar} alt="User Avatar" className="rounded-full" />)
-                                        :(<img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />)}
-                                        <div>
-                                            <p className="font-semibold">{reply.userName}</p>
-                                        </div>
-                                        <div>
-                                            <p>{reply.mainReply}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
                         </div>
                     ))}
 
@@ -177,11 +165,17 @@ const CommentCoinMarketCap = (props: Props) => {
                         </Button> */}
                     </div>
                     <div className="flex items-center space-x-4 mb-4 ml-2">
-                        <Button size='sm' color="primary" variant="light" startContent={<ViewIcon comment = {isComment} />} onPress={commentUpdate}>
+                        <Button size='sm' color="primary" variant="light" startContent={<ViewIcon />}>
                             <p className={CommnetStyle}>View</p>
                         </Button>
-                        <Button size='sm' color="primary" variant="light" startContent={<CommentIcon comment = {isComment} />} onPress={commentUpdate}>
-                            <p className={CommnetStyle}>Comment</p>
+                        <Button 
+                            size='sm' 
+                            color="primary" 
+                            variant="light" 
+                            startContent={<CommentIcon comment={curPost === d.id} />} 
+                            onPress={() => commentUpdate(d.id)}
+                        >
+                            <p className={curPost === d.id ? "text-[#3251ec]" : "text-[#989090]"}>Comment</p>
                         </Button>
                         <Button size='sm' color="primary" variant="light" startContent={<ShareIcon/>} onPress={shareUpdate}>
                             <p>Share</p>
