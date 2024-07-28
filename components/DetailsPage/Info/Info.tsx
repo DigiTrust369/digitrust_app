@@ -58,21 +58,22 @@ export default function Info(Props:any) {
   
 
   const goToCopyVault = async () => {
-    if (isOnbordaVisible) return;
-    const res = await copyVault(wallet);
-    if (res != "fall" && res != null)
-      toast.success("Transaction Success!\n Hash transaction block is " + res, {
-        style: {
-          maxWidth: "800px",
-        },
-        duration: 5000,
-      });
-    if (res == "fall") {
-      const loadingToast = toast.loading("Loading...");
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
-      }, 2000);
-    }
+    // if (isOnbordaVisible) return;
+    // const res = await copyVault(wallet);
+    // if (res != "fall" && res != null)
+    //   toast.success("Transaction Success!\n Hash transaction block is " + res, {
+    //     style: {
+    //       maxWidth: "800px",
+    //     },
+    //     duration: 5000,
+    //   });
+    // if (res == "fall") {
+    //   const loadingToast = toast.loading("Loading...");
+    //   setTimeout(() => {
+    //     toast.dismiss(loadingToast);
+    //   }, 2000);
+    // }
+
   };
 
   useEffect(() => {
@@ -180,12 +181,44 @@ export default function Info(Props:any) {
             <button
               id="onborda-step2"
               className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
-              onClick={async () => goToCopyVault()}
+              onClick={onOpen}
             >
               Invest
             </button>
           </div>
         </div>
+
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Add transaction</ModalHeader>
+              <ModalBody>
+              <div className="mt-4">
+                <label className="block text-muted-foreground">Asset</label>
+                <div className="flex items-center">
+                  <img src="https://openui.fly.dev/openui/24x24.svg?text=🔴" alt="Avalanche logo" className="mr-2" />
+                  <span className="text-foreground">Avalanche (AVAX)</span>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-muted-foreground">Quantity</label>
+                <input type="number" className="border border-border rounded p-2 w-full" placeholder="0.00" />
+              </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </section>
   );
 }
