@@ -8,7 +8,7 @@ import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import axios from 'axios';
-
+import BitcoinIcon from "@/icons/BitcoinIcon";
 
 const getCoinPrice = async (coinId:any) => {
   try {
@@ -20,6 +20,24 @@ const getCoinPrice = async (coinId:any) => {
   }
 };
 
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 export default function Info(Props:any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -29,7 +47,7 @@ export default function Info(Props:any) {
   const { isOnbordaVisible } = useOnborda();
   const [defaultIndex, setDefaultIndex] = useState(0);
   const [price, setPrice] = useState(null);
-
+  const [quantity,setQuantity] = useState(0)
   //Value for copy vault
   const wallet = useWallet();
 
@@ -56,6 +74,16 @@ export default function Info(Props:any) {
   }, []);
   // End call api
   
+  const transaction = async()=>{
+    await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/pn_v1/assets`,{
+      asset_id: Props.coinID,
+      amount: quantity,
+      asset_type: "crypto_n"
+    }).then
+    ((data) => {
+        console.log(data)
+    })
+  }
 
   const goToCopyVault = async () => {
     // if (isOnbordaVisible) return;
@@ -85,6 +113,7 @@ export default function Info(Props:any) {
     }
     doWork3();
   }, []);
+
 
   return (
     <section>
@@ -197,22 +226,22 @@ export default function Info(Props:any) {
               <div className="mt-4">
                 <label className="block text-muted-foreground">Asset</label>
                 <div className="flex items-center">
-                  <img src="https://openui.fly.dev/openui/24x24.svg?text=🔴" alt="Avalanche logo" className="mr-2" />
-                  <span className="text-foreground">Avalanche (AVAX)</span>
+                  <BitcoinIcon width='24' height='24'/>
+                  <span className="text-foreground ml-2">{Props.coinID}</span>
                 </div>
               </div>
 
               <div className="mt-4">
                 <label className="block text-muted-foreground">Quantity</label>
-                <input type="number" className="border border-border rounded p-2 w-full" placeholder="0.00" />
+                <input type="number" className="border border-border rounded p-2 w-full" placeholder="0.00" onChange={(e:any)=>setQuantity(e.target.value)} />
               </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button color="primary" onPress={transaction}>
+                  Apply
                 </Button>
               </ModalFooter>
             </>
