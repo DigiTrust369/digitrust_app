@@ -96,7 +96,7 @@ const TokensFields = (props: Props) => {
         return (
           <div className="input-group p-1 flex items-center" key={tokenIdx}>
             {/* button */}
-            <div className="w-1/3">
+            <div className="sm:w-1/3">
               <Dropdown
                 placeholder="Select token"
                 list={tokenOptions}

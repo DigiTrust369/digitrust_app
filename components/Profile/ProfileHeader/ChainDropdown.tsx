@@ -31,7 +31,7 @@ export default function ChainDropdown({ selectedKeys, setSelectedKeys, chain, se
             <DropdownTrigger className="border-2 border-zinc-300">
                 <div className="flex items-center rounded-lg bg-white px-0">
                     {selectedKeys}
-                    <Down />
+                    {/* <Down /> */}
                 </div>
             </DropdownTrigger>
             <DropdownMenu
