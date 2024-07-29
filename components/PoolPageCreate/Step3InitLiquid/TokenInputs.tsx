@@ -28,7 +28,6 @@ export default function TokenInputs() {
         0,
     ).toFixed(2);
 
-    console.log("Step3 Fields: ", fields)
     return (
         <>
             <ul className="pt-2 ">
@@ -42,16 +41,18 @@ export default function TokenInputs() {
                             {/*Weight*/}
                             <div className="text-sm	text-gray-700">{token?.percent}%</div>
                         </div>
-                        <input type="number"
-                            className="h-10 text-xl text-right font-numeric"
-                            placeholder="0"
-                            {...register(`tokens.${tokenIdx}.amount`)}
-                            onChange={(e) => {
-                                update(tokenIdx, {
-                                    ...token,
-                                    amount: +(e?.target?.value),
-                                });
-                            }}
+                        <input
+                        type="number"
+                        className="h-10 text-xl text-right font-numeric"
+                        placeholder="0"
+                        defaultValue={token.amount}
+                        {...register(`tokens.${tokenIdx}.amount`)}
+                        onBlur={(e) => {
+                            update(tokenIdx, {
+                            ...token,
+                            amount: e.target.value === '' ? '' : +e.target.value,
+                            });
+                        }}
                         />
                     </div>
                     {/* <div className="flex justify-between text-sm">

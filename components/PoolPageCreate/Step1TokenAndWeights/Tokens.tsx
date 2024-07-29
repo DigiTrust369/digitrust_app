@@ -83,7 +83,6 @@ const TokensFields = (props: Props) => {
     remove(tokenIdx);
   }
 
-  console.log("Step1: Fields: ", fields)
   return (
     <div className="w-full my-4 px-4">
       {fields.map((token, tokenIdx) => {
@@ -108,6 +107,7 @@ const TokensFields = (props: Props) => {
                     symbol: Tokens?.find(y => y.name == value)?.symbol,
                     logo_url: Tokens?.find(y => y.name == value)?.logo_url,
                     price: Tokens?.find(y => y.name == value)?.price,
+                    asset_id: Tokens?.find(y => y.name == value)?.id,
                   });
                 }}
               />

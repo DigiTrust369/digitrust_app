@@ -115,7 +115,7 @@ async function postData(url = "", data = {}) {
 
 export default function Header(props: { isHome: boolean, isDetail: boolean | false }) {
   const { startOnborda } = useOnborda();
-  const { userEmail, setUserEmail, chain, setChain, selectedKeys, setSelectedKeys } = useGlobalContext();
+  const { userEmail, setUserEmail, chain, setChain, selectedKeys, setSelectedKeys, walletAddress, setWalletAddress } = useGlobalContext();
   const handleStartOnborda = () => {
     startOnborda();
   };
@@ -136,7 +136,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   const [oauthParams, setOauthParams] =
     useState<queryString.ParsedQuery<string>>();
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState<string>();
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
@@ -334,7 +333,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           });
         } else {
           setEmail(data?.email);
-          setWalletAddress(data?.wallet);
           sessionStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
@@ -342,7 +340,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       }
     };
     getUserAddress();
-    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
   }, [oauthParams]);
 
   useEffect(() => {
@@ -358,15 +355,13 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       try {
         const res = await fetch(url);
         const data = await res.json();
-        setWalletAddress(data?.wallet);
-        // sessionStorage.setItem(`${chain}wallet`, walletAddress || data?.wallet);
+        sessionStorage.setItem(`${chain}wallet`, data?.wallet);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
-    // setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
+    setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
   }, [chain, email])
 
   useEffect(() => {
@@ -384,31 +379,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
   const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
     }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log(chain);
-      let scriptURLGet;
-      if (chain === "Klaytn") {
-        scriptURLGet = scriptURLGetEvmApt;
-      }
-      if (chain === "Algorand") {
-        scriptURLGet = scriptURLGetAlgorand;
-      }
-      console.log(scriptURLGet);
-      const url = `${scriptURLGet}?email=${email}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log(data);
-        setWalletAddress(data?.wallet)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [chain, email])
 
   return (
     <div className={props.isDetail ? "hero-background" : ""} >
@@ -474,8 +444,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
         {/* Create vault button */}
         {props.isHome ? (<button>
-          <Link href="/pool">
-            <div className="bg-leofi shadow-[0_0_15px_5px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
+          <Link href="/create-profile">
+            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
