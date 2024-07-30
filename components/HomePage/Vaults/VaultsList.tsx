@@ -253,12 +253,12 @@ export default function VaultsList() {
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap">
                     <button
-                      className="border rounded-full border-leofi"
+                      className="border rounded-full bg-[#ee4d2d]"
                       id="onborda-step1"
                       onClick={() => clickDepositHandler(vault.vault_id)}
                     >
                       <Link href={`/detail/${vault.vault_id}`}>
-                        <div className="flex items-center p-1 gap-2 text-leofi">
+                        <div className="flex items-center p-1 gap-2 text-white">
                           {/* <span className="font-normal text-sm">Go</span> */}
                           <RightArrowIcon />
                         </div>
