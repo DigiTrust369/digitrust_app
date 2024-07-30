@@ -20,11 +20,11 @@ const FormWrapper = (props: Props) => {
   return (
     <form>
       <div className="layout-container my-8">
-        <div className="flex justify-center	">
-          <div className="flex-none w-64">
+        <div className="flex justify-center flex-wrap gap-y-5">
+          <div className="flex-none">
             <PoolSteps active={step} onChangeStep={(step) => setStep(step)} />
           </div>
-          <div className={cn("flex-initial w-80 mx-5", styles.center)}>
+          <div className={cn("sm:w-2/5 mx-5")}>
             {step === 0 && <Step1TokenAndWeights onNext={() => setStep(1)} />}
             {step === 1 && (
               <Step2PoolFee
@@ -47,7 +47,7 @@ const FormWrapper = (props: Props) => {
               />
             )}
           </div>
-          <div className="flex-initial w-64">
+          <div className="flex-initial">
             <PoolSummary />
           </div>
         </div>

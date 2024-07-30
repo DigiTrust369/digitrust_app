@@ -34,7 +34,7 @@ interface Props {
 export default function InfoDropdown({ isHome, email, walletAddress, point, login: beginZkLogin, logout: logOutWallet, selectedKeys, setSelectedKeys, chain, setChain }: Props) {
     const format = useFormatter();
     return (
-        <div className="flex gap-5">
+        <div className="flex gap-2">
             <ChainDropdown chain={chain} setChain={setChain} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
 
             <Dropdown
@@ -52,7 +52,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                     >
                         <MenuIcon
                             bgColor={`${isHome ? "black" : "white"}`}
-                            iconColor={`${isHome ? "black" : "white"}`}
+                            iconColor={`${isHome ? "white" : "black"}`}
                         />
                     </Button>
                 </DropdownTrigger>
@@ -83,7 +83,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                         >
                             <div className="grid grid-row-auto grid-flow-col">
                                 <span>Wallet</span>
-                                <span className="text-blue-600 font-bold px-1">
+                                <span className="font-bold px-1">
                                     <div className="px-1">{`${walletAddress?.slice(
                                         0,
                                         4
@@ -93,7 +93,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
 
                             <div className="grid grid-row-auto grid-flow-col mt-2">
                                 <GoogleIcon />
-                                <span className="text-blue-600 font-bold px-1">
+                                <span className="font-bold px-1">
                                     <div className="px-1">
                                         {email.replace("@gmail.com", "")}
                                     </div>
@@ -121,7 +121,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                                 <Link href={"/profile"}>
                                     <div className="flex-col">
                                         <div className="ml-2"><ProfileIcon /></div>
-                                        <p className="text-blue-600">Profile</p>
+                                        <p className="">Profile</p>
                                     </div>
                                 </Link>
                                 <div>
@@ -129,7 +129,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                                         <p className="ml-3.5">
                                             <ExitIcon />
                                         </p>
-                                        <p className="text-blue-600">Log Out</p>
+                                        <p className="">Log Out</p>
                                     </button>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@ export default function InfoDropdown({ isHome, email, walletAddress, point, logi
                         <DropdownItem
                             isReadOnly
                             key="chain"
-                            className="cursor-default text-blue-600 font-bold"
+                            className="cursor-default font-bold"
                             endContent={
                                 <div className="flex gap-1 items-center">
                                     {selectedKeys} {chain}

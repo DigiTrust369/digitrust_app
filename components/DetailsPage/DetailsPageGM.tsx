@@ -60,7 +60,6 @@ const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
 
 
 export default function DetailsPage(Props: any) {
-export default function DetailsPage(Props: any) {
   const [chartData, setChartData] = useState<CandleData[]>([]);
   const [dataDetails, setDataDetails] = useState<any>();
   const [pieChartData, setPieChartData] = useState<PiePart[]>([]);
