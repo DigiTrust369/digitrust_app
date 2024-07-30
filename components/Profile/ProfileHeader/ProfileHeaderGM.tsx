@@ -377,7 +377,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     }
   }, [email]);
 
-  const classes = `mx-auto flex items-center justify-between px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
+  const classes = `mx-auto flex items-center justify-between px-5 sm:px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
     }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
 
   return (
@@ -433,8 +433,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           ) : (
             <Link href="/">
               <Image
-                src={digitrustNoTextWhiteLogo}
-                alt="digitrust logo"
+                src={leofiNoTextLogo}
+                alt="leofi logo"
                 className="sm:hidden object-fit"
                 width={60}
               />
@@ -443,9 +443,9 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         </div>
 
         {/* Create vault button */}
-        {props.isHome ? (<button>
+        {props.isHome && email ? (<button>
           <Link href="/create-profile">
-            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
+            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] text-xs sm:text-sm px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
@@ -454,7 +454,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Login button */}
         {email == "" ? (
           <button
-            className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50"
+            className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50 shadow-[0_0_10px_5px_rgba(215,228,2,0.8)]
+hover:drop-shadow-md"
             onClick={async () => beginZkLogin()}
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">

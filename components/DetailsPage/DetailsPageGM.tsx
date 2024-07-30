@@ -62,7 +62,8 @@ const Chart = dynamic(() => import("@/components/DetailsPage/Chart/Chart"), {
 export default function DetailsPage(Props: any) {
   const [chartData, setChartData] = useState<CandleData[]>([]);
   const [dataDetails, setDataDetails] = useState<any>();
-  const [pieChartData, setPieChartData] = useState<PiePart[]>([])
+  const [pieChartData, setPieChartData] = useState<PiePart[]>([]);
+  const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFFFFF'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,25 +129,30 @@ export default function DetailsPage(Props: any) {
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border">
         <Info coinID={Props.coinID} />
-        <div>
-          <h1 className="mt-2 pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-            Overview
-          </h1>
+        {/* PieChart Row */}
+        <div className="mt-4">
+          <div className="flex justify-center">
+            <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+              <PieChart data={pieChartData} 
+                  colors={COLORS} 
+                  logoUrl="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
+            </div>
+          </div>
         </div>
-        <div className="flex items-center justify-center mt-2">
-          <PieChart data={pieChartData} />
+        <div className="mt-4">
+          <Overview />
         </div>
       </div>
-      <main className="flex-1 md:w-1/2 h-screen md:h-auto p-4 overflow-y-auto scrollbar-hide">
+      <main className="flex-1 md:w-1/2 h-screen md:h-auto p-4 overflow-y-auto scrollbar-hide border">
         <div>
-          <h1 className="pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-            {Props.coinID} Price
+          <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+            {Props.coinID.toUpperCase()} Price
           </h1>
         </div>
         <div className="w-full">
           {chartData.length > 0 && <CandlestickChart data={chartData} />}
         </div>
-        <Overview />
+
       </main>
       <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
         <Comment coinID={Props.coinID} />
