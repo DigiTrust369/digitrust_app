@@ -135,7 +135,7 @@ export default function Comment(Props:any) {
 
     const getData = async() =>{  
         setIsLoading(true);
-        await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_post`,{}).then
+        await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`,{}).then
         ((data) => {
              setDataTopPost(data);
              setIsLoading(false);
@@ -175,7 +175,7 @@ export default function Comment(Props:any) {
 
             const fetchData = async () => {  
                 setIsLoading(true);
-                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_post`,{
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`,{
                     id:getRandomInt(99999).toString(),
                     profile_id: Props.coinID,
                     userName: userEmail,
@@ -291,7 +291,7 @@ export default function Comment(Props:any) {
 
     return (
     <div>
-        <div className="p-4 border-b flex justify-between items-center">
+        {/* <div className="p-4 border-b flex justify-between items-center">
             <div className="flex gap-5">
                 <Avatar isBordered radius="full" size="md" src="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
                 <div className="flex flex-col gap-1 items-start justify-center">
@@ -309,8 +309,8 @@ export default function Comment(Props:any) {
             >
                 {isFollowed ? "Unfollow" : "Follow"}
             </Button>
-        </div>
-        <div className="flex-grow overflow-auto p-4">
+        </div> */}
+        {/* <div className="flex-grow overflow-auto p-4">
             <Tabs aria-label="Dynamic tabs" 
                 items={tabs}
                 className="w-full text-base font-medium leading-7"
@@ -333,6 +333,21 @@ export default function Comment(Props:any) {
                 </Tab>
                 )}
             </Tabs>
+        </div> */}
+        <div className="p-4 border-b flex justify-between items-center bg-leofi text-lime-50">
+            Comment
+        </div>
+        <div className="flex-grow overflow-auto p-4 border">
+            {
+                 isLoading ? (
+                    <div className="flex justify-between items-center">Loading...</div>
+                ) : 
+                <ScrollShadow className="h-[450px] scrollbar-hide">
+                    <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> 
+                </ScrollShadow>
+               
+            }
+           
         </div>
         <div className="p-4 border-t flex items-center">
             <img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full mr-2" />

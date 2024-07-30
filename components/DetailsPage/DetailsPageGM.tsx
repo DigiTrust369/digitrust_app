@@ -12,6 +12,7 @@ import usdc from "@/assets/images/crypto/usdc.svg";
 import btc from "@/assets/images/crypto/bitcoin.svg";
 import Comment from "../DetailsPage/CommentCoinMarketCap/CommentCoinMarketCap";
 import CoinPriceChart from "./NewChart/CoinPriceChart";
+import { BitcoinIcon } from "lucide-react";
 
 const CandlestickChart = dynamic(() => import('./NewChart/CanddleChart'), { ssr: false });
 
@@ -135,7 +136,7 @@ export default function DetailsPage(Props: any) {
             <div style={{ position: 'relative', width: '200px', height: '200px' }}>
               <PieChart data={pieChartData} 
                   colors={COLORS} 
-                  logoUrl="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
+                  logoUrl="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" />
             </div>
           </div>
         </div>
