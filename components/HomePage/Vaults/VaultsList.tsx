@@ -27,7 +27,10 @@ import ont from "@/assets/images/crypto/ont.svg";
 import eos from "@/assets/images/crypto/eos.svg";
 import chz from "@/assets/images/crypto/chz.svg";
 import enj from "@/assets/images/crypto/enj.svg";
-
+import sol from "@/assets/images/crypto/solana.png";
+import ton from "@/assets/images/crypto/ton.svg";
+import base from "@/assets/images/crypto/base.svg";
+import blast from "@/assets/images/crypto/blast.svg";
 import depositIc from "@/assets/images/icons/deposit-icon.png";
 import downIc from "@/assets/images/icons/down-ic.png";
 import arrowDownUpIc from "@/assets/images/icons/arrow-up-down-ic.png";
@@ -52,7 +55,10 @@ interface Vault {
   manager: string;
   des: string;
   timestamp: number;
-  chain: string;
+  chain: {
+    name: string;
+    logo: string;
+  }[];
   period: any;
   asset?: string[];
   assets: {
@@ -61,10 +67,19 @@ interface Vault {
   }[];
 }
 
+const logos = {
+  eth: ethereum,
+  sol: sol,
+  ton: ton,
+  base: base,
+  bnb: bnb,
+  blasr: blast
+}
+
 const table_head = [
+  'Chain',
   'Profile Name',
   'Asset',
-  '7 Days',
   'Return',
   ''
 ];
@@ -89,8 +104,8 @@ const vaults = [
         img: btt,
       },
       {
-        name: "dash",
-        img: dash,
+        name: "solana",
+        img: sol,
       },
     ],
     apy: chartAPY1,
@@ -176,6 +191,7 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
+  console.log(mergedData)
 
   const clickDepositHandler = async (value: string) => {
     setVaultId(value);
@@ -219,6 +235,22 @@ export default function VaultsList() {
             <tbody className="table-body">
               {mergedData.map((vault) => (
                 <tr>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap overflow-hidden">
+                    <div className="w-full flex items-center">
+                      {vault.chain.map((c) => {
+                        const name: string = c?.name;
+                        return (
+                          <Image
+                            className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white [&:not(:first-child)]:-ml-[8px]"
+                            src={logos[name]}
+                            alt={name}
+                            width={26}
+                            height={26}
+                          />
+                        );
+                      })}
+                    </div>
+                  </td>
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
                     <div className="flex items-center gap-4">
                       <Image
@@ -245,10 +277,7 @@ export default function VaultsList() {
                       ))}
                     </div>
                   </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
-                    <Image src={vault.apy} alt="chart" />
-                  </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
+                  <td className={`px-6 py-6 whitespace-no-wrap text-nowrap ${+vault.monthly_return.split('%')[0] > 0 ? "text-green-500" : "text-[#DC2626]"}`}>
                     {vault.monthly_return}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap">
