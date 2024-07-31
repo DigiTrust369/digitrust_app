@@ -16,6 +16,7 @@ import Link from "next/link";
 // import CommentSection from "./Comment/CommentSection";
 import CommentSection from "./Comment/Comments";
 import { TelegramShareButton, TelegramIcon } from "react-share";
+import { Skeleton } from "@nextui-org/react";
 
 interface Asset {
   asset: string;
@@ -87,7 +88,7 @@ export default function Overview() {
   return (
     <div className="mt-11">
       <div>
-        <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+        <h1 className="pb-5 font-semibold text-orange-400 text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           History
         </h1>
       </div>
@@ -141,6 +142,7 @@ export default function Overview() {
           {/* <div className="mx-auto w-full text-bold text-xl">
             <PieChart data={chartData} />
           </div> */}
+        {assets != null && assets.length>0?
           <div className="overflow-x-auto">
             <table className="w-full bg-white min-w-full border border-[#C3D4E9]">
               <thead>
@@ -195,6 +197,22 @@ export default function Overview() {
               </tbody>
             </table>
           </div>
+          :            
+          <div>
+            <div className="space-y-3">
+              <Skeleton className="w-full rounded-lg">
+                  <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-full rounded-lg">
+                  <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-full rounded-lg">
+                  <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+              </Skeleton>
+          </div>
+      </div>
+          
+        }
         {/* <div className="hidden h-fit sm:block py-10 sm:py-0 sm:w-[30%] rounded-[10px] ">
           <div className="flex items-center gap-5 justify-between">
             <div className="flex items-center gap-5">
