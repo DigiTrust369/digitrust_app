@@ -6,7 +6,7 @@ import { useWallet } from "@suiet/wallet-kit";
 import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, modal } from "@nextui-org/react";
 import axios from 'axios';
 import BitcoinIcon from "@/icons/BitcoinIcon";
 
@@ -48,6 +48,7 @@ export default function Info(Props:any) {
   const [defaultIndex, setDefaultIndex] = useState(0);
   const [price, setPrice] = useState(null);
   const [quantity,setQuantity] = useState(0)
+  const [follow,setFollow] = useState(false)
   //Value for copy vault
   const wallet = useWallet();
 
@@ -74,16 +75,26 @@ export default function Info(Props:any) {
   }, []);
   // End call api
   
-  const transaction = async()=>{
-    await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/pn_v1/assets`,{
-      asset_id: Props.coinID,
-      amount: quantity,
-      asset_type: "crypto_n"
-    }).then
-    ((data) => {
-        console.log(data)
-    })
-  }
+  const transaction = async (onClose: () => void) => {
+    try {
+      const response = await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/pn_v1/assets`, {
+        asset_id: Props.coinID,
+        amount: quantity,
+        asset_type: "crypto_n"
+      });
+      console.log(response);
+      
+      // If the transaction is successful, close the modal
+      onClose();
+      
+      // Optionally, you can show a success message
+      toast.success("Transaction completed successfully");
+    } catch (error) {
+      console.error('Transaction failed:', error);
+      // Optionally, you can show an error message
+      toast.error("Transaction failed. Please try again.");
+    }
+  };
 
   const goToCopyVault = async () => {
     // if (isOnbordaVisible) return;
@@ -151,20 +162,25 @@ export default function Info(Props:any) {
             </div>
           </div>
 
-        <div className="flex gap-x-3">
-          <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
-            <div className="flex gap-x-4 text-base font-semibold leading-4">
-              <p className="uppercase text-leofi">{price ? (
-                <p>${price}</p>
-              ) : (
-                <p>Loading...</p>
-              )}</p>
-              {dataDetails.map((data) => (
-                <div key={data.vault_id} className="flex text-gray-800">
-                  <span>{format.number(+data.price)} USD</span>
-                </div>
-              ))}
+          <div className="flex gap-x-3">
+            <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
+              <button className="font-semibold text-blue-600" onClick={()=>setFollow(!follow)}>
+                {follow?'Unfollow': 'Follow'}
+              </button>
             </div>
+            <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
+              <div className="flex gap-x-4 text-base font-semibold leading-4">
+                <p className="uppercase text-blue-600">{price ? (
+                          <p>${price}</p>
+                        ) : (
+                          <p>Loading...</p>
+                        )}</p>
+                {dataDetails.map((data) => (
+                  <div key={data.vault_id} className="flex text-gray-800">
+                    <span>{format.number(+data.price)} USD</span>
+                  </div>
+                ))}
+              </div>
 
             <button>
               <svg
@@ -240,7 +256,7 @@ export default function Info(Props:any) {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={transaction}>
+                <Button color="primary" onPress={() => transaction(onClose)}>
                   Apply
                 </Button>
               </ModalFooter>
