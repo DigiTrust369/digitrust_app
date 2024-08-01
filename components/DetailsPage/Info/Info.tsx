@@ -156,59 +156,13 @@ export default function Info(Props:any) {
               </clipPath>
             </defs>
           </svg>
-          <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
+          <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-leofi">
             {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
             {Props.coinID.toUpperCase()}
           </div>
         </div>
 
         <div className="flex gap-x-3">
-          <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
-            <div className="flex gap-x-4 text-base font-semibold leading-4">
-              <p className="uppercase text-leofi">{price ? (
-                <p>${price}</p>
-              ) : (
-                <p>Loading...</p>
-              )}</p>
-              {dataDetails.map((data) => (
-                <div key={data.vault_id} className="flex text-gray-800">
-                  <span>{format.number(+data.price)} USD</span>
-                </div>
-              ))}
-            </div>
-
-            <button>
-              <svg
-                width="24"
-                height="25"
-                viewBox="0 0 24 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M12 4.5C7.58172 4.5 4 8.08172 4 12.5C4 16.9183 7.58172 20.5 12 20.5C16.4183 20.5 20 16.9183 20 12.5C20 8.08172 16.4183 4.5 12 4.5ZM2 12.5C2 6.97715 6.47715 2.5 12 2.5C17.5228 2.5 22 6.97715 22 12.5C22 18.0228 17.5228 22.5 12 22.5C6.47715 22.5 2 18.0228 2 12.5Z"
-                  fill="#C3D4E9"
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M11 17.5V11.5H13V17.5H11Z"
-                  fill="#C3D4E9"
-                />
-              </svg>
-              <defs>
-                <clipPath id="clip0_242_12349">
-                  <rect width="80" height="80" fill="white" />
-                </clipPath>
-              </defs>
-            </button>
-            <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-orange-400">
-              {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              {Props.coinID.toUpperCase()}
-            </div>
-          </div>
 
           <div className="flex gap-x-3">
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
@@ -260,28 +214,25 @@ export default function Info(Props:any) {
               </button>
             </div>
           </div>
-
-          <div className="flex items-center gap-x-[14px]">
-            <button
-              onClick={() => {
-                onOpen();
-                setDefaultIndex(1);
-              }}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border border-blue-600 text-blue-600 text-base sm:text-xl leading-normal font-medium tracking-tight`}
-            >
-              Withdraw
-            </button>
-            <button
-              id="onborda-step2"
-              className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
-              onClick={onOpen}
-            >
-              Invest
-            </button>
-          </div>
-
-
-
+        </div>
+        <div className="flex items-center gap-x-[14px]">
+          <button
+            onClick={() => {
+              onOpen();
+              setDefaultIndex(1);
+            }}
+            className={`w-24 sm:w-36 py-3 rounded-[10px] border border-blue-600 text-blue-600 text-base sm:text-xl leading-normal font-medium tracking-tight`}
+          >
+            Withdraw
+          </button>
+          <button
+            id="onborda-step2"
+            className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
+            onClick={async () => onOpen()}
+          >
+            Invest
+          </button>
+        </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
@@ -313,24 +264,6 @@ export default function Info(Props:any) {
           )}
         </ModalContent>
       </Modal>
-        <div className="flex items-center gap-x-[14px]">
-          <button
-            onClick={() => {
-              onOpen();
-              setDefaultIndex(1);
-            }}
-            className={`w-24 sm:w-36 py-3 rounded-[10px] border border-blue-600 text-blue-600 text-base sm:text-xl leading-normal font-medium tracking-tight`}
-          >
-            Withdraw
-          </button>
-          <button
-            id="onborda-step2"
-            className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
-            onClick={async () => goToCopyVault()}
-          >
-            Invest
-          </button>
-        </div>
       </div>
     </section>
   );
