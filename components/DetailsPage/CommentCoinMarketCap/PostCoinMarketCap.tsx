@@ -8,6 +8,8 @@ import BearIcon from '@/icons/Bear'
 import BullIcon from '@/icons/Bull'
 import ViewIcon from '@/icons/ViewIcon'
 import { useGlobalContext } from "@/Context/store";
+import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import Image, { StaticImageData } from "next/image";
 
 interface Data {
     id:string,
@@ -38,6 +40,7 @@ interface reply {
 
 interface Props {
     data: Array<Data>,
+    coinID:string,
     setBull: (id: string) => void,
     setBear: (id: string) => void,
     setComment: (id: string) => void,
@@ -124,24 +127,28 @@ const CommentCoinMarketCap = (props: Props) => {
                 <div>
                     <div className="bg-card p-4">
                         <div className="flex items-center space-x-2 mb-2">
-                            <img src={d.userAvatar} alt="User Avatar" className="rounded-full" />
+                            {d.userAvatar != null && d.userAvatar != "https://placehold.co/40x40"?
+                             <img src={d.userAvatar} alt="User Avatar" className="rounded-full" />
+                             :<Image className="rounded-full mr-2 bg-gray-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                            }
+                            
                             <div>
                                 <p className="font-semibold">{d.userName}</p>
                                 <p className="text-muted-foreground text-sm">{d.postTime}</p>
                             </div>
                         </div>
                         <p className="mb-2">
-                            <span className="text-primary">#BTC</span> <br />
+                            <span className="text-primary">#{props.coinID}</span> <br />
                             <span className="text-primary">{d.content}</span> <br />
                         </p>
                     </div>
                     {d.listComment.map((comment) => (
                         <div key={comment.idComment} className='ml-5'>
-                            <div className="flex items-center space-x-2 mb-2 bg-gray-100 rounded-2xl">
+                            <div className="flex items-center space-x-2 mb-2 bg-orange-200 rounded-2xl">
                                 {comment.userAvatar != null ? (
                                     <img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />
                                 ) : (
-                                    <img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full" />
+                                    <Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
                                 )}
                                 <div>
                                     <p className="font-semibold">{comment.userName}</p>

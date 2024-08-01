@@ -1,8 +1,10 @@
-import { Tabs, Tab, Card, CardHeader, CardBody, CardFooter, Avatar, Button, ScrollShadow } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardHeader, CardBody, CardFooter, Avatar, Button, ScrollShadow, Skeleton } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import CommentCoinMarketCap from "./PostCoinMarketCap";
 import { useGlobalContext } from "@/Context/store";
 import { IdentificationIcon } from "@heroicons/react/20/solid";
+import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import Image, { StaticImageData } from "next/image";
 
 async function postData(url = "", data = {}) {
     // Default options are marked with *
@@ -56,22 +58,13 @@ export default function Comment(Props: any) {
                     idComment: "1",
                     userName: "alvin",
                     userAvatar: "https://placehold.co/40x40",
-                    mainComment:"Hello world",
                     mainComment: "Hello world",
-                    listReply: [
-                        {
-                            idReply: "1",
-                            userName: "ichi",
-                            userAvatar: "https://placehold.co/40x40",
-                            mainReply: "Hi World"
-                        }
-                    ]
                 },
                 {
                     idComment: "2",
                     userName: "alvin",
                     userAvatar: "https://placehold.co/40x40",
-                    mainComment:"I'm here",
+                    mainComment: "I'm here",
                 }
             ]
         },
@@ -90,7 +83,7 @@ export default function Comment(Props: any) {
                     idComment: "1",
                     userName: "alvin",
                     userAvatar: "https://placehold.co/40x40",
-                    mainComment:"Great"
+                    mainComment: "Great"
                 }
             ]
         },
@@ -136,19 +129,19 @@ export default function Comment(Props: any) {
     ]
 
     useEffect(() => {
-        const fetchData = async () => {  
+        const fetchData = async () => {
             await getData();
         }
         fetchData();
     }, []);
 
-    const getData = async() =>{  
+    const getData = async () => {
         setIsLoading(true);
-        await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`,{}).then
-        ((data) => {
-             setDataTopPost(data);
-             setIsLoading(false);
-         })
+        await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`, {}).then
+            ((data) => {
+                setDataTopPost(data);
+                setIsLoading(false);
+            })
     }
 
     useEffect(() => {
@@ -162,10 +155,9 @@ export default function Comment(Props: any) {
     }
     // const [itemsTop, setItemsTop] = useState(dataTop);
     // const [itemsLast, setItemsLast] = useState(dataLast);
-    const [curPost,setCurPost] = useState("");
-    const newPost = async() =>{
-        if(curPost == "")
-        {
+    const [curPost, setCurPost] = useState("");
+    const newPost = async () => {
+        if (curPost == "") {
             // const newItem = {
             //     id:getRandomInt(99999).toString(),
             //     profile_id:"pn_v1",
@@ -182,24 +174,23 @@ export default function Comment(Props: any) {
             // setItemsLast(prevItems => [...prevItems, newItem]);
             // getData();
 
-            const fetchData = async () => {  
+            const fetchData = async () => {
                 setIsLoading(true);
-                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`,{
-                    id:getRandomInt(99999).toString(),
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/post`, {
+                    id: getRandomInt(99999).toString(),
                     profile_id: Props.coinID,
                     userName: userEmail,
                     postTime: new Date().toString(),
                     content: content,
                 }).then
-                ((data) => {
-                    console.log(data)
-                    getData();
-                })
+                    ((data) => {
+                        console.log(data)
+                        getData();
+                    })
             }
             fetchData();
         }
-        else
-        {
+        else {
             // const newItems = itemsTop.map(item => {
             //     if (item.id === curPost) {
             //         return {
@@ -219,75 +210,75 @@ export default function Comment(Props: any) {
             // });
             // setItemsTop(newItems);
 
-            const fetchData = async () => {  
+            const fetchData = async () => {
                 setIsLoading(true);
-                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_comment`,{
+                await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/add_comment`, {
                     idPost: curPost,
                     profile_id: Props.coinID,
                     commentUserName: userEmail,
                     mainComment: content,
                     idComment: getRandomInt(99999).toString(),
                 }).then
-                ((data) => {
-                    console.log(data)
-                    getData();
-                })
+                    ((data) => {
+                        console.log(data)
+                        getData();
+                    })
             }
             fetchData();
         }
         setContent("");
         setCurPost("");
-        
+
     }
 
-    function setBull(id:any){
-        const fetchData = async () => {  
+    function setBull(id: any) {
+        const fetchData = async () => {
             setIsLoading(true);
-            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bull_id`,{
-                id:id,
-                profile_id:Props.coinID,
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bull_id`, {
+                id: id,
+                profile_id: Props.coinID,
                 userName: userEmail,
             }).then
-            ((data) => {
-                console.log(data);
-                getData();
-            })
+                ((data) => {
+                    console.log(data);
+                    getData();
+                })
         }
         fetchData();
     }
 
-    function setBear(id:any){
-        const fetchData = async () => {  
+    function setBear(id: any) {
+        const fetchData = async () => {
             setIsLoading(true);
-            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bear_id`,{
-                id:id,
-                profile_id:Props.coinID,
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/bear_id`, {
+                id: id,
+                profile_id: Props.coinID,
                 userName: userEmail,
             }).then
-            ((data) => {
-                console.log(data);
-                getData();
-            })
+                ((data) => {
+                    console.log(data);
+                    getData();
+                })
         }
         fetchData();
     }
 
-    function setComment(id:any){
+    function setComment(id: any) {
         setCurPost(id)
     }
 
-    function setShare(id:any){
-        const fetchData = async () => {  
+    function setShare(id: any) {
+        const fetchData = async () => {
             setIsLoading(true);
-            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/share_profile`,{
-                id:id,
-                profile_id:Props.coinID,
+            await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/profile/share_profile`, {
+                id: id,
+                profile_id: Props.coinID,
                 userName: userEmail,
             }).then
-            ((data) => {
-                 console.log(data);
-                 getData();
-            })
+                ((data) => {
+                    console.log(data);
+                    getData();
+                })
         }
         fetchData();
     }
@@ -299,8 +290,8 @@ export default function Comment(Props: any) {
     }, [dataTopPost]);
 
     return (
-    <div>
-        {/* <div className="p-4 border-b flex justify-between items-center">
+        <div>
+            {/* <div className="p-4 border-b flex justify-between items-center">
             <div className="flex gap-5">
                 <Avatar isBordered radius="full" size="md" src="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
                 <div className="flex flex-col gap-1 items-start justify-center">
@@ -319,7 +310,7 @@ export default function Comment(Props: any) {
                 {isFollowed ? "Unfollow" : "Follow"}
             </Button>
         </div> */}
-        {/* <div className="flex-grow overflow-auto p-4">
+            {/* <div className="flex-grow overflow-auto p-4">
             <Tabs aria-label="Dynamic tabs" 
                 items={tabs}
                 className="w-full text-base font-medium leading-7"
@@ -343,29 +334,77 @@ export default function Comment(Props: any) {
                 )}
             </Tabs>
         </div> */}
-        <div className="p-4 border-b flex justify-between items-center bg-leofi text-lime-50">
-            Comment
+            <div className="p-4 border-b flex justify-between items-center bg-leofi text-lime-50">
+                Comment
+            </div>
+            <div className="flex-grow overflow-auto p-4 border">
+                {
+                    isLoading ? (
+                        <div className="w-full space-y-5 p-4">
+                            <div className="max-w-[300px] w-full flex items-center gap-3">
+                                <div>
+                                    <Skeleton className="flex rounded-full w-12 h-12"/>
+                                </div>  
+                                <div className="w-full flex flex-col gap-2">
+                                    <Skeleton className="h-3 w-3/5 rounded-lg"/>
+                                    <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                                </div>
+                            </div>
+                            <Skeleton className="rounded-lg">
+                                <div className="h-24 rounded-lg bg-default-300"></div>
+                            </Skeleton>
+                            <div className="space-y-3">
+                                <Skeleton className="w-3/5 rounded-lg">
+                                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                                </Skeleton>
+                                <Skeleton className="w-4/5 rounded-lg">
+                                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                                </Skeleton>
+                                <Skeleton className="w-2/5 rounded-lg">
+                                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                                </Skeleton>
+                            </div>
+
+                            <div className="max-w-[300px] w-full flex items-center gap-3">
+                                <div>
+                                    <Skeleton className="flex rounded-full w-12 h-12"/>
+                                </div>  
+                                <div className="w-full flex flex-col gap-2">
+                                    <Skeleton className="h-3 w-3/5 rounded-lg"/>
+                                    <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                                </div>
+                            </div>
+                            <Skeleton className="rounded-lg">
+                                <div className="h-24 rounded-lg bg-default-300"></div>
+                            </Skeleton>
+                            <div className="space-y-3">
+                                <Skeleton className="w-3/5 rounded-lg">
+                                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                                </Skeleton>
+                                <Skeleton className="w-4/5 rounded-lg">
+                                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                                </Skeleton>
+                                <Skeleton className="w-2/5 rounded-lg">
+                                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                                </Skeleton>
+                            </div>
+                        </div>
+                    ) :
+                        <ScrollShadow className="h-[450px] scrollbar-hide">
+                            <CommentCoinMarketCap coinID={Props.coinID} data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} />
+                        </ScrollShadow>
+
+                }
+
+            </div>
+            <div className="p-4 border-t flex items-center">
+                <Image className="rounded-full mr-2 bg-gray-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                <input type="text"
+                    placeholder="What are you thinking..."
+                    className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
+                    onChange={(event) => setContent(event.target.value)} />
+                <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>{curPost == "" ? "Post" : "Comment"}</button>
+            </div>
         </div>
-        <div className="flex-grow overflow-auto p-4 border">
-            {
-                 isLoading ? (
-                    <div className="flex justify-between items-center">Loading...</div>
-                ) : 
-                <ScrollShadow className="h-[450px] scrollbar-hide">
-                    <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> 
-                </ScrollShadow>
-               
-            }
-           
-        </div>
-        <div className="p-4 border-t flex items-center">
-            <img src="https://placehold.co/40x40" alt="User Avatar" className="rounded-full mr-2" />
-            <input type="text" 
-                placeholder="What are you thinking..." 
-                className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
-                onChange={(event) => setContent(event.target.value)} />
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>{curPost == ""? "Post":"Comment"}</button>
-        </div>
-    </div>
     )
 }

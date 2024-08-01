@@ -377,12 +377,12 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     }
   }, [email]);
 
-  const classes = `mx-auto flex items-center justify-between px-5 sm:px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
+  const classes = `max-w-screen-2xl mx-auto flex items-center justify-between px-5 sm:px-8 py-4 text-sm xl:text-base ${props.isHome ? "" : ""
     }`; {/* border-b-[1px] border-[#d7e402] border-opacity-50 */ }
 
   return (
     <div className={props.isDetail ? "hero-background" : ""} >
-      {email == "" ? (
+      {/* {email == "" ? (
         <div className="bg-white text-leofi flex items-center justify-center py-2">
           <Image
             src={Hot}
@@ -398,7 +398,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
             className="animate-pulse"
           />
         </div>
-      ) : ''}
+      ) : ''} */}
       <header className={classes}>
         {/* Logo */}
         <div>
@@ -445,7 +445,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Create vault button */}
         {props.isHome && email ? (<button>
           <Link href="/create-profile">
-            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] text-xs sm:text-sm px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
+            <div className="bg-leofi shadow-[0_0_15px_10px_rgba(215,228,2,0.8)] text-xs sm:text-sm px-2 sm:px-4 py-2.5 rounded-lg border-opacity-60 justify-center items-center gap-12 text-white hover:drop-shadow-md">
               Click to create your profile
             </div>
           </Link>
@@ -454,13 +454,15 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         {/* Login button */}
         {email == "" ? (
           <button
-            className=" bg-white border-solid border-1 rounded-md hover:bg-gray-50 shadow-[0_0_10px_5px_rgba(215,228,2,0.8)]
+            className=" bg-[#ed1c24]/0.8 border-solid border-1 rounded-md hover:bg-[#e48802] shadow-[5px_5px_10px_1px_rgba(215,228,2,0.8)]
 hover:drop-shadow-md"
             onClick={async () => beginZkLogin()}
           >
             <div className="grid grid-row-auto grid-flow-col my-2 mx-2">
-              <GoogleIcon />
-              <span className="text-leofi mx-2">Google login</span>
+              <div className="bg-white rounded-full">
+                <GoogleIcon />
+              </div>
+              <span className="text-white mx-2">Google login</span>
             </div>
           </button>
         ) : (

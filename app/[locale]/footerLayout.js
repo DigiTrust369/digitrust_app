@@ -13,12 +13,7 @@ const FooterLayout = () => {
   const pathname = usePathname().replace('/', '');
   return (
     <>
-      {
-        pathname != '' && <SecondFooter></SecondFooter>
-      }
-      {
-        pathname == '' && <Footer></Footer>
-      }
+      <SecondFooter></SecondFooter>
     </>
   );
 };

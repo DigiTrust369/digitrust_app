@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <div>
       <Layout>
-          <Vaults />
+        <Vaults />
       </Layout>
     </div>
   );
