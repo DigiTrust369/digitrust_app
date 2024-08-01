@@ -156,7 +156,7 @@ export default function Info(Props:any) {
                 </clipPath>
               </defs>
             </svg>
-            <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
+            <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-orange-400">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
               {Props.coinID.toUpperCase()}
             </div>
@@ -164,13 +164,13 @@ export default function Info(Props:any) {
 
           <div className="flex gap-x-3">
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
-              <button className="font-semibold text-blue-600" onClick={()=>setFollow(!follow)}>
+              <button className="font-semibold text-orange-400" onClick={()=>setFollow(!follow)}>
                 {follow?'Unfollow': 'Follow'}
               </button>
             </div>
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
               <div className="flex gap-x-4 text-base font-semibold leading-4">
-                <p className="uppercase text-blue-600">{price ? (
+                <p className="uppercase text-orange-400">{price ? (
                           <p>${price}</p>
                         ) : (
                           <p>Loading...</p>
