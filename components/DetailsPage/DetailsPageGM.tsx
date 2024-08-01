@@ -166,8 +166,8 @@ export default function DetailsPage(Props: any) {
           }
       </main>
 
-      <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
-        <Comment coinID={Props.coinID} />
+      <div className="flex-1 md:w-1/4 h-screen md:h-auto overflow-y-auto scrollbar-hide">
+        <Comment className="w-full" coinID={Props.coinID} />
       </div>
     </div>
   );
