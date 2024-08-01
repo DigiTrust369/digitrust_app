@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
 interface IPieChartProp {
@@ -27,6 +27,15 @@ const COLORS = [
 
 const PieChartCustom = (props: IPieChartProp) => {
   const { data = dataDemo, colors = COLORS, logoUrl = "https://example.com/default-logo.png" } = props;
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
 
   return (
     <div style={{ position: 'relative', width: 220, height: 220 }}>
@@ -39,6 +48,8 @@ const PieChartCustom = (props: IPieChartProp) => {
           outerRadius={105}
           paddingAngle={5}
           dataKey="value"
+          onMouseEnter={onPieEnter}
+          onMouseLeave={onPieLeave}
         >
           {data.map((entry: any, index: number) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
@@ -51,14 +62,14 @@ const PieChartCustom = (props: IPieChartProp) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 60,
-          height: 60,
+          width: 80,
+          height: 80,
           borderRadius: '50%',
           overflow: 'hidden',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white', // Optional: adds a white background behind the logo
+          backgroundColor: 'white',
         }}
       >
         <img
@@ -69,8 +80,26 @@ const PieChartCustom = (props: IPieChartProp) => {
             maxHeight: '100%',
             objectFit: 'contain'
           }}
+          className="ml-3"
         />
       </div>
+      {activeIndex !== null && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '68%',
+            left: '52%',
+            transform: 'translateX(-50%)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            color: 'white',
+            padding: '5px 10px',
+            borderRadius: '4px',
+            fontSize: '12px',
+          }}
+        >
+          {`${data[activeIndex].name}: ${data[activeIndex].value}`}
+        </div>
+      )}
     </div>
   );
 };
