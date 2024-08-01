@@ -137,106 +137,6 @@ const vaults = [
     ],
     apy: chartAPY2,
   },
-  // {
-  //   assets: [
-  //     {
-  //       name: "tether",
-  //       img: tether,
-  //     },
-  //     {
-  //       name: "enj",
-  //       img: enj,
-  //     },
-  //     {
-  //       name: "ont",
-  //       img: ont,
-  //     },
-  //     {
-  //       name: "eos",
-  //       img: eos,
-  //     },
-  //     {
-  //       name: "chz",
-  //       img: chz,
-  //     },
-  //   ],
-  //   apy: chartAPY1,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "usdc",
-  //       img: usdc,
-  //     },
-  //     {
-  //       name: "uni",
-  //       img: uni,
-  //     },
-  //     {
-  //       name: "sushi",
-  //       img: sushi,
-  //     },
-  //     {
-  //       name: "bat",
-  //       img: bat,
-  //     },
-  //     {
-  //       name: "ethereum",
-  //       img: ethereum,
-  //     },
-  //   ],
-  //   apy: chartAPY1,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "btt",
-  //       img: btt,
-  //     },
-  //     {
-  //       name: "uma",
-  //       img: uma,
-  //     },
-  //     {
-  //       name: "yfi",
-  //       img: yfi,
-  //     },
-  //     {
-  //       name: "doge",
-  //       img: doge,
-  //     },
-  //     {
-  //       name: "dash",
-  //       img: dash,
-  //     },
-  //   ],
-  //   apy: chartAPY2,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "enj",
-  //       img: enj,
-  //     },
-  //     {
-  //       name: "chz",
-  //       img: chz,
-  //     },
-  //     {
-  //       name: "bnb",
-  //       img: bnb,
-  //     },
-  //     {
-  //       name: "xtz",
-  //       img: xtz,
-  //     },
-  //     {
-  //       name: "ont",
-  //       img: ont,
-  //     },
-  //   ],
-  //   apy: chartAPY2,
-  // },
 ];
 
 export default function VaultsList() {
@@ -268,8 +168,6 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
-
-  console.log(mergedData);
 
   const clickDepositHandler = async (value: string) => {
     setVaultId(value);
