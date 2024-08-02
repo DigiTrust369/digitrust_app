@@ -78,9 +78,8 @@ const logos = {
 
 const table_head = [
   'Chain',
-  'Profile Name',
   'Asset',
-  'Return',
+  'Monthly Return',
   ''
 ];
 
@@ -251,7 +250,7 @@ export default function VaultsList() {
                       })}
                     </div>
                   </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
+                  {/* <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
                     <div className="flex items-center gap-4">
                       <Image
                         className="h-[32px] w-[32px]"
@@ -263,7 +262,7 @@ export default function VaultsList() {
                       <span>{vault.vault_name}</span>
                       <span className="text-[#90A3BF]">{vault.symbol}</span>
                     </div>
-                  </td>
+                  </td> */}
                   <td className="px-6 py-6 whitespace-no-wrap text-nowrap overflow-hidden">
                     <div className="w-full flex items-center">
                       {vault.assets.map((asset) => (
