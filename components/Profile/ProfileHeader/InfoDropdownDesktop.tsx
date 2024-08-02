@@ -113,7 +113,7 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
                     <DropdownSection>
                         <DropdownItem>
                             <div className="flex justify-center gap-x-10 text-leofi">
-                                <Link href={"/profile"}>
+                                <Link href={"/profile"} onClick={changeToProfile}>
                                     <div className="flex-col">
                                         <div className="ml-2"> <ProfileIcon /></div>
                                         <p>Profile</p>

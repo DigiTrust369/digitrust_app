@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useOnborda } from "onborda";
+// import { useOnborda } from "onborda";
 import { Fragment, useEffect, useState, useMemo } from "react";
 import SUIWalletIcon from "@/icons/SUIWalletIcon";
 import KlayIcon from "@/icons/KlayIcon";
@@ -74,9 +74,9 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const { startOnborda } = useOnborda();
+  // const { startOnborda } = useOnborda();
   const handleStartOnborda = () => {
-    startOnborda();
+    // startOnborda();
   };
 
   const [selectedKeys, setSelectedKeys] = useState(

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useOnborda } from "onborda";
+// import { useOnborda } from "onborda";
 import { Fragment, useEffect, useState, useMemo } from "react";
 import { useFormatter } from "next-intl";
 import GoogleIcon from "@/icons/GoogleIcon";
@@ -114,10 +114,10 @@ async function postData(url = "", data = {}) {
 }
 
 export default function Header(props: { isHome: boolean, isDetail: boolean | false }) {
-  const { startOnborda } = useOnborda();
+  // const { startOnborda } = useOnborda();
   const { userEmail, setUserEmail, chain, setChain, selectedKeys, setSelectedKeys, walletAddress, setWalletAddress } = useGlobalContext();
   const handleStartOnborda = () => {
-    startOnborda();
+    // startOnborda();
   };
 
   const iconClasses =
@@ -140,7 +140,6 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
 
   useEffect(() => {
     const getOauthParams = async () => {
-      // let curEmail = window.localStorage.getItem("userEmail");
       let curEmail = userEmail;
       const location = window.location.hash;
       if (
@@ -152,11 +151,13 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         setOauthParams(res);
       } else if (curEmail != "" && curEmail != null) {
         let myToast = toast.loading("Loading...");
-        setEmail(curEmail != null ? curEmail : "");
+        if(email == "" || email == null)
+          setEmail(curEmail != null ? curEmail : "");
         toast.dismiss(myToast);
       } else return;
     };
     getOauthParams();
+
   }, []);
 
   const logOutWallet = () => {
@@ -166,7 +167,16 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     sessionStorage.clear();
   };
 
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail && email === "") {
+      setEmail(storedEmail);
+      setUserEmail(storedEmail);
+    }
+  }, []);
+
   const beginZkLogin = async () => {
+
     var myToast = toast.loading("Getting key pair...");
     const ephemeralKeyPair = Ed25519Keypair.generate();
     window.sessionStorage.setItem(
@@ -219,6 +229,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       console.error("Error initiating Google login:", error);
       toast.dismiss(myToast);
     }
+    
   };
 
   useEffect(() => {
@@ -311,8 +322,8 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
               sessionStorage.setItem(`${chain}wallet`, algoAddress);
             }
           }
-
-          setEmail(NewdecodedJwt?.email);
+          if(email == "" || email == null)
+            setEmail(NewdecodedJwt?.email);
           await postData("https://dgt-dev.vercel.app/v1/claim_token", {
             receiver: NewdecodedJwt?.email,
             amount: 1024,
@@ -332,18 +343,23 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
             //startOnborda();
           });
         } else {
-          setEmail(data?.email);
+          if(email == "" || email == null)
+            setEmail(data?.email);
           sessionStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
       }
     };
-    getUserAddress();
+    
+    if(email == "" || email == null)
+      getUserAddress();
   }, [oauthParams]);
 
   useEffect(() => {
     const fetchData = async () => {
+      if(email == "" || email == null)
+          return
       let scriptURLGet;
       if (chain === "Klaytn") {
         scriptURLGet = scriptURLGetEvmApt;
@@ -365,7 +381,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
   }, [chain, email])
 
   useEffect(() => {
-    // window.localStorage.setItem("userEmail", email);
+    window.localStorage.setItem("userEmail", email);
     setUserEmail(email);
     async function updateBalance() {
       const { balance } = await getBalance(email);

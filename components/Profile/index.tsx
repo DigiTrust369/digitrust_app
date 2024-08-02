@@ -43,11 +43,21 @@ const ProfileContainer = (props: TProfileContainerProps) => {
     wallet,
     dgtAmount,
   } = props;
-  const { userEmail } = useGlobalContext();
+
+  const { userEmail, setUserEmail } = useGlobalContext();
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail && (!userEmail || userEmail === "")) {
+      setUserEmail(storedEmail);
+    }
+  }, []);
+
+
 
   return (
     <div>
-      {userEmail != "" ? (
+      {userEmail  != "" ? (
         <div>
           <GeneralInfo
             name={name}

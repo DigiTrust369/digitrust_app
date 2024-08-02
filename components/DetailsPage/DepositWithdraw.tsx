@@ -10,7 +10,7 @@ import {
 } from "@/constants/suiSignTransaction";
 import { useWallet } from "@suiet/wallet-kit";
 import { toast } from "react-hot-toast";
-import { useOnborda } from "onborda";
+// import { useOnborda } from "onborda";
 import usdt from "@/assets/images/crypto/tether.svg";
 import usdc from "@/assets/images/crypto/usdc.svg";
 import digitrustLogo from "@/assets/images/digitrust_token.png";
@@ -49,7 +49,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
   const [withdrawAmount, setWithdrawAmount] = useState(1);
   const wallet = useWallet();
   const [orderID, setOrderID] = useState(0);
-  const { isOnbordaVisible } = useOnborda();
+  // const { isOnbordaVisible } = useOnborda();
   const [email, setEmail] = useState("");
 
   const [isDropdownDepositOpen, setIsDropdownDepositOpen] = useState(false);
@@ -97,7 +97,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
   };
 
   const goToMakeBaseDeposit = async (work: number) => {
-    if (isOnbordaVisible) return;
+    // if (isOnbordaVisible) return;
     if (work == 1 && email != "") {
       let myToast = toast.loading("Deposit is in progress...");
       await postData("https://dgt-dev.vercel.app/v1/algo_deposit", {
@@ -123,7 +123,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
   };
 
   const goToWithdrawBase = async (work: number) => {
-    if (isOnbordaVisible) return;
+    // if (isOnbordaVisible) return;
     if (work == 2 && email != "") {
       // toast.error("You may withdraw your assets after September 2024.", {
       //   style: {
@@ -157,11 +157,9 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
 
   useEffect(() => {
     async function doWork() {
-      if (isOnbordaVisible) return;
-      else {
-        await goToMakeBaseDeposit(0);
-        await goToWithdrawBase(0);
-      }
+      // if (isOnbordaVisible) return;
+      await goToMakeBaseDeposit(0);
+      await goToWithdrawBase(0);
     }
     doWork();
   }, []);
@@ -252,7 +250,9 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
                       : "w-full rounded-lg px-8 py-2 leading-[150%] -tracking-[0.32px] text-gray-500"
                   }
                 >
-                  <a id="onborda-step4">Withdraw</a>
+                  <a 
+                  // id="onborda-step4"
+                  >Withdraw</a>
                 </button>
               )}
             </Tab>
@@ -665,7 +665,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
                       </div> */}
 
                       <button
-                        id="onborda-step3"
+                        // id="onborda-step3"
                         onClick={async () => goToMakeBaseDeposit(1)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >
@@ -830,7 +830,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
                       </div> */}
 
                       <button
-                        id="onborda-step5"
+                        // id="onborda-step5"
                         onClick={async () => goToWithdrawBase(2)}
                         className="flex w-full items-center justify-center gap-x-3 rounded-[10px] bg-blue-600 py-4 text-white duration-200 hover:bg-blue-500"
                       >
