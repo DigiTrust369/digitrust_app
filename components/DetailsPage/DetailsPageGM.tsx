@@ -128,40 +128,37 @@ export default function DetailsPage(Props: any) {
 
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border">
+    <div className="flex flex-col md:flex-row min-h-screen w-full">
+      <div className="flex-shrink-0 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border">
         <Info coinID={Props.coinID} />
-        <div>
-          <h1 className="mt-2 pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-            Overview
-          </h1>
+        <div className="flex items-center justify-center">
+          <PieChart data={pieChartData} logoUrl="https://th.bing.com/th/id/R.4ce03bafbcf2160241912485a2f8e1c7?rik=Z%2fLZuvSuxytOEg&pid=ImgRaw&r=0" ></PieChart>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 w-full">
           <Overview />
         </div>
       </div>
-      <main className="flex-1 md:w-1/2 h-screen md:h-auto p-4 overflow-y-auto scrollbar-hide border">
+      <main className="flex-grow md:w-1/2 h-screen md:h-auto overflow-y-auto scrollbar-hide border">
         <div>
-          <h1 className="pb-5 font-semibold text-[#2563EB] text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-            {Props.coinID} Price
+          <h1 className="pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+            {Props.coinID.toUpperCase()} Price
           </h1>
         </div>
         
-          {chartData.length > 0?
-            <div className="w-full">
-              <CandlestickChart data={chartData} />
-            </div>
-          :
+        {chartData.length > 0 ? (
+          <div className="w-full h-full" style={{ width: '100% !important' }}>
+            <CandlestickChart data={chartData} />
+          </div>
+        ) : (
           <Card>
             <Skeleton className="rounded-lg">
-                <div className="h-80 rounded-lg bg-default-300"></div>
+              <div className="h-80 rounded-lg bg-default-300"></div>
             </Skeleton>
           </Card>
-          
-          }
+        )}
       </main>
-      <div className="flex-1 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
-        <Comment coinID = {Props.coinID} />
+      <div className="flex-shrink-0 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
+        <Comment coinID={Props.coinID} />
       </div>
     </div>
   );

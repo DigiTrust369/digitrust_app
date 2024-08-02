@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import CommentCoinMarketCap from "./PostCoinMarketCap";
 import { useGlobalContext } from "@/Context/store";
 import { IdentificationIcon } from "@heroicons/react/20/solid";
-import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import leofiNotextLogo from "@/assets/images/leofi_avatar.png";
 import Image, { StaticImageData } from "next/image";
 
 async function postData(url = "", data = {}) {
@@ -398,7 +398,7 @@ export default function Comment(Props: any) {
 
             </div>
             <div className="p-4 border-t flex items-center">
-                <Image className="rounded-full mr-2 bg-orange-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                <Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={48} height={48}/>
                 <input type="text"
                     placeholder="What are you thinking..."
                     className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
