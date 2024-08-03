@@ -8,7 +8,7 @@ import BearIcon from '@/icons/Bear'
 import BullIcon from '@/icons/Bull'
 import ViewIcon from '@/icons/ViewIcon'
 import { useGlobalContext } from "@/Context/store";
-import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import leofiNotextLogo from "@/assets/images/leofi_avatar.png";
 import Image, { StaticImageData } from "next/image";
 
 interface Data {
@@ -124,12 +124,12 @@ const CommentCoinMarketCap = (props: Props) => {
     return (
         <div>
             {items.map((d)=> (
-                <div>
+                <div className='border-b-small'>
                     <div className="bg-card p-4">
                         <div className="flex items-center space-x-2 mb-2">
                             {d.userAvatar != null && d.userAvatar != "https://placehold.co/40x40"?
                              <img src={d.userAvatar} alt="User Avatar" className="rounded-full" />
-                             :<Image className="rounded-full mr-2 bg-orange-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                             :<Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={48} height={48}/>
                             }
                             
                             <div>
@@ -142,24 +142,22 @@ const CommentCoinMarketCap = (props: Props) => {
                             <span className="text-primary">{d.content}</span> <br />
                         </p>
                     </div>
+
                     {d.listComment.map((comment) => (
                         <div key={comment.idComment} className='ml-5'>
-                            <div className="flex items-center space-x-2 mb-2 bg-orange-200 rounded-2xl">
+                            <div className="flex items-start mb-3">
                                 {comment.userAvatar != null ? (
-                                    <img src={comment.userAvatar} alt="User Avatar" className="rounded-full" />
+                                    <img src={comment.userAvatar} alt="User Avatar" className="rounded-full mr-2" />
                                 ) : (
-                                    <Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                                    <Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={48} height={48}/>
                                 )}
-                                <div>
-                                    <p className="font-semibold">{comment.userName}</p>
-                                </div>
-                                <div>
-                                    <p>{comment.mainComment}</p>
+                                <div className='bg-orange-200 px-2 py-1 rounded-lg'>
+                                    <span className="font-bold">{comment.userName}</span>
+                                    <p className="text-muted-foreground">{comment.mainComment}</p>
                                 </div>
                             </div>
                         </div>
                     ))}
-
                     <div className="flex items-center space-x-4 mb-4 ml-2">
                         <Button size='sm' color="primary" variant="light" startContent={<BearIcon />} onPress={async() => bearUpdate(d.id)}>
                             <p className={checkArrayForStringCaseInsensitive(d.bear,userEmail)?"text-[#3251ec]":"text-[#989090]"}>{d.bear.length}</p>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { copyVault } from "@/constants/suiSignTransaction";
 import { useWallet } from "@suiet/wallet-kit";
-import { useOnborda } from "onborda";
+// import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
 import "@/components/DetailsPage/Info.css";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
@@ -15,7 +15,7 @@ export default function Info() {
   const format = useFormatter();
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
-  const { isOnbordaVisible } = useOnborda();
+  // const { isOnbordaVisible } = useOnborda();
   const [defaultIndex, setDefaultIndex] = useState(0);
 
   //Value for copy vault
@@ -36,7 +36,7 @@ export default function Info() {
   // End call api
 
   const goToCopyVault = async () => {
-    if (isOnbordaVisible) return;
+    // if (isOnbordaVisible) return;
     const res = await copyVault(wallet);
     if (res != "fall" && res != null)
       toast.success("Transaction Success!\n Hash transaction block is " + res, {
@@ -55,10 +55,11 @@ export default function Info() {
 
   useEffect(() => {
     async function doWork3() {
-      if (isOnbordaVisible) return;
-      else {
-        await goToCopyVault();
-      }
+      // if (isOnbordaVisible) return;
+      // else {
+      //   await goToCopyVault();
+      // }
+      await goToCopyVault();
     }
     doWork3();
   }, []);
@@ -171,7 +172,7 @@ export default function Info() {
               Withdraw
             </button>
             <button
-              id="onborda-step2"
+              // id="onborda-step2"
               className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
               onClick={async () => goToCopyVault()}
             >
