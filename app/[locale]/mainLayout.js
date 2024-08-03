@@ -17,7 +17,8 @@ const MainLayout = () => {
   const pathname = usePathname().replace("/", "");
   return (
     <>
-      {pathname != "" && pathname == "home" && (
+      <Banner time={8000}><ProfileHeader isHome={true}></ProfileHeader></Banner>
+      {/* {pathname != "" && pathname == "home" && (
         <Banner time={8000}><ProfileHeader isHome={true}></ProfileHeader></Banner>
       )}
       {pathname != "" && pathname != "home" && pathname == "detail" && (
@@ -25,7 +26,7 @@ const MainLayout = () => {
       )}
       {pathname != "" && pathname != "home" && pathname != "detail" && (
         <ProfileHeader isHome={false}></ProfileHeader>
-      )}
+      )} */}
       {/* {pathname == "" && <Header></Header>} */}
     </>
   );

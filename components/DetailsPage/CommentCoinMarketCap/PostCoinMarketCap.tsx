@@ -129,7 +129,7 @@ const CommentCoinMarketCap = (props: Props) => {
                         <div className="flex items-center space-x-2 mb-2">
                             {d.userAvatar != null && d.userAvatar != "https://placehold.co/40x40"?
                              <img src={d.userAvatar} alt="User Avatar" className="rounded-full" />
-                             :<Image className="rounded-full mr-2 bg-gray-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                             :<Image className="rounded-full mr-2 bg-orange-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
                             }
                             
                             <div>

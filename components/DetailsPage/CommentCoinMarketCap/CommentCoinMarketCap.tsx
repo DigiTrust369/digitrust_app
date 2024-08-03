@@ -290,7 +290,7 @@ export default function Comment(Props: any) {
     }, [dataTopPost]);
 
     return (
-        <div>
+        <>
             {/* <div className="p-4 border-b flex justify-between items-center">
             <div className="flex gap-5">
                 <Avatar isBordered radius="full" size="md" src="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
@@ -334,10 +334,10 @@ export default function Comment(Props: any) {
                 )}
             </Tabs>
         </div> */}
-            <div className="p-4 border-b flex justify-between items-center bg-leofi text-lime-50">
+            <div className="p-4 border-b flex justify-between items-center text-lg font-bold text-orange-400">
                 Comment
             </div>
-            <div className="flex-grow overflow-auto p-4 border">
+            <div className="flex-grow overflow-auto p-4">
                 {
                     isLoading ? (
                         <div className="w-full space-y-5 p-4">
@@ -398,13 +398,13 @@ export default function Comment(Props: any) {
 
             </div>
             <div className="p-4 border-t flex items-center">
-                <Image className="rounded-full mr-2 bg-gray-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
+                <Image className="rounded-full mr-2 bg-orange-200" src={leofiNotextLogo} alt="User Avatar" width={28} height={28}/>
                 <input type="text"
                     placeholder="What are you thinking..."
                     className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
                     onChange={(event) => setContent(event.target.value)} />
                 <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>{curPost == "" ? "Post" : "Comment"}</button>
             </div>
-        </div>
+        </>
     )
 }

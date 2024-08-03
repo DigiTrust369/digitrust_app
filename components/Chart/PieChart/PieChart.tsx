@@ -29,6 +29,11 @@ const COLORS = [
 const PieChartCustom = (props: IPieChartProp) => {
   const { data = dataDemo, colors = COLORS, logoUrl = "https://example.com/default-logo.png" } = props;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+
+  const onPieClick = (_: any, index: number) => {
+    setClickedIndex(index === clickedIndex ? null : index);
+  };
 
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
@@ -36,6 +41,19 @@ const PieChartCustom = (props: IPieChartProp) => {
 
   const onPieLeave = () => {
     setActiveIndex(null);
+  };
+
+  const ActiveShape = (props: any) => {
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+    return (
+      <g>
+        <path
+          d={`M ${cx},${cy} L ${cx},${cy - outerRadius} A ${outerRadius},${outerRadius} 0 0 1 ${cx + Math.sin(endAngle) * outerRadius},${cy - Math.cos(endAngle) * outerRadius} Z`}
+          fill={fill}
+          stroke="none"
+        />
+      </g>
+    );
   };
 
   return (
@@ -53,10 +71,18 @@ const PieChartCustom = (props: IPieChartProp) => {
             dataKey="value"
             onMouseEnter={onPieEnter}
             onMouseLeave={onPieLeave}
+            stroke="none"
+            activeShape={ActiveShape}
+            onClick={onPieClick}
           >
-            {data.map((entry: any, index: number) => (
-              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-            ))}
+           {data.map((entry: any, index: number) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={colors[index % colors.length]}
+              stroke={clickedIndex === index ? "none" : "#fff"}
+              strokeWidth={2}
+            />
+          ))}
           </Pie>
         </PieChart>
         <div
