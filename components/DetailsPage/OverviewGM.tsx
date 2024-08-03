@@ -88,7 +88,7 @@ export default function Overview() {
   return (
     <div className="mt-11">
       <div>
-        <h1 className="pb-5 font-semibold text-orange-400 text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
+        <h1 className="pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
           History
         </h1>
       </div>
