@@ -61,7 +61,7 @@ const CandlestickChart: React.FC<CandlestickChartProps> = ({ data }) => {
     }
   }, [data]);
 
-  return <div ref={chartContainerRef} />;
+  return <div className='w-full' ref={chartContainerRef} />;
 };
 
 export default CandlestickChart;
