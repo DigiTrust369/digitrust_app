@@ -157,8 +157,8 @@ export default function DetailsPage(Props: any) {
           </Card>
         )}
       </main>
-      <div className="flex-shrink-0 md:w-1/4 h-screen md:h-auto p-4 overflow-y-auto border scrollbar-hide">
-        <Comment coinID={Props.coinID} />
+      <div className="flex-shrink-0 md:w-1/4 max-h-fit border">
+          <Comment coinID={Props.coinID} />
       </div>
     </div>
   );
