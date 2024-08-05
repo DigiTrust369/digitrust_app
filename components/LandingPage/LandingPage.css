@@ -1,8 +1,6 @@
-.hero-background {
-    background-image: url('../../assets/images/bg-Hero.png');
-    background-size: cover;
-    width: 100%;
-}
+/* .hero-background {
+    padding: 0 0 20px 0;
+} */
 
 .ai-driven {
     background-image: url('../../assets/images/rectangle-blue.png');

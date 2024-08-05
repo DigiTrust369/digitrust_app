@@ -27,7 +27,10 @@ import ont from "@/assets/images/crypto/ont.svg";
 import eos from "@/assets/images/crypto/eos.svg";
 import chz from "@/assets/images/crypto/chz.svg";
 import enj from "@/assets/images/crypto/enj.svg";
-
+import sol from "@/assets/images/crypto/solana.png";
+import ton from "@/assets/images/crypto/ton.svg";
+import base from "@/assets/images/crypto/base.svg";
+import blast from "@/assets/images/crypto/blast.svg";
 import depositIc from "@/assets/images/icons/deposit-icon.png";
 import downIc from "@/assets/images/icons/down-ic.png";
 import arrowDownUpIc from "@/assets/images/icons/arrow-up-down-ic.png";
@@ -36,7 +39,8 @@ import filterIc from "@/assets/images/icons/filter-icon.svg";
 import downloadIc from "@/assets/images/icons/download-icon.svg";
 import chartAPY1 from "@/assets/images/icons/chart-apy1.png";
 import chartAPY2 from "@/assets/images/icons/chart-apy2.png";
-import digitrustNoTextLogo from "@/assets/images/digitrust_notext.png";
+import leofiNotextLogo from "@/assets/images/leofi_notext.png";
+import RightArrowIcon from "@/icons/RightArrowIcon";
 
 interface Vault {
   url: string;
@@ -51,7 +55,10 @@ interface Vault {
   manager: string;
   des: string;
   timestamp: number;
-  chain: string;
+  chain: {
+    name: string;
+    logo: string;
+  }[];
   period: any;
   asset?: string[];
   assets: {
@@ -59,6 +66,22 @@ interface Vault {
     img: string;
   }[];
 }
+
+const logos = {
+  eth: ethereum,
+  sol: sol,
+  ton: ton,
+  base: base,
+  bnb: bnb,
+  blasr: blast
+}
+
+const table_head = [
+  'Chain',
+  'Asset',
+  'Monthly Return',
+  ''
+];
 
 const vaults = [
   {
@@ -80,8 +103,8 @@ const vaults = [
         img: btt,
       },
       {
-        name: "dash",
-        img: dash,
+        name: "solana",
+        img: sol,
       },
     ],
     apy: chartAPY1,
@@ -136,106 +159,6 @@ const vaults = [
     ],
     apy: chartAPY2,
   },
-  // {
-  //   assets: [
-  //     {
-  //       name: "tether",
-  //       img: tether,
-  //     },
-  //     {
-  //       name: "enj",
-  //       img: enj,
-  //     },
-  //     {
-  //       name: "ont",
-  //       img: ont,
-  //     },
-  //     {
-  //       name: "eos",
-  //       img: eos,
-  //     },
-  //     {
-  //       name: "chz",
-  //       img: chz,
-  //     },
-  //   ],
-  //   apy: chartAPY1,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "usdc",
-  //       img: usdc,
-  //     },
-  //     {
-  //       name: "uni",
-  //       img: uni,
-  //     },
-  //     {
-  //       name: "sushi",
-  //       img: sushi,
-  //     },
-  //     {
-  //       name: "bat",
-  //       img: bat,
-  //     },
-  //     {
-  //       name: "ethereum",
-  //       img: ethereum,
-  //     },
-  //   ],
-  //   apy: chartAPY1,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "btt",
-  //       img: btt,
-  //     },
-  //     {
-  //       name: "uma",
-  //       img: uma,
-  //     },
-  //     {
-  //       name: "yfi",
-  //       img: yfi,
-  //     },
-  //     {
-  //       name: "doge",
-  //       img: doge,
-  //     },
-  //     {
-  //       name: "dash",
-  //       img: dash,
-  //     },
-  //   ],
-  //   apy: chartAPY2,
-  // },
-  // {
-  //   assets: [
-  //     {
-  //       name: "enj",
-  //       img: enj,
-  //     },
-  //     {
-  //       name: "chz",
-  //       img: chz,
-  //     },
-  //     {
-  //       name: "bnb",
-  //       img: bnb,
-  //     },
-  //     {
-  //       name: "xtz",
-  //       img: xtz,
-  //     },
-  //     {
-  //       name: "ont",
-  //       img: ont,
-  //     },
-  //   ],
-  //   apy: chartAPY2,
-  // },
 ];
 
 export default function VaultsList() {
@@ -267,6 +190,7 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
+  console.log(mergedData)
 
   const clickDepositHandler = async (value: string) => {
     setVaultId(value);
@@ -276,62 +200,16 @@ export default function VaultsList() {
   };
 
   return (
-    <div>
-      <div className="flex flex-wrap sm:flex-nowrap items-start justify-between">
+    <>
+      <div className="flex flex-wrap sm:flex-nowrap items-start justify-between mb-4">
         <div>
-          <h1 className="font-semibold text-[#2563EB] text-3xl sm:text-[36px] sm:leading-[54px]">
-            All Vaults
+          <h1 className="font-semibold text-leofi text-3xl sm:text-[36px] sm:leading-[54px]">
+            All Profiles
           </h1>
-          <p className="py-2 text-[#90A3BF] leading-6">Overview</p>
         </div>
-        {/* <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
-          <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
-            <button type="submit" className="px-[17px] py-[14px]"> */}
-        {/* <FontAwesomeIcon
-                icon={faSearch}
-                width="1.25rem"
-                height="1.25rem"
-                color="#2563EB"
-              /> */}
-        {/* <Image className="w-5 h-5" src={searchIc} alt="search-icon" />
-            </button>
-            <input type="text" placeholder="Search to a vault" name="search" />
-          </form> */}
-
-        {/* <form className="flex items-center bg-white border border-[#ECEFF1] rounded-lg">
-            <button type="submit" className="px-[17px] py-[14px]"> */}
-        {/* <FontAwesomeIcon
-                icon={faFilter}
-                width="1.25rem"
-                height="1.25rem"
-                color="#2563EB"
-              /> */}
-        {/* <Image className="w-5 h-5" src={filterIc} alt="filter-icon" />
-            </button>
-            <input type="text" placeholder="Filter by: Newest" name="filter" />
-            <Image className="mr-[9px]" src={downIc} alt="down-icon" />
-          </form> */}
-
-        {/* <button className="rounded-[6px] bg-blue-600 px-5 py-2.5 text-white duration-200 hover:bg-blue-600/85 xl:px-6">
-            <div className="flex gap-3"> */}
-        {/* <FontAwesomeIcon
-                icon={faFileDownload}
-                width="14px"
-                height="17px"
-                color="white"
-              /> */}
-        {/* <Image
-                className="w-3.5 h-auto"
-                src={downloadIc}
-                alt="download-icon"
-              />
-              <span className="leading-6">Export</span>
-            </div>
-          </button>
-        </div> */}
       </div>
       {/* <div className="align-middle inline-block min-w-full shadow overflow-x-auto bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg"> */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-auto table-container">
         {isLoading && (
           <div className="animate-pulse">
             <div className="h-4 bg-gray-200 mt-3 mb-6 rounded"></div>
@@ -342,44 +220,41 @@ export default function VaultsList() {
           </div>
         )}
         {!isLoading && (
-          <table className="min-w-full border border-[#C3D4E9]">
-            <thead>
+          <table className="min-w-full table overflow-y-auto">
+            <thead className="table-head">
               <tr>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  Vault Name
-                </th>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  Price
-                </th>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  TVL
-                  {/* <Image
-                  className="w-[16px] h-[16px]"
-                  src={arrowDownUpIc}
-                  alt="arrow-icon"
-                /> */}
-                </th>
-
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  Asset
-                </th>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  7 Days
-                </th>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9] text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
-                  Return
-                </th>
-                <th className="px-6 py-6 border-b border-b-[#C3D4E9]"></th>
+                {
+                  table_head.map(header => (
+                    <th className="px-6 py-6 text-nowrap text-left text-base leading-4 text-gray-800 tracking-wider">
+                      {header}
+                    </th>))
+                }
               </tr>
             </thead>
-            <tbody>
+            <tbody className="table-body">
               {mergedData.map((vault) => (
-                <tr className="border-b border-[#C3D4E9]">
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                <tr>
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap overflow-hidden">
+                    <div className="w-full flex items-center">
+                      {vault.chain.map((c) => {
+                        const name: string = c?.name;
+                        return (
+                          <Image
+                            className="w-[26px] h-[26px] object-cover rounded-[50%] bg-white [&:not(:first-child)]:-ml-[8px]"
+                            src={logos[name]}
+                            alt={name}
+                            width={26}
+                            height={26}
+                          />
+                        );
+                      })}
+                    </div>
+                  </td>
+                  {/* <td className="px-6 py-6 whitespace-no-wrap text-nowrap">
                     <div className="flex items-center gap-4">
                       <Image
                         className="h-[32px] w-[32px]"
-                        src={digitrustNoTextLogo}
+                        src={leofiNotextLogo}
                         alt={vault.vault_name}
                         width={32}
                         height={32}
@@ -387,14 +262,8 @@ export default function VaultsList() {
                       <span>{vault.vault_name}</span>
                       <span className="text-[#90A3BF]">{vault.symbol}</span>
                     </div>
-                  </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    ${format.number(+vault.price.slice(0, -1))}
-                  </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    ${format.number(+vault.tvl)}
-                  </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9] overflow-hidden">
+                  </td> */}
+                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap overflow-hidden">
                     <div className="w-full flex items-center">
                       {vault.assets.map((asset) => (
                         <Image
@@ -407,26 +276,19 @@ export default function VaultsList() {
                       ))}
                     </div>
                   </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
-                    <Image src={vault.apy} alt="chart" />
-                  </td>
-                  <td className="px-6 py-6 whitespace-no-wrap text-nowrap border-b border-b-[#C3D4E9]">
+                  <td className={`px-6 py-6 whitespace-no-wrap text-nowrap ${+vault.monthly_return.split('%')[0] > 0 ? "text-green-500" : "text-[#DC2626]"}`}>
                     {vault.monthly_return}
                   </td>
                   <td className="px-6 py-6 whitespace-no-wrap">
                     <button
-                      className="border rounded-[10px] border-[#2563EB]"
+                      className="border rounded-full bg-[#ee4d2d]"
                       id="onborda-step1"
                       onClick={() => clickDepositHandler(vault.vault_id)}
                     >
-                      <Link href="/detail">
-                        <div className="flex items-center px-2 sm:px-[26px] gap-2 py-[5px] text-[#2563EB]">
-                          <Image
-                            className="hidden sm:block w-[18px] h-[18px]"
-                            src={depositIc}
-                            alt="deposit-icon"
-                          />
-                          <span className="font-normal">Deposit</span>
+                      <Link href={`/detail/${vault.vault_id}`}>
+                        <div className="flex items-center p-1 gap-2 text-white">
+                          {/* <span className="font-normal text-sm">Go</span> */}
+                          <RightArrowIcon />
                         </div>
                       </Link>
                     </button>
@@ -437,6 +299,6 @@ export default function VaultsList() {
           </table>
         )}
       </div>
-    </div>
+    </>
   );
 }

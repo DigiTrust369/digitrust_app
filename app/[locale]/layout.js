@@ -4,8 +4,8 @@ import { getMetadata } from "@/constants/metadata";
 import MainLayout from './mainLayout';
 import FooterLayout from './footerLayout';
 import { Toaster } from "react-hot-toast";
-import { Onborda } from "onborda";
-import { steps } from "@/lib/steps";
+// import { Onborda } from "onborda";
+// import { steps } from "@/lib/steps";
 import CustomCard from "@/components/CustomCard";
 
 // export async function generateStaticParams() {
@@ -28,16 +28,17 @@ export async function generateMetadata(props) {
 
 export default async function LocaleLayout(props) {
   const { children, params: { locale } = {} } = props;
-    
+
   return <Provider locale={locale}>
-          <Onborda   
-              steps={steps} 
-              cardComponent={CustomCard}
-              shadowOpacity="0.5">
-            <MainLayout />
-              <Toaster position="top-center" />
-              {children}
-            <FooterLayout />
-          </Onborda>
-        </Provider>;
+
+    <div className="flex flex-col min-h-screen">
+      <MainLayout />
+      <main className="flex-grow">
+        <Toaster position="top-center" />
+        {children}
+      </main>
+      <FooterLayout />
+    </div>
+
+  </Provider>;
 }

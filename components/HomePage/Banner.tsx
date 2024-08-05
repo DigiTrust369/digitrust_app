@@ -10,11 +10,12 @@ import walletIc from "@/assets/images/icons/wallet-ic.png";
 import tvIc from "@/assets/images/icons/tv-ic.png";
 import peopleIc from "@/assets/images/icons/people-ic.png";
 import chartUpIc from "@/assets/images/icons/chart-up-ic.png";
+import { is } from "@mysten/sui.js/dist/cjs/utils";
 
 const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, children }) => {
   const [isChanged, setIsChanged] = useState(false);
   let content = isChanged ? (
-    <div className="mx-auto w-[90%] pt-[111px]">
+    <div id="banner-1" className="mx-auto w-[90%] pt-[111px]">
       <div className="flex-col align-center">
         <h1 className="text-2xl sm:text-[42px] leading-[42px] text-white font-semibold tracking-tight text-center">
           Block any trader in easy 3 steps
@@ -61,15 +62,19 @@ const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, childre
           </div>
         </div>
       </div>
+      <div className="mx-auto w-fit mt-14">
+        <button className={`${isChanged ? "bg-white" : "bg-gray-400"} rounded-full p-1.5 mx-2`} onClick={() => setIsChanged(true)}></button>
+        <button className={`${!isChanged ? "bg-white" : "bg-gray-400"} rounded-full p-1.5 mx-2`} onClick={() => setIsChanged(false)}></button>
+      </div>
     </div>
   ) : (
-    <div className="relative mx-auto top-[66px]">
+    <div id="banner-2" className="relative mx-auto top-[66px]">
       <div className="flex-col align-center px-3">
         <h1 className="text-2xl sm:text-[42px] leading-[42px] text-white font-semibold tracking-tight text-center">
-          No vaults created
+          No profiles created
         </h1>
         <p className="text-base mt-4 sm:text-xl text-white font-medium tracking-tight text-center">
-          Anyone can be come a manager and create their own vaults -
+          Anyone can be come a manager and create their own profiles -
           permissionlesly
         </p>
         <div className="mx-auto mt-[40px] sm:w-[65%] flex justify-between">
@@ -110,14 +115,18 @@ const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, childre
           </div>
         </div>
         <div className="sm:mt-[35px] text-center">
-          <Link href="/pool">
+          <Link href="/create-profile">
             <button className="bg-white rounded-[10px]">
               <div className="px-5 py-2.5 sm:px-[41px] sm:py-[13px] text-[#2563EB] text-base sm:text-xl font-semibold leading-[30px] tracking-tight">
-                Create Vault
+                Create Profile
               </div>
             </button>
           </Link>
         </div>
+      </div>
+      <div className="mx-auto w-fit mt-5">
+        <button className={`${isChanged ? "bg-white" : "bg-gray-400"} rounded-full p-1.5 mx-2`} onClick={() => setIsChanged(true)}></button>
+        <button className={`${!isChanged ? "bg-white" : "bg-gray-400"} rounded-full p-1.5 mx-2`} onClick={() => setIsChanged(false)}></button>
       </div>
     </div>
   );
@@ -133,8 +142,8 @@ const Banner: React.FC<{ time: number, children: ReactNode }> = ({ time, childre
   return (
     <section className="hero-background">
       {children}
-      <div className="h-[554px]">
-        {content}
+      <div className="">
+        {/* {content} */}
       </div>
     </section>
   );

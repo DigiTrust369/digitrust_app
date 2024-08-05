@@ -7,24 +7,17 @@ import { useFieldArray } from "react-hook-form";
 import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
 import toast from "react-hot-toast";
+import { useGlobalContext } from "@/Context/store";
+import { redirect } from "next/navigation";
 
 type Props = {
     onBack?: () => void;
-};
-
-const postData = async (data = {}) => {
-    const response = await fetch('https://dgt-dev.vercel.app/v1/create_vault', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    })
-    return response;
+    fee: number;
 };
 
 const Step4Preview = (props: Props) => {
-    const { onBack } = props;
+    const { userEmail, walletAddress } = useGlobalContext();
+    const { onBack, fee } = props;
     const { register, control, watch, reset } = useTypedForm("CreateVaults");
     const {
         fields,
@@ -40,27 +33,55 @@ const Step4Preview = (props: Props) => {
         control,
         name: "tokens",
     });
-    console.log(fields)
-    console.log(sessionStorage.getItem("wallet"))
+
     const vaultName = fields.map(token => `${token.amount}${token.symbol}`).join('-');
     const vaultSymbols = fields.map(token => token.symbol);
+    const portfolio = fields.map((token, index) => {
+        return {
+            "asset_id": `${token.asset_id}`,
+            "amount": token.amount,
+            "asset_type": 'token',
+        }
+    })
 
     const createVault = async () => {
+        // const data = {
+        //     "manager": sessionStorage.getItem("wallet"),
+        //     "vault_symbol": vaultName,
+        //     "symbols": vaultSymbols,
+        //     "token_adrs": ["0x11", "0x1"],
+        //     "created_at": Date.now(),
+        //     "end_at": 34234,
+        //     "manage_fee": fee,
+        // }
         const data = {
-            "manager": sessionStorage.getItem("wallet"),
-            "vault_symbol": vaultName,
-            "symbols": vaultSymbols,
-            "token_adrs": ["0x11", "0x1"],
+            "profile_id": userEmail.split('@')[0],
+            "username": userEmail.split('@')[0],
+            "email": userEmail,
+            "management_fee": `${fee}`,
+            "wallet_address": walletAddress,
+            "asset_portfolio": portfolio,
             "created_at": Date.now(),
-            "end_at": 34234,
-            "manage_fee": 12
+            "updated_at": 1626627600
         }
+        console.log(data)
 
-        const response = await postData(data);
-        const resData = await response.json();
-        if (resData.status == 'ok') {
-            toast.success("Created Vault Successfully !");
-            setTimeout(() => reset(), 5000);
+        const url = 'https://dgt-dev.vercel.app/v1/create_vault';
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+                toast.success("Created Profile Successfully !");
+                // setTimeout(() => reset(), 5000);
+            } else {
+                toast.error("Something went wrong! Try again!");
+            }
         } else {
             toast.error("Something went wrong! Try again!");
         }
@@ -70,9 +91,9 @@ const Step4Preview = (props: Props) => {
         <div className={cn(styles.root, "bal-card content p-4 rounded-lg")}>
             <div className="flex flex-col">
                 <div className="flex flex-col mb-4">
-                    <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span>
+                    {/* <span className="text-xs mb-1 text-slate-600">Polygon Mainnet</span> */}
                     <div className="flex flex-row items-center">
-                        <button className="flex text-blue-500 hover:text-blue-700 mr-1" type="button" onClick={onBack}>
+                        <button className="flex text-leofi hover:text-leofiorange mr-1" type="button" onClick={onBack}>
                             <div className="inline-block bal-icon flex">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -90,14 +111,14 @@ const Step4Preview = (props: Props) => {
                                 </svg>
                             </div>
                         </button>
-                        <h5 className="font-semibold">Preview new weighted pool</h5>
+                        <h5 className="font-semibold">Preview new weighted profile</h5>
                     </div>
                 </div>
 
                 <div className="flex flex-col border rounded-lg mb-4">
                     {/* row */}
                     <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
-                        Tokens and initial seed liquidity
+                        Tokens and initial profile
                     </h6>
                     {/* row */}
                     {/* row */}
@@ -109,15 +130,15 @@ const Step4Preview = (props: Props) => {
                     <h6 className="flex justify-between p-2 px-4 w-full bg-gray-50 font-semibold rounded-lg">
                         Summary
                     </h6>
-                    <Summary />
+                    <Summary fee={props.fee} />
 
                 </div>
                 <button
-                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
+                    className="bal-btn px-4 h-12 text-base bg-gradient-to-tr from-leofired to-leofiorange hover:from-leofi hover:to-leofi transition-colors text-white border-none block w-full rounded-lg shadow hover:shadow-none cursor-pointer"
                     type="button"
                     onClick={createVault}
                 >
-                    <div className="content justify-center"> Approve for creating vault</div>
+                    <div className="content justify-center"> Approve for creating profile</div>
                 </button>
             </div>
         </div>

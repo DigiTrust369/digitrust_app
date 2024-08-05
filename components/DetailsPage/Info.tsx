@@ -3,25 +3,23 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { copyVault } from "@/constants/suiSignTransaction";
 import { useWallet } from "@suiet/wallet-kit";
-import { useOnborda } from "onborda";
+// import { useOnborda } from "onborda";
 import { useFormatter } from "next-intl";
-import { env } from "process";
-import "@/components/DetailsPage/Info.css"
+import "@/components/DetailsPage/Info.css";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import DepositWithdraw from "./DepositWithdraw";
 
 export default function Info() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const format = useFormatter();
   // Call Api
   const [dataDetails, setDataDetails] = useState<any[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isUnFollowedDisplayed, setIsUnFollowedDisplayed] = useState(false);
-  const { isOnbordaVisible } = useOnborda();
+  // const { isOnbordaVisible } = useOnborda();
+  const [defaultIndex, setDefaultIndex] = useState(0);
 
   //Value for copy vault
   const wallet = useWallet();
-
-  function clickHandler() {
-    setIsFollowing((prevState) => !prevState);
-  }
 
   useEffect(() => {
     const fetchDataDetails = async () => {
@@ -38,7 +36,7 @@ export default function Info() {
   // End call api
 
   const goToCopyVault = async () => {
-    if (isOnbordaVisible) return;
+    // if (isOnbordaVisible) return;
     const res = await copyVault(wallet);
     if (res != "fall" && res != null)
       toast.success("Transaction Success!\n Hash transaction block is " + res, {
@@ -57,10 +55,11 @@ export default function Info() {
 
   useEffect(() => {
     async function doWork3() {
-      if (isOnbordaVisible) return;
-      else {
-        await goToCopyVault();
-      }
+      // if (isOnbordaVisible) return;
+      // else {
+      //   await goToCopyVault();
+      // }
+      await goToCopyVault();
     }
     doWork3();
   }, []);
@@ -98,29 +97,9 @@ export default function Info() {
             </svg>
             <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-gray-800">
               {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-              $aHYPE
+              {dataDetails.map((data) => data.vault_name)}
             </div>
           </div>
-          {/* <div className="flex items-center gap-x-3">
-            {dataDetails.map((data) => (
-              <div
-                key={data.vault_id}
-                className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency"
-              >
-                <span>{data.currency}</span>
-                aHYPE
-              </div>
-            ))} */}
-          {/* <div className="flex rounded-full border border-gray-45 bg-blue-600 px-[10px] py-1 text-base font-medium leading-6 text-white shadow-currency">
-              {dataDetails && (
-                  <span>{dataDetails.currency}</span>
-              )}
-              aHYPE
-          </div> */}
-          {/* <div className="rounded-full border border-blue-600 bg-indigo-100 px-[10px] py-1 text-base font-medium leading-6 text-gray-800 shadow-elevation">
-              Live on Avalanche
-            </div>
-          </div> */}
 
           {dataDetails.map((data) => (
             <p
@@ -171,73 +150,29 @@ export default function Info() {
                 </svg>
               </button>
             </div>
-            {/* <div className="flex flex-wrap sm:flex-nowrap gap-y-3 gap-x-3">
-              <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
-                <div className="flex gap-x-4 text-base font-semibold leading-4">
-                  <p className="uppercase text-blue-600">STAKED</p>
-                  {dataDetails.map((data) => (
-                    <div key={data.vault_id} className="flex text-gray-800">
-                      <span>{data.currency}</span>
-                      <p>{data.tvl}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <button>
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 4.5C7.58172 4.5 4 8.08172 4 12.5C4 16.9183 7.58172 20.5 12 20.5C16.4183 20.5 20 16.9183 20 12.5C20 8.08172 16.4183 4.5 12 4.5ZM2 12.5C2 6.97715 6.47715 2.5 12 2.5C17.5228 2.5 22 6.97715 22 12.5C22 18.0228 17.5228 22.5 12 22.5C6.47715 22.5 2 18.0228 2 12.5Z"
-                      fill="#C3D4E9"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M11 17.5V11.5H13V17.5H11Z"
-                      fill="#C3D4E9"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M11 9.5V7.5H13V9.5H11Z"
-                      fill="#C3D4E9"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div> */}
           </div>
 
           <div className="flex items-center gap-x-[14px]">
-            <button
-              onClick={clickHandler}
-              className={`w-24 sm:w-36 py-3 rounded-[10px] border ${
-                isFollowing && !isUnFollowedDisplayed
-                  ? "border-blue-600 text-blue-600"
-                  : "bg-blue-600 text-white"
-              } ${
-                isFollowing && isUnFollowedDisplayed
-                  ? "bg-red-300 text-white"
-                  : ""
-              } text-base sm:text-xl leading-normal font-medium tracking-tight`}
-              onMouseEnter={() => setIsUnFollowedDisplayed(true)}
-              onMouseLeave={() => setIsUnFollowedDisplayed(false)}
+            {/* <button
+              onClick={() => {
+                onOpen();
+                setDefaultIndex(0);
+              }}
+              className={`w-24 sm:w-36 py-3 rounded-[10px] border bg-blue-600 text-white text-base sm:text-xl leading-normal font-medium tracking-tight`}
             >
-              {/* {isFollowing ? "Following" : "Follow"} */}
-              {isFollowing && !isUnFollowedDisplayed && "Following"}
-              {isFollowing && isUnFollowedDisplayed && "Unfollow"}
-              {!isFollowing && "Follow"}
-            </button>
-
+              Deposit
+            </button> */}
             <button
-              id="onborda-step2"
+              onClick={() => {
+                onOpen();
+                setDefaultIndex(1);
+              }}
+              className={`w-24 sm:w-36 py-3 rounded-[10px] border border-blue-600 text-blue-600 text-base sm:text-xl leading-normal font-medium tracking-tight`}
+            >
+              Withdraw
+            </button>
+            <button
+              // id="onborda-step2"
               className="w-24 sm:w-36 py-3 rounded-[10px] border border-green-600 text-xl leading-normal font-medium tracking-tight text-green-600"
               onClick={async () => goToCopyVault()}
             >
@@ -246,6 +181,18 @@ export default function Info() {
           </div>
         </div>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={true}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+              <ModalBody>
+                <DepositWithdraw defaultIndex={defaultIndex} />
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </section>
   );
 }

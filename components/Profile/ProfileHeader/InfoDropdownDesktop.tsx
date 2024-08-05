@@ -48,75 +48,6 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
 
     return (
         <div className="flex gap-5">
-            {/* <Dropdown>
-                <DropdownTrigger className="border-2 border-zinc-300">
-                    <div className="flex items-center rounded-lg bg-white px-0 text-blue-600">
-                        {selectedKeys}
-                        <Down />
-                    </div>
-                </DropdownTrigger>
-                <DropdownMenu
-                    aria-label="Single selection example"
-                    variant="flat"
-                    disallowEmptySelection
-                    selectionMode="single"
-                >
-                    <DropdownItem
-                        key="suidevnet"
-                        startContent={<SUIWallet className={iconClasses} />}
-                        onClick={() => {
-                            setChain("Sui");
-                            setSelectedKeys(
-                                <SUIWallet className={iconClasses} />
-                            );
-                        }
-                        }
-                    >
-                        Sui
-                    </DropdownItem>
-                    <DropdownItem
-                        key="klaytntestnet"
-                        startContent={<KlayIcon className={iconClasses} />}
-                        onClick={() => {
-                            setChain("Klaytn");
-                            setSelectedKeys(
-                                <KlayIcon className={iconClasses} />
-                            );
-                        }
-                        }
-                    >
-                        Klaytn
-                    </DropdownItem>
-                    <DropdownItem
-                        key="aptos"
-                        startContent={<AptosIcon className={iconClasses} />}
-                        onClick={() => {
-                            setChain("Aptos");
-                            setSelectedKeys(
-                                <AptosIcon className={iconClasses} />
-                            );
-                        }
-                        }
-                    >
-                        Aptos
-                    </DropdownItem>
-                    <DropdownItem
-                        key="algorandtestnet"
-                        startContent={
-                            <AlgorandIcon className={iconClasses} />
-                        }
-                        onClick={() => {
-                            setChain("Algorand");
-                            setSelectedKeys(
-                                <AlgorandIcon className={iconClasses} />
-                            );
-                        }
-                        }
-                    >
-                        Algorand
-                    </DropdownItem>
-                </DropdownMenu>
-            </Dropdown> */}
             <ChainDropdown chain={chain} setChain={setChain} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} />
             <Dropdown
                 radius="sm"
@@ -127,14 +58,14 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
                 <DropdownTrigger>
                     <Button
                         variant="bordered"
-                        className="capitalize text-blue-600 bg-white font-semibold"
+                        className="capitalize bg-white font-semibold"
                         disableRipple
                     >
                         <WalletIcon />
-                        {`${walletAddress.slice(
+                        {`${walletAddress?.slice(
                             0,
                             4
-                        )}...${walletAddress.slice(-5, -1)}`}
+                        )}...${walletAddress?.slice(-5, -1)}`}
                         <Down />
                     </Button>
                 </DropdownTrigger>
@@ -181,11 +112,11 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
                     </DropdownSection>
                     <DropdownSection>
                         <DropdownItem>
-                            <div className="flex justify-center gap-x-10">
-                                <Link href={"/profile"}>
+                            <div className="flex justify-center gap-x-10 text-leofi">
+                                <Link href={"/profile"} onClick={changeToProfile}>
                                     <div className="flex-col">
                                         <div className="ml-2"> <ProfileIcon /></div>
-                                        <p className="text-blue-600">Profile</p>
+                                        <p>Profile</p>
                                     </div>
                                 </Link>
                                 <div>
@@ -193,7 +124,7 @@ export default function InfoDropdownDesktop({ isHome, email, walletAddress, poin
                                         <p className="ml-3.5 items-center">
                                             <ExitIcon />
                                         </p>
-                                        <p className="text-blue-600">Log Out</p>
+                                        <p>Log Out</p>
                                     </button>
                                 </div>
                             </div>

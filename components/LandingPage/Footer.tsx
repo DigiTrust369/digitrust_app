@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Button from "@/components/Button";
 import Image from "next/image";
-import digitrustLogo from "@/assets/images/digitrust.png";
+import leofiLogo from "@/assets/images/leofi.png";
 
 const navLinksLeft = [
   {
@@ -83,8 +83,8 @@ export default function Footer() {
           {/* Logo */}
           <Link href="/">
             <Image
-              src={digitrustLogo}
-              alt="digitrust logo"
+              src={leofiLogo}
+              alt="leofi logo"
               className="h-[50px] w-[205px] object-fit"
             />
           </Link>
@@ -193,7 +193,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex flex-wrap sm:flex-nowrap gap-y-5 items-center justify-between bg-blue-600 px-[60px] py-10 text-white xl:px-[100px]">
+      <div className="flex flex-wrap sm:flex-nowrap gap-y-5 items-center justify-between px-[60px] py-10 text-white xl:px-[100px]">
         <p>© 2023 DIGITRUST - All Rights Reserved</p>
         <div className="flex items-center gap-x-24">
           <Link href="/">Terms of use</Link>

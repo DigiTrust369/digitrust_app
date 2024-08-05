@@ -15,20 +15,23 @@ type Props = {};
 
 const FormWrapper = (props: Props) => {
   const [step, setStep] = useState(0);
+  const [fee, setFee] = useState(0);
 
   return (
     <form>
-      <div className="layout-container mt-8">
-        <div className="flex justify-center	">
-          <div className="flex-none w-64">
+      <div className="layout-container my-8">
+        <div className="flex justify-center flex-wrap gap-y-5">
+          <div className="flex-none">
             <PoolSteps active={step} onChangeStep={(step) => setStep(step)} />
           </div>
-          <div className={cn("flex-initial w-80 mx-5", styles.center)}>
+          <div className={cn("sm:w-2/5 mx-5")}>
             {step === 0 && <Step1TokenAndWeights onNext={() => setStep(1)} />}
             {step === 1 && (
               <Step2PoolFee
                 onNext={() => setStep(2)}
                 onBack={() => setStep(0)}
+                setFee={setFee}
+                fee={fee}
               />
             )}
             {step === 2 && (
@@ -40,10 +43,11 @@ const FormWrapper = (props: Props) => {
             {step === 3 && (
               <Step4Preview
                 onBack={() => setStep(2)}
+                fee={fee}
               />
             )}
           </div>
-          <div className="flex-initial w-64">
+          <div className="flex-initial">
             <PoolSummary />
           </div>
         </div>

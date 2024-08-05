@@ -10,7 +10,7 @@ const LockButton = (props: Props) => {
   const { value, ...rest } = props;
   return (
     <button
-      className="ml-2 ease-color mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-800 flex items-center shadow-sm border dark:border-0 bg-gray-50 dark:bg-gray-850 rounded-full p-1 justify-center border-transparent mr-0"
+      className="ml-2 ease-color mt-1 text-leofi hover:text-blue-800 dark:hover:text-blue-800 flex items-center shadow-sm border dark:border-0 bg-gray-50 dark:bg-gray-850 rounded-full p-1 justify-center border-transparent mr-0"
       type="button"
       {...rest}
     >

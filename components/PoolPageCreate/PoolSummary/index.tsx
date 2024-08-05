@@ -11,12 +11,14 @@ import {
 import styles from "./styles.module.scss";
 import { useTypedForm } from "@/hooks/useTypedForm";
 import { fetchTokens } from "../Step1TokenAndWeights/const";
+import { useFormatter } from "next-intl";
 
 type Props = {};
 
 const colors = ["#ffed00", "#ff0000", "#27272A", "#008000", "#FFA500", "#0000FF", "#A020F0"];
 
 const PoolSummary = (props: Props) => {
+  const format = useFormatter();
   const { watch } = useTypedForm("CreateVaults");
   const tokensValues = watch("tokens")?.filter(
     (x) => x?.name && x?.percent > 0
@@ -34,7 +36,7 @@ const PoolSummary = (props: Props) => {
   return (
     <div className={cn("flex flex-col", styles.root)}>
       <div className="flex flex-col bal-card rounded-lg overflow-hidden bg-white dark:bg-gray-850 shadow-xl content styles_root__XCc9d">
-        <div className="px-4 py-4">Pool summary</div>
+        <div className="px-4 py-4">Profile summary</div>
         <div>
           <div className={styles["divider"]}></div>
         </div>
@@ -94,7 +96,7 @@ const PoolSummary = (props: Props) => {
               <span className="mr-4">{x?.symbol}</span>
               <div className="flex flex-row justify-center">
                 <div className="mr-4">
-                  <span>${x?.marketPrice}</span>
+                  <span>${format.number(x?.marketPrice)}</span>
                 </div>
                 <img alt="" src={x?.icon} className="h-5" />
               </div>

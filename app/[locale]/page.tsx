@@ -7,6 +7,7 @@ import {
   LandingPage,
 } from "@/components";
 import { WalletKitProvider } from "@mysten/wallet-kit";
+import { redirect } from "next/navigation";
 
 // function Home() {
 //   return (
@@ -27,5 +28,5 @@ import { WalletKitProvider } from "@mysten/wallet-kit";
 // export default Home;
 
 export default function Home() {
-  return <LandingPage />;
+  return redirect('/home');
 }

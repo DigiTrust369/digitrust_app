@@ -14,7 +14,7 @@ const PoolSteps = (props: Props) => {
   return (
     <div className={cn("flex flex-col rounded-lg", styles.root)}>
       <div className="text-base text-center px-4 py-4">
-        Create a weighted pool steps
+        Create a weighted profile steps
       </div>
       <div>
         <div className={styles["divider"]}></div>
@@ -22,10 +22,10 @@ const PoolSteps = (props: Props) => {
       <div className="text-base text-center px-4 py-4">
         {STEPS.map((step, idx) => {
           const defaultCircleClassName =
-            "relative text-sm rounded-full w-7 h-7 flex justify-center items-center border-2 border-gray-300 dark:border-gray-600 text-blue-600 circle-line mr-2";
+            "relative text-sm rounded-full w-7 h-7 flex justify-center items-center border-2 border-gray-300 dark:border-gray-600 text-leofi circle-line mr-2";
           const activeCircleClassName =
-            "relative text-sm rounded-full w-7 h-7 flex justify-center items-center border-2 border-none bg-gradient-from-l bg-gradient-to-r from-blue-600 to-blue-400 text-white active circle-line mr-2";
-          const activeClassName = "text-blue-600 font-semibold";
+            "relative text-sm rounded-full w-7 h-7 flex justify-center items-center border-2 border-none bg-leofi text-white active circle-line mr-2";
+          const activeClassName = "text-leofi font-semibold";
           const isActive = idx === active;
           return (
             <div
