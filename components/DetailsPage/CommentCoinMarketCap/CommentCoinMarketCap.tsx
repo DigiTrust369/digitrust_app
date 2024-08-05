@@ -126,6 +126,50 @@ export default function Comment(Props: any) {
             share: ["nhatlapross@gmail.com", "nhatlapross1@gmail.com", "nhatlapross2@gmail.com"],
             listComment: []
         },
+        {
+            id: "1",
+            profile_id: "pn_v1",
+            userAvatar: "https://placehold.co/40x40",
+            userName: "@alvinichi",
+            postTime: "6h",
+            content: "Bitcoin start invest time",
+            bull: ["nhatlapross@gmail.com", "nhatlapross1@gmail.com", "nhatlapross2@gmail.com"],
+            bear: ["nhatlapross@gmail.com"],
+            share: ["nhatlapross@gmail.com", "nhatlapross1@gmail.com", "nhatlapross2@gmail.com"],
+            listComment: [
+                {
+                    idComment: "1",
+                    userName: "alvin",
+                    userAvatar: "https://placehold.co/40x40",
+                    mainComment: "Hello world",
+                },
+                {
+                    idComment: "2",
+                    userName: "alvin",
+                    userAvatar: "https://placehold.co/40x40",
+                    mainComment: "I'm here",
+                }
+            ]
+        },
+        {
+            id: "2",
+            profile_id: "pn_v1",
+            userAvatar: "https://placehold.co/40x40",
+            userName: "@marsivi",
+            postTime: "2h",
+            content: "Bitcoin ETH awsome",
+            bull: ["nhatlapross@gmail.com", "nhatlapross1@gmail.com", "nhatlapross2@gmail.com"],
+            bear: ["nhatlapross@gmail.com"],
+            share: ["nhatlapross@gmail.com", "nhatlapross1@gmail.com", "nhatlapross2@gmail.com"],
+            listComment: [
+                {
+                    idComment: "1",
+                    userName: "alvin",
+                    userAvatar: "https://placehold.co/40x40",
+                    mainComment: "Great"
+                }
+            ]
+        }
     ]
 
     useEffect(() => {
@@ -290,64 +334,21 @@ export default function Comment(Props: any) {
     }, [dataTopPost]);
 
     return (
-        <>
-            {/* <div className="p-4 border-b flex justify-between items-center">
-            <div className="flex gap-5">
-                <Avatar isBordered radius="full" size="md" src="https://th.bing.com/th/id/R.d7aee691faadd1ebbbea18147c248042?rik=YiWu%2fNx0ygvlJw&pid=ImgRaw&r=0" />
-                <div className="flex flex-col gap-1 items-start justify-center">
-                    <h4 className="text-small font-semibold leading-none text-default-600">{Props.coinID.toUpperCase()}</h4>
-                    <h5 className="text-small tracking-tight text-default-400">1.6M Followers</h5>
-                </div>
-            </div>
-            <Button
-                className={isFollowed ? "bg-transparent text-foreground border-default-200" : ""}
-                color="primary"
-                radius="full"
-                size="sm"
-                variant={isFollowed ? "bordered" : "solid"}
-                onPress={() => setIsFollowed(!isFollowed)}
-            >
-                {isFollowed ? "Unfollow" : "Follow"}
-            </Button>
-        </div> */}
-            {/* <div className="flex-grow overflow-auto p-4">
-            <Tabs aria-label="Dynamic tabs" 
-                items={tabs}
-                className="w-full text-base font-medium leading-7"
-                classNames={{
-                    tabList: "w-full",
-                    tab: "flex-1 px-0",
-                }}
-            >
-                {(item) => (
-                <Tab key={item.id} title={item.label}>
-                    <ScrollShadow className="h-[450px] scrollbar-hide">
-                        {
-                            isLoading ? (
-                                <div className="flex justify-between items-center">Loading...</div>
-                            ) : (item.id == "top" ? 
-                                <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} />   
-                                : <CommentCoinMarketCap data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} /> )
-                        }
-                    </ScrollShadow>
-                </Tab>
-                )}
-            </Tabs>
-        </div> */}
+        <div className="flex flex-col h-screen"> {/* Use h-screen to take full viewport height */}
             <div className="p-4 border-b flex justify-between items-center text-lg font-bold text-orange-400">
                 Comment
             </div>
-            <div className="flex-grow overflow-auto p-4">
-                {
-                    isLoading ? (
+            <div className="flex-grow overflow-hidden max-h-[75%]"> {/* Wrapper for fixed height content */}
+                <div className="h-[calc(100vh-120px)] overflow-auto p-4"> {/* Fixed height scrollable area */}
+                    {isLoading ? (
                         <div className="w-full space-y-5 p-4">
                             <div className="max-w-[300px] w-full flex items-center gap-3">
                                 <div>
-                                    <Skeleton className="flex rounded-full w-12 h-12"/>
-                                </div>  
+                                    <Skeleton className="flex rounded-full w-12 h-12" />
+                                </div>
                                 <div className="w-full flex flex-col gap-2">
-                                    <Skeleton className="h-3 w-3/5 rounded-lg"/>
-                                    <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                                    <Skeleton className="h-3 w-3/5 rounded-lg" />
+                                    <Skeleton className="h-3 w-4/5 rounded-lg" />
                                 </div>
                             </div>
                             <Skeleton className="rounded-lg">
@@ -367,11 +368,11 @@ export default function Comment(Props: any) {
 
                             <div className="max-w-[300px] w-full flex items-center gap-3">
                                 <div>
-                                    <Skeleton className="flex rounded-full w-12 h-12"/>
-                                </div>  
+                                    <Skeleton className="flex rounded-full w-12 h-12" />
+                                </div>
                                 <div className="w-full flex flex-col gap-2">
-                                    <Skeleton className="h-3 w-3/5 rounded-lg"/>
-                                    <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                                    <Skeleton className="h-3 w-3/5 rounded-lg" />
+                                    <Skeleton className="h-3 w-4/5 rounded-lg" />
                                 </div>
                             </div>
                             <Skeleton className="rounded-lg">
@@ -389,22 +390,43 @@ export default function Comment(Props: any) {
                                 </Skeleton>
                             </div>
                         </div>
-                    ) :
-                        <ScrollShadow className="h-[450px] scrollbar-hide">
-                            <CommentCoinMarketCap coinID={Props.coinID} data={dataTopPost} setBull={setBull} setBear={setBear} setComment={setComment} setShare={setShare} />
+                    ) : (
+                        <ScrollShadow className="h-full scrollbar-hide">
+                            <CommentCoinMarketCap
+                                coinID={Props.coinID}
+                                data={dataTopPost}
+                                setBull={setBull}
+                                setBear={setBear}
+                                setComment={setComment}
+                                setShare={setShare}
+                            />
                         </ScrollShadow>
-
-                }
-
+                    )}
+                </div>
             </div>
-            <div className="p-4 border-t flex items-center">
-                <Image className="rounded-full mr-2 bg-orange-100" src={leofiNotextLogo} alt="User Avatar" width={48} height={48}/>
-                <input type="text"
-                    placeholder="What are you thinking..."
-                    className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
-                    onChange={(event) => setContent(event.target.value)} />
-                <button className="bg-primary text-primary-foreground px-4 py-2 rounded" onClick={() => newPost()}>{curPost == "" ? "Post" : "Comment"}</button>
+            <div className="p-4 border-t"> {/* Post input area */}
+                <div className="flex items-center">
+                    <Image
+                        className="rounded-full mr-2 bg-orange-100"
+                        src={leofiNotextLogo}
+                        alt="User Avatar"
+                        width={48}
+                        height={48}
+                    />
+                    <input
+                        type="text"
+                        placeholder="What are you thinking..."
+                        className="flex-grow w-full bg-input text-foreground p-2 rounded-lg mr-2"
+                        onChange={(event) => setContent(event.target.value)}
+                    />
+                    <button
+                        className="bg-primary text-primary-foreground px-4 py-2 rounded"
+                        onClick={() => newPost()}
+                    >
+                        {curPost == "" ? "Post" : "Comment"}
+                    </button>
+                </div>
             </div>
-        </>
+        </div>
     )
 }

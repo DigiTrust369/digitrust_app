@@ -1,21 +1,9 @@
-"use client";
 import ProfileContainer from "@/components/Profile";
-import Copy from "@/icons/Copy";
-import Discord from "@/icons/Discord";
-import ExternalLink from "@/icons/ExternalLink";
-import Info from "@/icons/Info";
-import Telegram from "@/icons/Telegram";
-import TwitterWithoutTitle from "@/icons/TwitterWithoutTitle";
-import X from "@/icons/X";
-import React from "react";
-
-// type TProfileProps = {
-//   params: { userAddress: string };
-// };
+import React, { useEffect, useState } from "react";
 
 const fetchProfile = async () => {
   const response = await fetch(
-    "https://dgt-dev.vercel.app/v1/user?user_id=user_v1"
+    `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/user?user_id=user_v1`
   );
 
   if (!response.ok) {
@@ -25,27 +13,90 @@ const fetchProfile = async () => {
   return response.json();
 };
 
-// async function Profile(props: TProfileProps) {
-async function Profile() {
-  const profile = await fetchProfile();
+type TVault = {
+  name: string;
+  balance: number;
+  list_price: string;
+  current_price: string;
+  manager: string;
+  tvl: number;
+  monthly_return: string;
+  daily_return: string;
+  logo_url: string;
+};
 
-  if (!profile || Object.keys(profile).length === 0) {
-    return <div>User not found</div>;
-  }
+interface IProfile {
+  name: string,
+  holding_amount: number,
+  managed_amount: number,
+  description: string,
+  wallet: string,
+  logo_url: string,
+  vaults: TVault[],
+  dgt_amount: number
+}
+
+function Profile() {
+  // const [data, setData] = useState<IProfile>({
+  //   name: "test",
+  //   holding_amount: 0,
+  //   managed_amount: 0,
+  //   description: "test",
+  //   wallet: "0x000",
+  //   logo_url: "test",
+  //   vaults: [],
+  //   dgt_amount: 0
+  // });
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const profile = await fetchProfile();
+  //       if (!profile || Object.keys(profile).length === 0) {
+  //         setData({
+  //           name: "test",
+  //           holding_amount: 0,
+  //           managed_amount: 0,
+  //           description: "test",
+  //           wallet: "0x000",
+  //           logo_url: "test",
+  //           vaults: [],
+  //           dgt_amount: 0
+  //         });
+  //       } else {
+  //         setData(profile);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching profile:", error);
+  //       // Handle error state if needed
+  //       setData({
+  //         name: "test",
+  //         holding_amount: 0,
+  //         managed_amount: 0,
+  //         description: "test",
+  //         wallet: "0x000",
+  //         logo_url: "test",
+  //         vaults: [],
+  //         dgt_amount: 0
+  //       });
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
-      <div>
-        <ProfileContainer
-          name={profile.name}
-          holdingAmount={profile.holding_amount}
-          managedAmount={profile.managed_amount}
-          description={profile.des}
-          wallet={profile.wallet}
-          logoUrl={profile.logo_url}
-          vaults={profile.vaults}
-          dgtAmount={profile.dgt_amount}
-        />
-      </div>
+    <div>
+      {/* <ProfileContainer
+        name={data.name}
+        holdingAmount={data.holding_amount}
+        managedAmount={data.managed_amount}
+        description={data.description}
+        wallet={data.wallet}
+        logoUrl={data.logo_url}
+        vaults={data.vaults}
+        dgtAmount={data.dgt_amount}
+      /> */}
+    </div>
   );
 }
 
