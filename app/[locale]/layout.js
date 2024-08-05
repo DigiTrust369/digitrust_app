@@ -30,14 +30,15 @@ export default async function LocaleLayout(props) {
   const { children, params: { locale } = {} } = props;
 
   return <Provider locale={locale}>
-          {/* <Onborda   
-              steps={steps} 
-              cardComponent={CustomCard}
-              shadowOpacity="0.5"> */}
-            <MainLayout />
-              <Toaster position="top-center" />
-              {children}
-            <FooterLayout />
-          {/* </Onborda> */}
-        </Provider>;
+
+    <div className="flex flex-col min-h-screen">
+      <MainLayout />
+      <main className="flex-grow">
+        <Toaster position="top-center" />
+        {children}
+      </main>
+      <FooterLayout />
+    </div>
+
+  </Provider>;
 }

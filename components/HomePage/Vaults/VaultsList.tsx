@@ -220,7 +220,7 @@ export default function VaultsList() {
           </div>
         )}
         {!isLoading && (
-          <table className="min-w-full table">
+          <table className="min-w-full table overflow-y-auto">
             <thead className="table-head">
               <tr>
                 {
