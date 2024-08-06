@@ -179,11 +179,11 @@ export default function Info(Props:any) {
                         ) : (
                           <p>Loading...</p>
                         )}</p>
-                {dataDetails.map((data) => (
+                {dataDetails != null? dataDetails.map((data) => (
                   <div key={data.vault_id} className="flex text-gray-800">
                     <span>{format.number(+data.price)} USD</span>
                   </div>
-                ))}
+                )) : <p>Loading...</p>}
               </div>
 
               <button>

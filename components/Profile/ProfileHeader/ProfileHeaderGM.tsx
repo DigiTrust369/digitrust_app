@@ -116,9 +116,6 @@ async function postData(url = "", data = {}) {
 export default function Header(props: { isHome: boolean, isDetail: boolean | false }) {
   // const { startOnborda } = useOnborda();
   const { userEmail, setUserEmail, chain, setChain, selectedKeys, setSelectedKeys, walletAddress, setWalletAddress } = useGlobalContext();
-  const handleStartOnborda = () => {
-    // startOnborda();
-  };
 
   const iconClasses =
     "text-xl text-default-500 pointer-events-none flex-shrink-0";
@@ -151,7 +148,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
         setOauthParams(res);
       } else if (curEmail != "" && curEmail != null) {
         let myToast = toast.loading("Loading...");
-        if(email == "" || email == null)
+        if (email == "" || email == null)
           setEmail(curEmail != null ? curEmail : "");
         toast.dismiss(myToast);
       } else return;
@@ -164,7 +161,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
     setEmail("");
     window.location.hash = "";
     // window.location.href = window.location.origin + "/home";
-    sessionStorage.clear();
+    localStorage.clear();
   };
 
   useEffect(() => {
@@ -229,7 +226,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
       console.error("Error initiating Google login:", error);
       toast.dismiss(myToast);
     }
-    
+
   };
 
   useEffect(() => {
@@ -285,7 +282,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem(`${chain}wallet`, evmAddress);
+              localStorage.setItem(`${chain}wallet`, evmAddress);
             }
           }
 
@@ -319,10 +316,10 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
                   "Content-Type": "text/plain;charset=utf-8",
                 },
               });
-              sessionStorage.setItem(`${chain}wallet`, algoAddress);
+              localStorage.setItem(`${chain}wallet`, algoAddress);
             }
           }
-          if(email == "" || email == null)
+          if (email == "" || email == null)
             setEmail(NewdecodedJwt?.email);
           await postData("https://dgt-dev.vercel.app/v1/claim_token", {
             receiver: NewdecodedJwt?.email,
@@ -343,41 +340,46 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
             //startOnborda();
           });
         } else {
-          if(email == "" || email == null)
+          if (email == "" || email == null)
             setEmail(data?.email);
-          sessionStorage.setItem(`${chain}wallet`, data?.wallet);
+          localStorage.setItem(`${chain}wallet`, data?.wallet);
         }
         window.location.hash = "";
         toast.dismiss(myToast);
       }
     };
-    
-    if(email == "" || email == null)
+
+    if (email == "" || email == null)
       getUserAddress();
   }, [oauthParams]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if(email == "" || email == null)
-          return
-      let scriptURLGet;
-      if (chain === "Klaytn") {
-        scriptURLGet = scriptURLGetEvmApt;
-      }
-      if (chain === "Algorand") {
-        scriptURLGet = scriptURLGetAlgorand;
-      }
-      const url = `${scriptURLGet}?email=${email}`;
+    const fetchData = async (url) => {
+      if (email == "" || email == null)
+        return
+
       try {
         const res = await fetch(url);
         const data = await res.json();
-        sessionStorage.setItem(`${chain}wallet`, data?.wallet);
+        localStorage.setItem(`${chain}wallet`, data?.wallet);
+        setWalletAddress(data?.wallet);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
-    setWalletAddress(sessionStorage.getItem(`${chain}wallet`));
+    let scriptURLGet;
+    if (chain === "Klaytn") {
+      scriptURLGet = scriptURLGetEvmApt;
+    }
+    if (chain === "Algorand") {
+      scriptURLGet = scriptURLGetAlgorand;
+    }
+    const url = `${scriptURLGet}?email=${email}`;
+    if (!localStorage.getItem(`${chain}wallet`)) {
+      fetchData(url);
+    } else {
+      setWalletAddress(localStorage.getItem(`${chain}wallet`));
+    }
   }, [chain, email])
 
   useEffect(() => {
