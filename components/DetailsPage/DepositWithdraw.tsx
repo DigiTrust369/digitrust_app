@@ -250,7 +250,7 @@ export default function DepositWithdraw({ defaultIndex }: Props) {
                       : "w-full rounded-lg px-8 py-2 leading-[150%] -tracking-[0.32px] text-gray-500"
                   }
                 >
-                  <a 
+                  <a
                   // id="onborda-step4"
                   >Withdraw</a>
                 </button>
