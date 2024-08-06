@@ -190,7 +190,6 @@ export default function VaultsList() {
   const mergedData = vaults.map((obj1, index) => {
     return { ...obj1, ...vaultsList[index] };
   });
-  console.log(mergedData)
 
   const clickDepositHandler = async (value: string) => {
     setVaultId(value);
