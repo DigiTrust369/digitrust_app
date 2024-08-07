@@ -71,7 +71,7 @@ export default function DetailsPage(Props: any) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${Props.coinID}/ohlc?vs_currency=usd&days=30`
+          `https://api.coingecko.com/api/v3/coins/${process.env.NEXT_PUBLIC_SYMBOL}/ohlc?vs_currency=usd&days=30`
         );
         const data: [number, number, number, number, number][] = await response.json();
 
@@ -100,7 +100,7 @@ export default function DetailsPage(Props: any) {
     const fetchDataDetails = async () => {
       // Api Default
       const response = await fetch(
-        "https://dgt-dev.vercel.app/v1/vault_allocation?vault_id=dgt1"
+        `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/vault_allocation?vault_id=dgt1`
       );
       const data = await response.json();
       // console.log(data);
@@ -141,7 +141,7 @@ export default function DetailsPage(Props: any) {
       <main className="flex-grow md:w-1/2 h-screen md:h-auto overflow-y-auto scrollbar-hide border">
         <div>
           <h1 className="pb-5 font-semibold text-leofi text-2xl sm:text-3xl sm:text-[36px] sm:leading-[54px] text-center">
-            {Props.coinID.toUpperCase()} Price
+            {process.env.NEXT_PUBLIC_SYMBOL} Price
           </h1>
         </div>
         

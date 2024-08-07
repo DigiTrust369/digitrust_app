@@ -1,17 +1,17 @@
 import ProfileContainer from "@/components/Profile";
 import React, { useEffect, useState } from "react";
 
-const fetchProfile = async () => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/user?user_id=user_v1`
-  );
+// const fetchProfile = async () => {
+//   const response = await fetch(
+//     `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/user?user_id=user_v1`
+//   );
 
-  if (!response.ok) {
-    return null;
-  }
+//   if (!response.ok) {
+//     return null;
+//   }
 
-  return response.json();
-};
+//   return response.json();
+// };
 
 type TVault = {
   name: string;

@@ -64,7 +64,7 @@ const navLinks = [
 ];
 
 async function generateAddress(account_id: string, address_id: string) {
-  const evmURL = `https://dgt-dev.vercel.app/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
+  const evmURL = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/evm_adr?account_id=${account_id}&address_id=${address_id}`;
   const resEVM = await fetch(evmURL);
   const evmAddress = await resEVM.json();
 
@@ -72,7 +72,7 @@ async function generateAddress(account_id: string, address_id: string) {
 }
 
 async function generateAPTAddress(account_id: string) {
-  const apturl = `https://dgt-dev.vercel.app/v1/apt_adr?account_id=${account_id}`;
+  const apturl = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/apt_adr?account_id=${account_id}`;
   const resApt = await fetch(apturl);
   const aptAddress = await resApt.json();
 
@@ -80,7 +80,7 @@ async function generateAPTAddress(account_id: string) {
 }
 
 async function generateAlgorandAddress(email: string) {
-  const url = `https://dgt-dev.vercel.app/v1/algo_Adr?email=${email}`;
+  const url = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/algo_Adr?email=${email}`;
   const res = await fetch(url);
   const algoAddress = await res.json();
 
@@ -88,7 +88,7 @@ async function generateAlgorandAddress(email: string) {
 }
 
 async function getBalance(_email: string) {
-  const url = `https://dgt-dev.vercel.app/v1/user_balance?email=${_email}`;
+  const url = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/user_balance?email=${_email}`;
   const resApt = await fetch(url);
   const balance = await resApt.json();
 
@@ -321,7 +321,7 @@ export default function Header(props: { isHome: boolean, isDetail: boolean | fal
           }
           if (email == "" || email == null)
             setEmail(NewdecodedJwt?.email);
-          await postData("https://dgt-dev.vercel.app/v1/claim_token", {
+          await postData(`${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/claim_token`, {
             receiver: NewdecodedJwt?.email,
             amount: 1024,
             created_at: new Date(),

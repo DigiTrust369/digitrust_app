@@ -66,7 +66,7 @@ const Step4Preview = (props: Props) => {
         }
         console.log(data)
 
-        const url = 'https://dgt-dev.vercel.app/v1/create_vault';
+        const url = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/create_vault`;
         const response = await fetch(url, {
             method: "POST",
             headers: {
