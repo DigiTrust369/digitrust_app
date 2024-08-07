@@ -35,7 +35,7 @@ interface Asset {
   asset_url: string;
 }
 
-export default function Overview() {
+export default function Overview(Props: any) {
   const format = useFormatter();
   let assets: Asset[];
 

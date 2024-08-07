@@ -10,15 +10,15 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import axios from 'axios';
 import BitcoinIcon from "@/icons/BitcoinIcon";
 
-const getCoinPrice = async (coinId:any) => {
-  try {
-    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
-    return response.data[coinId].usd;
-  } catch (error) {
-    console.error('Error fetching coin price:', error);
-    return null;
-  }
-};
+// const getCoinPrice = async (coinId:any) => {
+//   try {
+//     const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
+//     return response.data[coinId].usd;
+//   } catch (error) {
+//     console.error('Error fetching coin price:', error);
+//     return null;
+//   }
+// };
 
 async function postData(url = "", data = {}) {
   // Default options are marked with *
@@ -56,19 +56,13 @@ export default function Info(Props:any) {
     const fetchDataDetails = async () => {
       // Api Default
       const response = await fetch(
-        "https://dgt-dev.vercel.app/v1/vault_detail?vault_id=dgt1"
+        `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/vault_detail?profile_id=${Props.coinID}`
       );
       const data = await response.json();
       setDataDetails(data);
     };
 
-    const fetchPrice = async () => {
-      const bitcoinPrice = await getCoinPrice(Props.coinID);
-      setPrice(bitcoinPrice);
-    };
-
     fetchDataDetails();
-    fetchPrice();
 
     // const interval = setInterval(fetchPrice, 60000); 
     // return () => clearInterval(interval); 
@@ -159,8 +153,9 @@ export default function Info(Props:any) {
             </defs>
           </svg>
           <div className="text-4xl font-semibold leading-10 -tracking-[0.84px] text-leofi">
-            {/* {dataDetails && <p>{dataDetails.vault_name}</p>} */}
-            {Props.coinID.toUpperCase()}
+            {dataDetails != null? dataDetails.map((data) => (
+                    <span>{data.vault_name}</span>
+                )) : <p>Loading...</p>}
           </div>
         </div>
 
@@ -174,14 +169,14 @@ export default function Info(Props:any) {
             </div>
             <div className="flex items-center gap-x-2 rounded-[10px] border border-gray-45 bg-white px-4 py-3">
               <div className="flex gap-x-4 text-base font-semibold leading-4">
-                <p className="uppercase text-leofi">{price ? (
+                {/* <p className="uppercase text-leofi">{price ? (
                           <p>${price}</p>
                         ) : (
                           <p>Loading...</p>
-                        )}</p>
+                        )}</p> */}
                 {dataDetails != null? dataDetails.map((data) => (
-                  <div key={data.vault_id} className="flex text-gray-800">
-                    <span>{format.number(+data.price)} USD</span>
+                  <div key={data.vault_id} className="flex text-leofi">
+                    <span>{format.number(+data.price)} {data.currency}</span>
                   </div>
                 )) : <p>Loading...</p>}
               </div>
