@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import cn from "classnames";
 import styles from "./styles.module.scss";
@@ -8,7 +9,7 @@ import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
 import toast from "react-hot-toast";
 import { useGlobalContext } from "@/Context/store";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
     onBack?: () => void;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const Step4Preview = (props: Props) => {
+    const router = useRouter();
     const { userEmail, walletAddress } = useGlobalContext();
     const { onBack, fee } = props;
     const { register, control, watch, reset } = useTypedForm("CreateVaults");
@@ -55,7 +57,7 @@ const Step4Preview = (props: Props) => {
         //     "manage_fee": fee,
         // }
         const data = {
-            "profile_id": userEmail.split('@')[0],
+            "profile_id": vaultName,
             "username": userEmail.split('@')[0],
             "email": userEmail,
             "management_fee": `${fee}`,
@@ -64,7 +66,7 @@ const Step4Preview = (props: Props) => {
             "created_at": Date.now(),
             "updated_at": 1626627600
         }
-        console.log(data)
+        // console.log(data)
 
         const url = `${process.env.NEXT_PUBLIC_PROFILE_URL}/v1/create_vault`;
         const response = await fetch(url, {
@@ -76,9 +78,13 @@ const Step4Preview = (props: Props) => {
         });
         if (response.ok) {
             const result = await response.json();
+            console.log(result);
             if (result.success) {
                 toast.success("Created Profile Successfully !");
-                // setTimeout(() => reset(), 5000);
+                setTimeout(() => {
+                    reset();
+                    router.push('/home');
+                }, 1000);
             } else {
                 toast.error("Something went wrong! Try again!");
             }
