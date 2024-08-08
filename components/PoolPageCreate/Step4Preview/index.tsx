@@ -55,7 +55,7 @@ const Step4Preview = (props: Props) => {
         //     "manage_fee": fee,
         // }
         const data = {
-            "profile_id": userEmail.split('@')[0],
+            "profile_id": vaultName,
             "username": userEmail.split('@')[0],
             "email": userEmail,
             "management_fee": `${fee}`,
@@ -64,7 +64,7 @@ const Step4Preview = (props: Props) => {
             "created_at": Date.now(),
             "updated_at": 1626627600
         }
-        console.log(data)
+        // console.log(data)
 
         const url = 'https://dgt-dev.vercel.app/v1/create_vault';
         const response = await fetch(url, {
