@@ -76,9 +76,13 @@ const Step4Preview = (props: Props) => {
         });
         if (response.ok) {
             const result = await response.json();
+            console.log(result);
             if (result.success) {
                 toast.success("Created Profile Successfully !");
-                // setTimeout(() => reset(), 5000);
+                setTimeout(() => {
+                    reset();
+                    redirect('/home');
+                }, 1000);
             } else {
                 toast.error("Something went wrong! Try again!");
             }
