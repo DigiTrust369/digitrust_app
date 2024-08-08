@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import cn from "classnames";
 import styles from "./styles.module.scss";
@@ -8,7 +9,7 @@ import TokenLiquid from "./TokenLiquid"
 import Summary from "./Summary";
 import toast from "react-hot-toast";
 import { useGlobalContext } from "@/Context/store";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
     onBack?: () => void;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const Step4Preview = (props: Props) => {
+    const router = useRouter();
     const { userEmail, walletAddress } = useGlobalContext();
     const { onBack, fee } = props;
     const { register, control, watch, reset } = useTypedForm("CreateVaults");
@@ -81,7 +83,7 @@ const Step4Preview = (props: Props) => {
                 toast.success("Created Profile Successfully !");
                 setTimeout(() => {
                     reset();
-                    redirect('/home');
+                    router.push('/home');
                 }, 1000);
             } else {
                 toast.error("Something went wrong! Try again!");
